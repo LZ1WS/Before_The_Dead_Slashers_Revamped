@@ -14,7 +14,7 @@ net.Receive( "sls_killerseesurvivor_callout", function(len, killer)
 
 	if killer:Team() == TEAM_KILLER then
 
-		if GM.MAP.Killer.Name == "SCP-049" and killer:HasWeapon("weapon_scp049") then
+		if GM.MAP.Killer.VoiceCallouts then
 			killer:EmitSound(tostring(table.Random(GM.MAP.Killer.VoiceCallouts)))
 		end
 

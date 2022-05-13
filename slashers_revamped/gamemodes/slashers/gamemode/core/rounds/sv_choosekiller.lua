@@ -18,6 +18,13 @@ if v:GetNWBool("sls_killer_choose", true) == false then continue end
 		end
 		table.insert(tbl[v.choosekiller], v)
 	end
+		if table.IsEmpty(tbl) then
+			local rnd_player_to_use = player.GetAll()[math.random(#player.GetAll())]
+			if !tbl[rnd_player_to_use.choosekiller] then
+				tbl[rnd_player_to_use.choosekiller] = {}
+			end
+			table.insert(tbl[rnd_player_to_use.choosekiller], rnd_player_to_use)
+		end
 	for k, _ in pairs(tbl) do
 		winkey = math.max(winkey, k)
 	end

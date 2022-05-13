@@ -212,7 +212,7 @@ GM.MAP.KILLERS =
 		[7] = {
 		["name"] = "the Machine",
 		["icon"] = "icons/springtrap.png",
-		["description"] = "class_desc_wip",
+		["description"] = "class_desc_springtrap",
 		["model"] = "models/tetTris/FNaF/SB/Burntrap_inkmanspm.mdl",
 		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
 		},
@@ -288,9 +288,9 @@ GM.MAP.KILLERS =
 		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
 		},
 		[18] = {
-		["name"] = "AMOGUS",
+		["name"] = "the Impostor",
 		["icon"] = "icons/amogus.png",
-		["description"] = "NONONONONO! GET OUT OF MY HEAD!",
+		["description"] = "class_desc_amogus",
 		["model"] = "models/josephthekp/amongdrip.mdl",
 		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
 		},
@@ -325,7 +325,7 @@ GM.MAP.KILLERS =
 		[23] = {
 		["name"] = "the Deerling",
 		["icon"] = "icons/deerling.png",
-		["description"] = "class_desc_wip",
+		["description"] = "class_desc_deerling",
 		["model"] = "models/bala/monsterboys_pm.mdl",
 		["stats"] = "\nWalk Speed = 190\nRun Speed = 200",
 		},
@@ -388,6 +388,14 @@ GM.MAP.SURVIVORS = {
 	},
 }
 
+hook.Add( "InitPostEntity", "sls_share_killers_list", function()
+	net.Start("sls_share_killers_list")
+	net.WriteTable(GM.MAP.KILLERS)
+	net.SendToServer()
+	print("sls_share_killers_list")
+hook.Remove("InitPostEntity", "sls_share_killers_list")
+end )
+
 local sls_ply_choosen_killer_model
 local sls_ply_choosen_killer_description
 local sls_ply_choosen_killer_stats
@@ -410,7 +418,6 @@ sheet:Dock( FILL )
 
 local sls_killer_Checkbox = HUBMENU:Add( "DCheckBoxLabel" ) -- Create the checkbox
 	sls_killer_Checkbox:Dock(TOP)
-	sls_killer_Checkbox:SetContentAlignment(9)						-- Set the position
 	sls_killer_Checkbox:SetText(GM.LANG:GetString("hub_killer_checkbox"))					-- Set the text next to the box
 	sls_killer_Checkbox:SetFont("ChatFont")
 	sls_killer_Checkbox:SetValue( LocalPlayer():GetNWBool("sls_killer_choose", true) )						-- Initial value
@@ -462,6 +469,8 @@ survnameimage:SetFont("ChatFont")
 survnameimage:SetText(survname)
 survnameimage:SetContentAlignment(8)
 survnameimage:SizeToContents()
+survnameimage:SetWrap(true)
+survnameimage:SetAutoStretchVertical( true )
 
 DermaImageButton2:SetImage(survivor["icon"])
 DermaImageButton2:SetSize(116, 116)
@@ -480,8 +489,9 @@ function sls_playermodel:LayoutEntity( Entity ) return end -- disables default r
 
 local clickonme_mdl = sls_playermodel:Add("DLabel")
 clickonme_mdl:Dock(TOP)
-clickonme_mdl:SetFont("ChatFont")
+clickonme_mdl:SetFont("GModNotify")
 clickonme_mdl:SetText("Click to show model")
+clickonme_mdl:SetTextColor(Color(255, 200, 0))
 clickonme_mdl:SetContentAlignment(8)
 clickonme_mdl:SizeToContents()
 
@@ -503,16 +513,77 @@ local List = HUBMENUSCROLL:Add( "DIconLayout" )
 List:Dock( FILL )
 List:SetSpaceY( 5 )
 List:SetSpaceX( 5 )
+
+local sls_killer_random_button = List:Add( "DImageButton" )
+local sls_killer_random_button_name = sls_killer_random_button:Add("DLabel")
+sls_killer_random_button_name:Dock(TOP)
+sls_killer_random_button_name:SetText(GM.LANG:GetString("hub_killer_random"))
+sls_killer_random_button_name:SetFont("ChatFont")
+sls_killer_random_button_name:SetContentAlignment(8)
+sls_killer_random_button_name:SizeToContents()
+sls_killer_random_button_name:SetWrap(true)
+sls_killer_random_button_name:SetAutoStretchVertical( true )
+sls_killer_random_button:SetImage("icons/no_icon_red.png")
+sls_killer_random_button:SetSize(116, 116)
+sls_killer_random_button.DoClick = function()
+	::try_again_rnd_killer_number::
+	local rnd_killer = math.random(1, #GM.MAP.KILLERS)
+	for number, killer in pairs(GM.MAP.KILLERS) do
+		if number ~= rnd_killer then continue end
+		if (killer.map) and killer.map != game.GetMap() then goto try_again_rnd_killer_number end
+		net.Start("sls_hub_choosekiller")
+		net.WriteInt(rnd_killer, 6)
+		net.SendToServer()
+	if (string.find(GM.LANG:GetString(killer["description"]), "Unknow")) then
+		description:SetText(killer["description"])
+		description:AppendText(killer["stats"])
+		sls_ply_choosen_killer_description = killer["description"]
+		sls_ply_choosen_killer_stats = killer["stats"]
+		else
+		description:SetText(GM.LANG:GetString(killer["description"]))
+		description:AppendText(killer["stats"])
+		sls_ply_choosen_killer_description = GM.LANG:GetString(killer["description"])
+		sls_ply_choosen_killer_stats = killer["stats"]
+		end
+		if IsValid(sls_playermodel) then sls_playermodel:Remove() end
+		sls_playermodel = modelpanel:Add( "DAdjustableModelPanel" )
+		local clickonme_mdl = sls_playermodel:Add("DLabel")
+		clickonme_mdl:Dock(TOP)
+		clickonme_mdl:SetFont("GModNotify")
+		clickonme_mdl:SetText("Click to show model")
+		clickonme_mdl:SetTextColor(Color(255, 200, 0))
+		clickonme_mdl:SetContentAlignment(8)
+		clickonme_mdl:SizeToContents()
+		sls_playermodel:Dock(FILL)
+		function sls_playermodel:LayoutEntity( Entity ) return end -- disables default rotation
+		sls_playermodel:SetModel(killer["model"])
+		
+		if (sls_playermodel.Entity:LookupBone("ValveBiped.Bip01_Head1")) then
+		local headpos = sls_playermodel.Entity:GetBonePosition(sls_playermodel.Entity:LookupBone("ValveBiped.Bip01_Head1"))
+		sls_playermodel:SetLookAt(headpos)
+		
+		sls_playermodel:SetCamPos(headpos-Vector(-15, 0, 0))	-- Move cam in front of face
+		
+		sls_playermodel.Entity:SetEyeTarget(headpos-Vector(-15, 0, 0))
+		end
+		
+		sls_ply_choosen_killer_model = killer["model"]
+	end
+end
+
 --if (GM.MAP.KILLERS[game.GetMap()]) then
 for k, killer in pairs(GM.MAP.KILLERS) do --pairs(GM.MAP.KILLERS[game.GetMap()]) do
 	if (killer.map) and killer.map != game.GetMap() then continue end
+
 local DermaImageButton = List:Add( "DImageButton" )
 local killername = DermaImageButton:Add("DLabel")
 killername:Dock(TOP)
 killername:SetFont("ChatFont")
-killername:SetText(killer["name"])
 killername:SetContentAlignment(8)
+killername:SetText(killer["name"])
 killername:SizeToContents()
+killername:SetWrap(true)
+killername:SetAutoStretchVertical( true )
 DermaImageButton:SetImage(killer["icon"])
 DermaImageButton:SetSize(116, 116)
 
@@ -536,8 +607,9 @@ end
 
 local clickonme_mdl = sls_playermodel:Add("DLabel")
 clickonme_mdl:Dock(TOP)
-clickonme_mdl:SetFont("ChatFont")
+clickonme_mdl:SetFont("GModNotify")
 clickonme_mdl:SetText("Click to show model")
+clickonme_mdl:SetTextColor(Color(255, 200, 0))
 clickonme_mdl:SetContentAlignment(8)
 clickonme_mdl:SizeToContents()
 end
@@ -561,8 +633,9 @@ if IsValid(sls_playermodel) then sls_playermodel:Remove() end
 sls_playermodel = modelpanel:Add( "DAdjustableModelPanel" )
 local clickonme_mdl = sls_playermodel:Add("DLabel")
 clickonme_mdl:Dock(TOP)
-clickonme_mdl:SetFont("ChatFont")
+clickonme_mdl:SetFont("GModNotify")
 clickonme_mdl:SetText("Click to show model")
+clickonme_mdl:SetTextColor(Color(255, 200, 0))
 clickonme_mdl:SetContentAlignment(8)
 clickonme_mdl:SizeToContents()
 sls_playermodel:Dock(FILL)
@@ -591,6 +664,7 @@ if SERVER then
 util.AddNetworkString("sls_OpenHUB")
 util.AddNetworkString("sls_hub_choosekiller")
 util.AddNetworkString("sls_killer_choose_nw")
+util.AddNetworkString("sls_share_killers_list")
 
 hook.Add("ShowSpare2", "sls_hub_ShowSpare2", function(ply)
 net.Start("sls_OpenHUB")
@@ -598,7 +672,12 @@ net.Send(ply)
 end)
 
 net.Receive("sls_hub_choosekiller", function(len, ply)
-ply:SetNWInt("choosen_killer", net.ReadInt(6))
+	ply:SetNWInt("choosen_killer", net.ReadInt(6))
+end)
+
+net.Receive("sls_share_killers_list", function(len, ply)
+	local GM = GM or GAMEMODE
+	GM.MAP.KILLERS = net.ReadTable()
 end)
 
 net.Receive("sls_killer_choose_nw", function(len, ply)

@@ -244,7 +244,13 @@ hook.Add( "StartCommand", "Mason_ability", function(ply, mv)
 for _,v in ipairs(player.GetAll()) do
 v:ConCommand("play kamenshik/ability/ohblyahleb.wav")
 end
-timer.Simple(30, function() ply:SetNWBool("Mason_ability", false) end)
+timer.Create("sls_mason_ability_cooldown", 30, 1, function()
+ply:SetNWBool("Mason_ability", false)
+net.Start( "notificationSlasher" )
+net.WriteTable({"class_ability_time"})
+net.WriteString("safe")
+net.Send(ply)
+end)
 			end
 		end)
 end
@@ -252,6 +258,10 @@ end
 
 	hook.Add("sls_round_End", "sls_kability_End", function()
 hook.Remove("StartCommand", "Mason_ability")
+for _, v in ipairs(player.GetAll()) do
+	v:SetNWBool("Mason_ability", false)
+end
+timer.Remove("sls_mason_ability_cooldown")
 end)
 hook.Add("sls_round_PostStart", "intro_fixkamen", function()
 hook.Remove("sls_round_PostStart", "sls_kability_PostStart")
@@ -268,14 +278,15 @@ if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_huntress")
 	GM.MAP.Killer.Icon = Material("icons/huntress.png")
 end
-hook.Add("sls_round_PostStart", "intro_fixhuntress", function()
-for _,v in ipairs(player.GetAll()) do
-	if v:Team() == TEAM_KILLER then
-	v:EmitSound("huntress/chase/sound_2.wav", 150)
-	else
-	v:StopSound("huntress/chase/sound_2.wav")
+
+hook.Add("sls_round_End", "sls_kability_End", function()
+	for _,v in ipairs(player.GetAll()) do
+		v:StopSound("huntress/chase/sound_2.wav")
 	end
-end
+end)
+
+hook.Add("sls_round_PostStart", "intro_fixhuntress", function()
+	GM.ROUND.Killer:EmitSound("huntress/chase/sound_2.wav", 80)
 hook.Remove("sls_round_PostStart", "intro_fixhuntress")
 end)
 elseif rndnumber == 4 then
@@ -289,9 +300,43 @@ if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_slender")
 	GM.MAP.Killer.Icon = Material("icons/slenderman.png")
 end
-hook.Add("sls_round_PostStart", "intro_fixslender", function()
-hook.Remove("sls_round_PostStart", "intro_fixslender")
+
+local slender_tpused = false
+
+-- Ability
+function GM.MAP.Killer:UseAbility(ply)
+if CLIENT then return end
+	if GM.MAP.Killer.Name != "Slenderman" then return end
+	if !slender_tpused then
+    local FOV = ply:GetFOV()
+	local aimpoint = ply:GetEyeTrace()
+    local TraceDist = aimpoint.StartPos:Distance(aimpoint.HitPos)
+	if TraceDist < 500 then
+	slender_tpused = true
+	ply:SetFOV(FOV + 25, 0.25)
+    timer.Simple(0.125, function() 
+        ply:SetFOV(FOV, 0.25) 
+    end)
+    ply:EmitSound(Sound("slender/blink_swep/teleport" .. math.random(1, 2) .. ".mp3", 256, 100))
+    ply:SetLocalVelocity(Vector(0, 0, 0))
+    ply:SetPos(aimpoint.HitPos)
+	timer.Create("sls_slender_tp_cooldown", 5, 1, function()
+	slender_tpused = false
+	net.Start( "notificationSlasher" )
+	net.WriteTable({"class_ability_time"})
+	net.WriteString("safe")
+	net.Send(ply)
+	end)
+	end
+end
+		end
+
+hook.Add("sls_round_End", "sls_kability_End", function()
+slender_tpused = false
+timer.Remove("sls_slender_tp_cooldown")
+hook.Remove("sls_round_End", "sls_kability_End")
 end)
+
 elseif rndnumber == 5 then
 -- Killer
 GM.MAP.Killer.Name = "Michael Myers"
@@ -576,15 +621,48 @@ GM.MAP.Killer.RunSpeed = 200
 GM.MAP.Killer.ExtraWeapons = {"weapon_fists"}
 
 if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_wip")
+	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_springtrap")
 	GM.MAP.Killer.Icon = Material("icons/springtrap.png")
 end
+
+local springtrap_trap_placed = false
+local springtrap_traps = 0
+
+-- Ability
+function GM.MAP.Killer:UseAbility(ply)
+	if CLIENT then return end
+	if GM.MAP.Killer.Name != "The Machine" then return end
+	if !springtrap_trap_placed and springtrap_traps < 5 then
+	springtrap_trap_placed = true
+	springtrap_traps = springtrap_traps + 1
+	local trap = ents.Create( "sls_springtrap_traps" )
+	trap:SetModel("models/hunter/plates/plate.mdl")
+	trap:SetMaterial("sprites/animglow02")
+	trap:SetPos( ply:GetPos() )
+	trap:Spawn()
+	timer.Create("sls_springtrap_trap_placed_cooldown", 10, 1, function()
+		springtrap_trap_placed = false
+		net.Start( "notificationSlasher" )
+	net.WriteTable({"class_ability_time"})
+	net.WriteString("safe")
+	net.Send(ply)
+	end)
+end
+		end
+
+hook.Add("sls_round_End", "sls_kability_End", function()
+	springtrap_trap_placed = false
+timer.Remove("sls_springtrap_trap_placed_cooldown")
+hook.Remove("sls_round_End", "sls_kability_End")
+end)
+
 hook.Add("sls_round_PostStart", "introfixspring", function()
 for _,v in ipairs(player.GetAll()) do
 v:ConCommand("play springtrap/voice/intro.mp3")
 end
 hook.Remove("sls_round_PostStart", "introfixspring")
 end)
+
 elseif rndnumber == 8 then
 GM.MAP.Killer.Name = "Albert Wesker"
 GM.MAP.Killer.Model = "Models/Player/slow/amberlyn/re5/wesker/slow.mdl"
@@ -618,7 +696,8 @@ if SERVER then
 hook.Add( "PlayerShouldTakeDamage", "Wesker_infection", function( ply, attacker )
 if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and attacker:Team() == TEAM_KILLER and ply:GetNWBool("sls_wesker_infected", false) == false then
 ply:SetNWBool("sls_wesker_infected", true)
-timer.Create("wesker_infection" .. ply:SteamID64(), 15, 0, function()
+if !ply:IsBot() then
+	timer.Create("wesker_infection" .. ply:SteamID64(), 15, 0, function()
 if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == true then
 ply:TakeDamage(25, attacker, attacker:GetActiveWeapon())
 elseif ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == false and timer.Exists("wesker_infection" .. ply:SteamID64()) then
@@ -628,6 +707,18 @@ timer.Remove("wesker_infection" .. ply:SteamID64())
 ply:SetNWBool("sls_wesker_infected", false)
 end
 end)
+else
+	timer.Create("wesker_infection" .. ply:EntIndex(), 15, 0, function()
+		if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == true then
+		ply:TakeDamage(25, attacker, attacker:GetActiveWeapon())
+		elseif ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == false and timer.Exists("wesker_infection" .. ply:EntIndex()) then
+		timer.Remove("wesker_infection" .. ply:EntIndex())
+		elseif ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == true and ply:Alive() == false then
+		timer.Remove("wesker_infection" .. ply:EntIndex())
+		ply:SetNWBool("sls_wesker_infected", false)
+		end
+		end)
+end
 end
 end )
 end
@@ -635,8 +726,12 @@ end
 		if SERVER then
 hook.Remove("PlayerShouldTakeDamage", "Wesker_infection")
 for _,players in pairs(player.GetAll()) do
-if timer.Exists("wesker_infection" .. players:SteamID64()) then
+if timer.Exists("wesker_infection" .. players:SteamID64()) or timer.Exists("wesker_infection" .. players:EntIndex()) then
+	if !players:IsBot() then
 timer.Remove("wesker_infection" .. players:SteamID64())
+	else
+timer.Remove("wesker_infection" .. players:EntIndex())
+	end
 players:SetNWBool("sls_wesker_infected", false)
 end
 end
@@ -788,6 +883,7 @@ function GM.MAP.Killer:UseAbility(ply)
 ply:EmitSound("cloaker/ability/vuvuvu.mp3")
 if CLIENT then
 hook.Add("PreDrawHalos", "AddHackedHalos", function()
+	if LocalPlayer():Team() == TEAM_SURVIVORS then return end
         halo.Add(GM.ROUND.Survivors,color_green, 2, 2, 2, true, true )
 	timer.Simple("10", function()
 hook.Remove("PreDrawHalos", "AddHackedHalos")
@@ -803,6 +899,10 @@ end
 whused = true
 timer.Simple(30, function()
 whused = false
+net.Start( "notificationSlasher" )
+net.WriteTable({"class_ability_time"})
+net.WriteString("safe")
+net.Send(ply)
 end)
 end
 		end
@@ -819,23 +919,22 @@ GM.MAP.Killer.Model = "models/violetqueen/sjsm/deerlord.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 190
 GM.MAP.Killer.ExtraWeapons = {}
+GM.MAP.Killer.VoiceCallouts = {"deerlord/voice/DL_01.ogg", "deerlord/voice/DL_02.ogg", "deerlord/voice/DL_03.ogg", "deerlord/voice/DL_04.ogg", "deerlord/voice/DL_05.ogg"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_specimen8")
 	GM.MAP.Killer.Icon = Material("icons/spec8.png")
 end
 
-	hook.Add("sls_round_PreStart", "sls_kability_PreStart", function()
 if CLIENT then
 local ourMat = Material( "overlays/rad" )
-local tab2 = {
-[ "$pp_colour_brightness" ] = 0,
-}
 hook.Add("RenderScreenspaceEffects", "Specimen8_static", function()
 if LocalPlayer():Team() != TEAM_KILLER then
+	render.UpdateScreenEffectTexture()
+	ourMat:SetTexture( "$fbtexture", render.GetScreenEffectTexture() )
+	ourMat:SetFloat( "$pp_colour_brightness", 0 )
 	render.SetMaterial( ourMat )
 	render.DrawScreenQuad()
-	DrawColorModify( tab2 )
 end
 end)
 end
@@ -846,11 +945,9 @@ else
 	return true
 	end
 end)
-end)
 	hook.Add("sls_round_End", "sls_kability_End", function()
 hook.Remove("ShouldCollide", "sls_Specimen8")
 hook.Remove("RenderScreenspaceEffects", "Specimen8_static")
-hook.Remove("sls_round_PreStart", "sls_kability_PreStart")
 hook.Remove("sls_round_End", "sls_kability_End")
 end)
 elseif rndnumber == 14 then
@@ -860,6 +957,7 @@ GM.MAP.Killer.Model = "models/Lucifer/helltaker/rstar/Lucifer/Lucifer.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 210
 GM.MAP.Killer.ExtraWeapons = {}
+GM.MAP.Killer.VoiceCallouts = {"tirsiak/voice/Tirsiak1.ogg", "tirsiak/voice/Tirsiak2.ogg", "tirsiak/voice/Tirsiak3.ogg", "tirsiak/voice/Tirsiak4.ogg"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_uspecimen4")
@@ -867,6 +965,7 @@ if CLIENT then
 end
 abilityusedtirsiak = false
 function GM.MAP.Killer:UseAbility(ply)
+	if CLIENT then return end
 	if GM.MAP.Killer.Name != "Tirsiak" then return end
 	if abilityusedtirsiak == false then
 ply:EmitSound("tirsiak/ability/freeze.mp3")
@@ -881,6 +980,10 @@ end
 abilityusedtirsiak = true
 timer.Simple(30, function()
 abilityusedtirsiak = false
+net.Start( "notificationSlasher" )
+net.WriteTable({"class_ability_time"})
+net.WriteString("safe")
+net.Send(ply)
 end)
 end
 end
@@ -919,6 +1022,7 @@ function GM.MAP.Killer:UseAbility(ply)
                 v:ConCommand("play kasper/ability/ability.mp3")
         end
 hook.Add("PreDrawHalos", "AddKasperHalos", function()
+	if LocalPlayer():Team() == TEAM_SURVIVORS then return end
 halo.Add(GM.ROUND.Survivors,color_green, 2, 2, 2, true, true )
 timer.Simple(5, function()
 hook.Remove("PreDrawHalos", "AddKasperHalos")
@@ -928,6 +1032,10 @@ end
 kwhused = true
 timer.Simple(30, function()
 kwhused = false
+net.Start( "notificationSlasher" )
+net.WriteTable({"class_ability_time"})
+net.WriteString("safe")
+net.Send(ply)
 end)
 end
 end
@@ -999,9 +1107,39 @@ GM.MAP.Killer.RunSpeed = 200
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
-	GM.MAP.Killer.Desc = "NONONONONO! GET OUT OF MY HEAD!"
+	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_amogus")
 	GM.MAP.Killer.Icon = Material("icons/amogus.png")
 end
+
+local disg_used = false
+
+function GM.MAP.Killer:UseAbility(ply)
+	if CLIENT then return end
+	if GM.MAP.Killer.Name != "the Impostor" then return end
+	if !disg_used then
+		local rnd_survivor = GM.ROUND.Survivors[ math.random( #GM.ROUND.Survivors ) ]
+		GM.ROUND.Killer:SetModel(rnd_survivor:GetModel())
+		disg_used = true
+		timer.Create("sls_undisguise_cooldown", 20, 1, function()
+			GM.ROUND.Killer:SetModel(GM.MAP.Killer.Model)
+			timer.Create("sls_disguise_cooldown", 10, 1, function()
+			disg_used = false
+			net.Start( "notificationSlasher" )
+			net.WriteTable({"class_ability_time"})
+			net.WriteString("safe")
+			net.Send(ply)
+			end)
+		end)
+	end
+		end
+
+hook.Add("sls_round_End", "sls_kability_End", function()
+timer.Remove("sls_undisguise_cooldown")
+timer.Remove("sls_disguise_cooldown")
+disg_used = false
+hook.Remove("sls_round_End", "sls_kability_End")
+end)
+
 elseif rndnumber == 19 then
 GM.MAP.Killer.Name = "White Face"
 GM.MAP.Killer.Model = "models/imscared/whiteface.mdl"
@@ -1013,73 +1151,64 @@ if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_whiteface")
 	GM.MAP.Killer.Icon = Material("icons/whiteface.png")
 end
-WFAbil = {
-["$pp_colour_brightness"] = 0,
-	["$pp_colour_addr"] = 0,
-	["$pp_colour_addg"] = 0,
-	["$pp_colour_addb"] = 0,
-	--["$pp_colour_contrast"] = 1,
-	["$pp_colour_colour"] = 1,
-	["$pp_colour_mulr"] = 0,
-	["$pp_colour_mulg"] = 0,
-	["$pp_colour_mulb"] = 0
-}
-local function WFDontleaveme()
+
 hook.Add("PlayerPostThink", "sls_WFability", function(ply)
 if GM.ROUND.Escape == true && GM.MAP.Killer.Name == "White Face" then
+	GM.ROUND.Killer:SetRunSpeed(300)
+	GM.ROUND.Killer:SetWalkSpeed(300)
 for _,v in ipairs(player.GetAll()) do
-if v:Team() == TEAM_KILLER then
-v:SetRunSpeed(300)
-v:SetWalkSpeed(300)
-end
 v:ConCommand("play whiteface/ability/ability.mp3")
 end
+hook.Remove("PlayerPostThink", "sls_WFability")
+end
+end)
+
 if CLIENT then
+
+	WFAbil = {
+		["$pp_colour_brightness"] = 0,
+			["$pp_colour_addr"] = 0,
+			["$pp_colour_addg"] = 0,
+			["$pp_colour_addb"] = 0,
+			--["$pp_colour_contrast"] = 1,
+			["$pp_colour_colour"] = 1,
+			["$pp_colour_mulr"] = 0,
+			["$pp_colour_mulg"] = 0,
+			["$pp_colour_mulb"] = 0
+		}
+
 hook.Add("RenderScreenspaceEffects", "WFRage", function()
-if LocalPlayer():Alive() and GM.MAP.Killer.Name == "White Face" then
-	--render.SetMaterial( ourMat )
-	--render.DrawScreenQuad()
+if LocalPlayer():Alive() && LocalPlayer():Team() == TEAM_SURVIVORS && GM.MAP.Killer.Name == "White Face" && GM.ROUND.Escape then
+
 if WFAbil["$pp_colour_colour"] < 3 then
 WFAbil["$pp_colour_colour"] = WFAbil["$pp_colour_colour"] + 0.001
 end
+
 if WFAbil["$pp_colour_brightness"] > -0.2 then
 WFAbil["$pp_colour_brightness"] = WFAbil["$pp_colour_brightness"] - 0.001
 end
+
 DrawColorModify( WFAbil )
 DrawBloom( 0.65, 2, 10, 10, 3, 1, 1, 1, 1)
+elseif !GM.ROUND.Escape or !LocalPlayer():Alive() or GM.MAP.Killer.Name != "White Face" then
+
+	if WFAbil["$pp_colour_colour"] > 1 then
+		WFAbil["$pp_colour_colour"] = 1
+	end
+
+	if WFAbil["$pp_colour_brightness"] < 0 then
+		WFAbil["$pp_colour_brightness"] = 0
+	end
+
+	DrawColorModify( WFAbil )
+	DrawBloom( 0.65, 2, 9, 9, 1, 1, 1, 1, 1 )
     end
 end)
 	end
-hook.Remove("PlayerPostThink", "sls_WFability")
-else
-hook.Add("RenderScreenspaceEffects", "WFRage", function()
-if WFAbil["$pp_colour_colour"] != 0 then
-WFAbil["$pp_colour_colour"] = WFAbil["$pp_colour_colour"] - 3
-end
-if WFAbil["$pp_colour_brightness"] != 0 then
-WFAbil["$pp_colour_brightness"] = WFAbil["$pp_colour_brightness"] + 0.001
-end
-DrawColorModify( WFAbil )
-DrawBloom( 1 )
-end)
-hook.Remove("PlayerPostThink", "sls_WFability")
-end
-end)
-	end
-	hook.Add("sls_round_PostStart", "sls_kability_PostStart", WFDontleaveme)
-	hook.Add("sls_round_End", "sls_kability_End", function()
-WFAbil = {
-["$pp_colour_brightness"] = 0,
-	["$pp_colour_addr"] = 0,
-	["$pp_colour_addg"] = 0,
-	["$pp_colour_addb"] = 0,
-	--["$pp_colour_contrast"] = 1,
-	["$pp_colour_colour"] = 1,
-	["$pp_colour_mulr"] = 0,
-	["$pp_colour_mulg"] = 0,
-	["$pp_colour_mulb"] = 0
-}
+
+hook.Add("sls_round_End", "sls_kability_End", function()
 hook.Remove("RenderScreenspaceEffects", "WFRage")
+hook.Remove("PlayerPostThink", "sls_WFability")
 hook.Remove("sls_round_PostStart", "sls_kability_PostStart")
 hook.Remove("sls_round_End", "sls_kability_End")
 end)
@@ -1158,7 +1287,7 @@ GM.MAP.Killer.ExtraWeapons = {"necromancer_swep", "weapon_dmcscythe"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_tadero")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
+	GM.MAP.Killer.Icon = Material("icons/tadero.png")
 end
 elseif rndnumber == 22 then
 -- Killer
@@ -1171,7 +1300,7 @@ GM.MAP.Killer.VoiceCallouts = {"plaguescp/voice/spotted1.mp3", "plaguescp/voice/
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_scp049")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
+	GM.MAP.Killer.Icon = Material("icons/scp049.png")
 end
 	hook.Add("sls_round_PostStart", "introfix049", function()
 for _,v in ipairs(player.GetAll()) do
@@ -1188,8 +1317,98 @@ GM.MAP.Killer.RunSpeed = 240
 GM.MAP.Killer.ExtraWeapons = {"tfa_iw7_tactical_knife"}
 
 if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_wip")
+	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_deerling")
 	GM.MAP.Killer.Icon = Material("icons/deerling.png")
 end
+
+local deerling_ability_active = true
+local deerling_ability_used = false
+
+function GM.MAP.Killer:UseAbility(ply)
+	if CLIENT then return end
+		if GM.MAP.Killer.Name != "the Deerling" then return end
+		if !deerling_ability_used then
+			deerling_ability_active = true
+			deerling_ability_used = true
+			ply:EmitSound("deerling/voice/deerling_ability.ogg", 511)
+			timer.Create("sls_deerling_ability_disable", 15, 1, function()
+				deerling_ability_active = false
+			timer.Create("sls_deerling_ability_cooldown", 15, 1, function()
+				deerling_ability_used = false
+				net.Start( "notificationSlasher" )
+				net.WriteTable({"class_ability_time"})
+				net.WriteString("safe")
+				net.Send(ply)
+			end)
+		end)
+		end
+	end
+	
+	function CreateBloodPool(rag, boneid, color, flags)
+		if not IsValid(rag) then return end
+		
+		local boneid = boneid or 0
+		local flags = flags or 0
+		local color = color or BLOOD_COLOR_RED
+	
+		local effectdata = EffectData()
+		effectdata:SetEntity(rag)
+		effectdata:SetAttachment(boneid)
+		effectdata:SetFlags(flags)
+		effectdata:SetColor(color)
+	
+		util.Effect("blood_pool", effectdata, true, true)
+	end
+
+hook.Add("EntityTakeDamage", "sls_deerling_ability", function(ply, dmg)
+	local attacker = dmg:GetAttacker()
+	if ply:IsPlayer() && ply:Team() == TEAM_SURVIVORS && attacker:Team() == TEAM_KILLER && deerling_ability_active && !timer.Exists("sls_deerling_ability_bleed" .. ply:SteamID64()) && !timer.Exists("sls_deerling_ability_bleed" .. ply:EntIndex())  then
+		local trace = ply:GetEyeTraceNoCursor()
+		if !ply:IsBot() then
+		timer.Create("sls_deerling_ability_bleed" .. ply:SteamID64(), 2, 6, function()
+			local effectdata = EffectData()
+			effectdata:SetOrigin( ply:GetPos() )
+			effectdata:SetEntity( ply )
+			effectdata:SetColor(BLOOD_COLOR_RED)
+			util.Effect("blood_pool", effectdata, true, true)
+		ply:SetHealth( ply:Health() - math.random(5, 10) )
+	end)
+else
+	timer.Create("sls_deerling_ability_bleed" .. ply:EntIndex(), 2, 6, function()
+		local effectdata = EffectData()
+		effectdata:SetOrigin( ply:GetPos() )
+		effectdata:SetEntity( ply )
+		effectdata:SetColor(BLOOD_COLOR_RED)
+		util.Effect("blood_pool", effectdata, true, true)
+		ply:SetHealth( ply:Health() - math.random(5, 10) )
+	end)
+		end
+	end
+end)
+
+hook.Add("PlayerFootstep", "sls_deerling_second_ability", function(ply, pos, foot, sound, volume)
+	if GM.MAP.Killer.Name != "the Deerling" then return end
+	if ply:Team() == TEAM_KILLER && !deerling_ability_active then
+		return true
+	elseif deerling_ability_active then
+		ply:EmitSound( "NPC_Dog.Footstep" ) -- Play the footsteps hunter is using
+		return true -- Don't allow default footsteps, or other addon footsteps
+	end
+end)
+
+hook.Add("sls_round_End", "sls_kability_End", function()
+	deerling_ability_active = false
+	timer.Remove("sls_deerling_ability_cooldown")
+	for _,v in ipairs(player.GetAll()) do
+		if !v:IsBot() then
+	timer.Remove("sls_deerling_ability_bleed" .. v:SteamID64())
+		else
+	timer.Remove("sls_deerling_ability_bleed" .. v:EntIndex())
+		end
+	end
+	hook.Remove("EntityTakeDamage", "sls_deerling_ability")
+	hook.Remove("PlayerFootstep", "sls_deerling_second_ability")
+	hook.Remove("sls_round_End", "sls_kability_End")
+end)
 
 end

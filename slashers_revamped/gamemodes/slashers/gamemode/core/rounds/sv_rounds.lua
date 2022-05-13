@@ -85,7 +85,13 @@ function GM.ROUND:Start(forceKiller)
 	else
 		GM.ROUND.Killer = GM.ROUND:ChooseKiller()
 	end
-	local killer = GM.ROUND.Killer:GetNWInt("choosen_killer", 1)
+	::try_again_rnd_killer_number::
+	local rnd_killer_number = math.random(1, #GM.MAP.KILLERS)
+	for number, killer in pairs(GM.MAP.KILLERS) do
+		if number ~= rnd_killer then continue end
+		if (killer.map) and killer.map != game.GetMap() then goto try_again_rnd_killer_number end
+	end
+	local killer = GM.ROUND.Killer:GetNWInt("choosen_killer", rnd_killer_number)
 	SetGlobalInt("RNDKiller", killer)
 --local mapsLuaPath = "slashers/gamemode/maps"
 			--AddCSLuaFile(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")

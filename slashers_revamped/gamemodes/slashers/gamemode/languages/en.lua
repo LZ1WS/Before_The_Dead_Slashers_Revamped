@@ -39,7 +39,10 @@ LANG["class_desc_scp049"] = "SCP-049 is a humanoid creature about 190 cm tall, s
 LANG["class_desc_wesker"] = "Every day, humans come one step closer to self-destruction. I'm not destroying the world, I'm saving it!\nYou infect the survivors you hit, who in turn get 15 seconds to find a vaccine, otherwise they will start taking damage, up to death."
 LANG["class_desc_scrake"] = "A two-meter-plus furious creature that came from Horzine laboratories and is capable of sawing everything alive with one swift ram forward, brandishing a built-in chainsaw.\nRemember that you are less controllable in the process of a furious race, so carefully choose the moment to attack."
 LANG["class_desc_t800"] = "You have a shotgun, use it to your advantage, but keep in mind, it is not infinite."
-LANG["class_desc_slender"] = "In the process of writing..."
+LANG["class_desc_slender"] = "An urban myth that came to life.\nStalking it's prey, Slenderman can quickly approach by using teleport by pressing Q by default."
+LANG["class_desc_springtrap"] = "I always come back!\nThe Machine is a cold serial killer which was trapped in this suit. He can call to the twisted spirits of those killed by him and place traps by pressing Q, which give him an alert if an survivor comes near them. The maximum amount of traps is 5."
+LANG["class_desc_amogus"] = "NONONONONO! GET OUT OF MY HEAD!\nThe Impostor is an alien like creature that can quickly morph and disguise itself as a survivor by pressing Q."
+LANG["class_desc_deerling"] = "They just came from the grey swamp. When we finally reached the town there wasn't anything left besides grey mud... a lot of grey mud.\nDeerlings are known for their eternal bloodlust. By pressing Q Deerling fall in rage and brutally scarify anyone on his path. Those who have been hit are suffering from hemorrhage, leaving blood behind and losing health. Deerlings are well known for their stealth and agility. They don't make a single sound outside of bloodrage."
 LANG["class_desc_wip"] = "Work in progress."
 
 LANG["scp049_infect"] = " HP, can infect (RMB)."
@@ -99,5 +102,6 @@ LANG["hub_killerchoose"] = "Killer Choosing"
 LANG["hub_description"] = "Description"
 LANG["hub_model"] = "Model"
 LANG["hub_killer_checkbox"] = "Allow to choose you as killer"
+LANG["hub_killer_random"] = "Random Killer"
 
 return LANG

@@ -22,7 +22,7 @@ local function InitValue()
 	LocalPlayer().LastViewByKillerTime = 0
 	LocalPlayer().ChaseSoundPlaying = false
 	LocalPlayer().LastViewKillerTime = 0
-	LocalPlayer():SetNWInt( 'EvilPoints', 700 )
+	LocalPlayer():SetNWInt( "EvilPoints", 700 )
 	LocalPlayer().CalloutUsed = false
 end
 hook.Add("sls_round_PostStart", "sls_chasemo_PostStart", InitValue)
@@ -67,7 +67,7 @@ local function chasekillerMusic()
 timer.Simple(1, function()
 		LocalPlayer().ChaseSoundPlaying = true
 		ChaseSound:Play()
-		if !LocalPlayer().CalloutUsed == false then
+		if !LocalPlayer().CalloutUsed then
 		LocalPlayer().CalloutUsed = true
 		net.Start( "sls_killerseesurvivor_callout" )
 		net.SendToServer()
