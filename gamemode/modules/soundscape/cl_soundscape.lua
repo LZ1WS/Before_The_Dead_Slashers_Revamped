@@ -26,16 +26,35 @@ jumpscare.low = {
 	"scare_low_3.wav",
 }
 
+slender_jumpscare.low = {
+	"seehim2.wav",
+	"seehim3.wav",
+	"seehim4.wav",
+	"seehim5.wav",
+}
+
 jumpscare.mid = {
 	"scare_mid_1.wav",
 	"scare_mid_2.wav",
 	"scare_mid_3.wav",
 }
 
+slender_jumpscare.mid = {
+	"seehim6.wav",
+	"seehim8.wav",
+	"seehim10.wav",
+}
+
 jumpscare.high = {
 	"scare_high_1.wav",
 	"scare_high_2.wav",
 	"scare_high_3.wav",
+}
+
+slender_jumpscare.high = {
+	"seehim1.wav",
+	"seehim7.wav",
+	"seehim9.wav",
 }
 
 local ambient
@@ -144,7 +163,7 @@ local function JumpScare()
 
 	local shootPos = LocalPlayer():GetShootPos()
 	local hisPos = killer:GetShootPos()
-	local aimVec = LocalPlayer():GetAimVector()
+	local aimVec = LocalPlayer():GetAimVector() 
 	local distance = hisPos:DistToSqr(shootPos)
 
 	if distance < 3000000 then
@@ -156,14 +175,30 @@ local function JumpScare()
 			if LocalPlayer().lastJumpscare && LocalPlayer().lastJumpscare + jumpscare.cooldown > CurTime() then return end
 
 			if distance <= 100000 then
+				if GM.MAP.Killer.Name == "Slenderman" then
+				surface.PlaySound("slender/voice/" .. slender_jumpscare.high[math.random(1, #slender_jumpscare.high)])
+				net.Start("sls_slender_jumpscare_dmg")
+				net.SendToServer()
+				else
 				-- High
 				surface.PlaySound("slashers/scares/" .. jumpscare.high[math.random(1, #jumpscare.high)])
+				end
 			elseif distance <= 1000000 then
-				-- Mid
+				if GM.MAP.Killer.Name == "Slenderman" then
+					surface.PlaySound("slender/voice/" .. slender_jumpscare.mid[math.random(1, #slender_jumpscare.mid)])
+					net.Start("sls_slender_jumpscare_dmg")
+					net.SendToServer()
+				else
+					-- Mid
 				surface.PlaySound("slashers/scares/" .. jumpscare.mid[math.random(1, #jumpscare.mid)])
+				end
 			else
-				-- Low
+				if GM.MAP.Killer.Name == "Slenderman" then
+				surface.PlaySound("slender/voice/" .. slender_jumpscare.low[math.random(1, #slender_jumpscare.low)])	
+				else
+					-- Low
 				surface.PlaySound("slashers/scares/" .. jumpscare.low[math.random(1, #jumpscare.low)])
+				end
 			end
 
 			LocalPlayer().lastJumpscare = CurTime()
