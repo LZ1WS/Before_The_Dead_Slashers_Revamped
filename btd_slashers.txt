@@ -1,0 +1,8 @@
+"btd_slashers"
+{
+	"base"		"base"
+	"title"		"Slashers"
+	"maps"		"^slash_"
+	"menusystem"	"1"
+	"workshopid"	"1092007703"
+}
