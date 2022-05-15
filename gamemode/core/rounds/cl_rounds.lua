@@ -85,7 +85,11 @@ net.Receive("sls_plykiller", function()
 --local mapsLuaPath = "slashers/gamemode/maps"
 	SetGlobalInt("RNDKiller", net.ReadInt(8))
 			--include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
+			if GetConVar("slashers_unserious_killers"):GetInt() == 1 then
+				include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_funny.lua")
+				else
+				include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_serious.lua")
+			end
 end)
 
 

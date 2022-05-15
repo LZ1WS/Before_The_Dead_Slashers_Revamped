@@ -95,8 +95,13 @@ function GM.ROUND:Start(forceKiller)
 --local mapsLuaPath = "slashers/gamemode/maps"
 			--AddCSLuaFile(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
 			--include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-			AddCSLuaFile("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
-			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
+			if GetConVar("slashers_unserious_killers"):GetInt() == 1 then
+			AddCSLuaFile("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_funny.lua")
+			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_funny.lua")
+			else
+			AddCSLuaFile("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_serious.lua")
+			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_serious.lua")
+			end
 	net.Start("sls_plykiller")
 	net.WriteInt(killer, 8)
 	net.Broadcast()

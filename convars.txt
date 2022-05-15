@@ -41,3 +41,7 @@
 "slashers_lang_default" = "en"
  game replicated server_can_execute lua_server
  - Set default language of gamemode.
+
+ "slashers_unserious_killers" = "1"
+  game replicated server_can_execute lua_server
+  - Toggle on (1) or off (0) unserious killers (Example: Mason, Imposter)
