@@ -328,7 +328,6 @@ if CLIENT then return end
         ply:SetFOV(FOV, 0.25) 
     end)
     ply:EmitSound(Sound("slender/blink_swep/teleport" .. math.random(1, 2) .. ".mp3", 256, 100))
-    ply:SetLocalVelocity(Vector(0, 0, 0))
     ply:SetPos(aimpoint.HitPos)
 	net.Start( "notificationSlasher" )
 	net.WriteTable({"class_ability_used"})
@@ -1455,9 +1454,9 @@ elseif rndnumber == 24 then
 elseif rndnumber == 25 then
 	-- Killer
 	GM.MAP.Killer.Name = "Mute"
-	GM.MAP.Killer.Model = "models/player/fusion/bellkiller/bellkiller_pm.mdl"
-	GM.MAP.Killer.WalkSpeed = 120
-	GM.MAP.Killer.RunSpeed = 150
+	GM.MAP.Killer.Model = "models/bellkiller_cw.mdl"
+	GM.MAP.Killer.WalkSpeed = 150
+	GM.MAP.Killer.RunSpeed = 180
 	GM.MAP.Killer.ExtraWeapons = {"mute_knife"}
 	
 	if CLIENT then

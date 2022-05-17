@@ -9,9 +9,9 @@
 
 local GM = GM or GAMEMODE
 
---[[GM.MAP.Name = "Summercamp"
+GM.MAP.Name = "Summercamp"
 GM.MAP.EscapeDuration = 240
-if rndnumber == 1 then
+--[[if rndnumber == 1 then
 GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_jason.wav"
 GM.MAP.ChaseMusic = "jason/chase/chase.wav"
 GM.MAP.TerrorMusic = "jason/terror/terror.wav"

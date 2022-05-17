@@ -343,7 +343,7 @@ GM.MAP.KILLERS =
 			["name"] = "Mute",
 			["icon"] = "icons/mute.png",
 			["description"] = "class_desc_mute",
-			["model"] = "models/player/fusion/bellkiller/bellkiller_pm.mdl",
+			["model"] = "models/bellkiller_cw.mdl",
 			["stats"] = "\nWalk Speed = 120\nRun Speed = 150",
 		},
 }

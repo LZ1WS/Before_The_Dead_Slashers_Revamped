@@ -26,6 +26,8 @@ CLASS_SURV_EMO = 7
 CLASS_SURV_BLACK = 8
 CLASS_SURV_SHERIF = 9
 CLASS_SURV_BABYSIT = 10
+CLASS_SURV_HIPPY = 11
+CLASS_SURV_RANGER = 12
 
 team.SetUp(TEAM_KILLER, "Murderer", Color(255, 0, 0), false);
 team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255), false);
