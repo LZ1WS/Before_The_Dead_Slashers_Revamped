@@ -17,6 +17,7 @@ local start_soundsList = {
 
 -- Jumpscare
 local jumpscare = {}
+local slender_jumpscare = {}
 
 jumpscare.cooldown = 10
 
