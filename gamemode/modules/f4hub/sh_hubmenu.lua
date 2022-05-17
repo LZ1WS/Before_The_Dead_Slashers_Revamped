@@ -339,6 +339,13 @@ GM.MAP.KILLERS =
 		["model"] = "models/player/Bacteria.mdl",
 		["stats"] = "\nWalk Speed = 190\nRun Speed = 220",
 		},
+		[25] = {
+			["name"] = "Mute",
+			["icon"] = "icons/mute.png",
+			["description"] = "class_desc_mute",
+			["model"] = "models/player/fusion/bellkiller/bellkiller_pm.mdl",
+			["stats"] = "\nWalk Speed = 120\nRun Speed = 150",
+		},
 }
 
 GM.MAP.SURVIVORS = {
@@ -395,6 +402,18 @@ GM.MAP.SURVIVORS = {
 		["description"] = "class_desc_babysit",
 		["model"] = "models/players/mj_dbd_qm.mdl",
 		["stats"] = "\nHP = 120\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
+	},
+	["Mitch Floyd"] = {
+		["icon"] = "icons/hippy.png",
+		["description"] = "class_desc_hippy",
+		["model"] = "models/players/mj_dbd_quentin.mdl",
+		["stats"] = "\nHP = 110\nWalk Speed = 140\nRun Speed = 240\nStamina = 110",
+	},
+	["Sheldon Riddell"] = {
+		["icon"] = "icons/ranger.png",
+		["description"] = "class_desc_ranger",
+		["model"] = "models/v92/characters/park-ranger/bm/rogers/player.mdl",
+		["stats"] = "\nHP = 140\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
 	},
 }
 

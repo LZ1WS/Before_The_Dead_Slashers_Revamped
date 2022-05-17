@@ -27,11 +27,12 @@ local function Terror()
 	if LocalPlayer():Team() == TEAM_KILLER then return end
 	for _,v in ipairs(player.GetAll()) do
 	if v:Team() == TEAM_KILLER then
+		if v:GetNWBool("sls_terror_disabled", false) then return end
 if LocalPlayer():GetPos():Distance(v:GetPos()) < 1500  && v:IsValid() && v != LocalPlayer() then
-	if (!LocalPlayer():Alive()) && (LocalPlayer().TerrorSoundPlaying) then TerrorSound:FadeOut(1.2) end
-	if (LocalPlayer().ChaseSoundPlaying) && (LocalPlayer().TerrorSoundPlaying) then TerrorSound:FadeOut(1.2) end
-	if (LocalPlayer().ChaseSoundPlaying) then return end
-	if (!LocalPlayer():Alive()) then return end
+	if !LocalPlayer():Alive() && LocalPlayer().TerrorSoundPlaying then TerrorSound:FadeOut(1.2) end
+	if LocalPlayer().ChaseSoundPlaying && LocalPlayer().TerrorSoundPlaying then TerrorSound:FadeOut(1.2) end
+	if LocalPlayer().ChaseSoundPlaying then return end
+	if !LocalPlayer():Alive() then return end
 --print(LocalPlayer().LastViewByKillerTime)
 
 		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1500 && (!LocalPlayer().TerrorSoundPlaying) then

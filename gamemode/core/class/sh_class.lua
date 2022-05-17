@@ -163,6 +163,36 @@ if CLIENT then
 	GM.CLASS.Survivors[CLASS_SURV_BABYSIT].icon = Material("icons/steve.png")
 end
 
+GM.CLASS.Survivors[CLASS_SURV_HIPPY] = {}
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].name = "Hippy"
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].walkspeed = 140
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].life = 110
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].stamina = 110
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].model = "models/players/mj_dbd_quentin.mdl"
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].die_sound = "slashers/effects/scream_man_1.wav"
+GM.CLASS.Survivors[CLASS_SURV_HIPPY].weapons = {"swep_smokenade"}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_HIPPY].dispname = "Mitch Floyd"
+	GM.CLASS.Survivors[CLASS_SURV_HIPPY].description = GM.LANG:GetString("class_desc_hippy")
+	GM.CLASS.Survivors[CLASS_SURV_HIPPY].icon = Material("icons/hippy.png")
+end
+
+GM.CLASS.Survivors[CLASS_SURV_RANGER] = {}
+GM.CLASS.Survivors[CLASS_SURV_RANGER].name = "Ranger"
+GM.CLASS.Survivors[CLASS_SURV_RANGER].walkspeed = 150
+GM.CLASS.Survivors[CLASS_SURV_RANGER].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_RANGER].life = 140
+GM.CLASS.Survivors[CLASS_SURV_RANGER].stamina = 160
+GM.CLASS.Survivors[CLASS_SURV_RANGER].model = "models/v92/characters/park-ranger/bm/rogers/player.mdl"
+GM.CLASS.Survivors[CLASS_SURV_RANGER].die_sound = "slashers/effects/scream_man_1.wav"
+GM.CLASS.Survivors[CLASS_SURV_RANGER].weapons = {}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_RANGER].dispname = "Sheldon Riddell"
+	GM.CLASS.Survivors[CLASS_SURV_RANGER].description = GM.LANG:GetString("class_desc_ranger")
+	GM.CLASS.Survivors[CLASS_SURV_RANGER].icon = Material("icons/ranger.png")
+end
+
 local function StartRound()
 	for _, v in ipairs(player.GetAll()) do
 		v.ClassID = nil

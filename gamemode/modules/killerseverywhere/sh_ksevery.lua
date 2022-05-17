@@ -104,6 +104,10 @@ elseif rndnumber == 24 then
 	GM.MAP.StartMusic = "sound/bacteria/voice/intro.ogg"
 	GM.MAP.ChaseMusic = "bacteria/chase/chase.wav"
 	GM.MAP.TerrorMusic = "bacteria/terror/terror.wav"
+elseif rndnumber == 25 then
+	GM.MAP.StartMusic = "sound/slender/voice/intro.mp3"
+	GM.MAP.ChaseMusic = "mute/chase/chase.wav"
+	GM.MAP.TerrorMusic = "mute/terror/terror.wav"
 end
 
 if rndnumber == 1 then
@@ -326,6 +330,10 @@ if CLIENT then return end
     ply:EmitSound(Sound("slender/blink_swep/teleport" .. math.random(1, 2) .. ".mp3", 256, 100))
     ply:SetLocalVelocity(Vector(0, 0, 0))
     ply:SetPos(aimpoint.HitPos)
+	net.Start( "notificationSlasher" )
+	net.WriteTable({"class_ability_used"})
+	net.WriteString("safe")
+	net.Send(ply)
 	timer.Create("sls_slender_tp_cooldown", 5, 1, function()
 	slender_tpused = false
 	net.Start( "notificationSlasher" )
@@ -644,6 +652,10 @@ function GM.MAP.Killer:UseAbility(ply)
 	trap:SetMaterial("sprites/animglow02")
 	trap:SetPos( ply:GetPos() )
 	trap:Spawn()
+	net.Start( "notificationSlasher" )
+	net.WriteTable({"class_ability_used"})
+	net.WriteString("safe")
+	net.Send(ply)
 	timer.Create("sls_springtrap_trap_placed_cooldown", 10, 1, function()
 		springtrap_trap_placed = false
 		net.Start( "notificationSlasher" )
@@ -772,7 +784,7 @@ end
 elseif rndnumber == 11 then
 -- Killer
 GM.MAP.Killer.Name = "Ghostface"
-GM.MAP.Killer.Model = "models/player/dbd/oman_killer.mdl"
+GM.MAP.Killer.Model = "models/player/cla/classic_ghostface.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
 GM.MAP.Killer.ExtraWeapons = {}
@@ -884,6 +896,12 @@ local color_green = Color( 0, 153, 0 )
 function GM.MAP.Killer:UseAbility(ply)
 	if GM.MAP.Killer.Name != "Cloaker" then return end
 	if whused == false then
+		if SERVER then
+			net.Start( "notificationSlasher" )
+			net.WriteTable({"class_ability_used"})
+			net.WriteString("safe")
+			net.Send(ply)
+		end
 ply:EmitSound("cloaker/ability/vuvuvu.mp3")
 if CLIENT then
 hook.Add("PreDrawHalos", "AddHackedHalos", function()
@@ -956,7 +974,7 @@ end)
 elseif rndnumber == 14 then
 -- Killer
 GM.MAP.Killer.Name = "Tirsiak"
-GM.MAP.Killer.Model = "models/Lucifer/helltaker/rstar/Lucifer/Lucifer.mdl"
+GM.MAP.Killer.Model = "models/dreadhunger/player/hunter.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 210
 GM.MAP.Killer.ExtraWeapons = {}
@@ -971,6 +989,10 @@ function GM.MAP.Killer:UseAbility(ply)
 	if CLIENT then return end
 	if GM.MAP.Killer.Name != "Tirsiak" then return end
 	if abilityusedtirsiak == false then
+		net.Start( "notificationSlasher" )
+	net.WriteTable({"class_ability_used"})
+	net.WriteString("safe")
+	net.Send(ply)
 ply:EmitSound("tirsiak/ability/freeze.mp3")
 for _,v in ipairs(ents.FindInSphere(ply:GetPos(), 300)) do
 if v:IsPlayer() and v:Team() == TEAM_SURVIVORS then
@@ -1015,8 +1037,6 @@ v:ConCommand("play kasper/voice/intro.mp3")
 end
 hook.Remove("sls_round_PostStart", "introfixkasper")
 end)
-		if CLIENT then
-local color_green = Color( 0, 153, 0 )
 kwhused = false
 function GM.MAP.Killer:UseAbility(ply)
 	if GM.MAP.Killer.Name != "Leo Kasper" then return end
@@ -1024,6 +1044,15 @@ function GM.MAP.Killer:UseAbility(ply)
         for _, v in pairs(player.GetAll()) do
                 v:ConCommand("play kasper/ability/ability.mp3")
         end
+kwhused = true
+if SERVER then
+net.Start( "notificationSlasher" )
+net.WriteTable({"class_ability_used"})
+net.WriteString("safe")
+net.Send(ply)
+end
+		if CLIENT then
+local color_green = Color( 0, 153, 0 )
 hook.Add("PreDrawHalos", "AddKasperHalos", function()
 	if LocalPlayer():Team() == TEAM_SURVIVORS then return end
 halo.Add(GM.ROUND.Survivors,color_green, 2, 2, 2, true, true )
@@ -1032,10 +1061,14 @@ hook.Remove("PreDrawHalos", "AddKasperHalos")
 end)
 end)
 end
-kwhused = true
 timer.Simple(30, function()
 kwhused = false
-notificationPanel("class_ability_time","safe")
+if SERVER then
+net.Start( "notificationSlasher" )
+net.WriteTable({"class_ability_time"})
+net.WriteString("safe")
+net.Send(ply)
+end
 end)
 end
 end
@@ -1120,21 +1153,30 @@ function GM.MAP.Killer:UseAbility(ply)
 		local rnd_survivor = GM.ROUND.Survivors[ math.random( #GM.ROUND.Survivors ) ]
 		GM.ROUND.Killer:SetModel(rnd_survivor:GetModel())
 		disg_used = true
-		timer.Create("sls_undisguise_cooldown", 20, 1, function()
+			net.Start( "notificationSlasher" )
+			net.WriteTable({"disguise_ability_used", rnd_survivor:Name()})
+			net.WriteString("safe")
+			net.Send(ply)
+			ply:SetNWBool("sls_chase_disabled", true)
+		hook.Add( "KeyPress", "sls_impostor_disguise_undisguise", function( ply, key )
+			if key == IN_ATTACK then
 			GM.ROUND.Killer:SetModel(GM.MAP.Killer.Model)
-			timer.Create("sls_disguise_cooldown", 10, 1, function()
+			ply:SetNWBool("sls_chase_disabled", false)
+			timer.Create("sls_disguise_cooldown", 20, 1, function()
 			disg_used = false
 			net.Start( "notificationSlasher" )
 			net.WriteTable({"class_ability_time"})
 			net.WriteString("safe")
 			net.Send(ply)
 			end)
+			hook.Remove("KeyPress", "sls_impostor_disguise_undisguise")
+		end
 		end)
 	end
 		end
 
 hook.Add("sls_round_End", "sls_kability_End", function()
-timer.Remove("sls_undisguise_cooldown")
+hook.Remove("KeyPress", "sls_impostor_disguise_undisguise")
 timer.Remove("sls_disguise_cooldown")
 disg_used = false
 hook.Remove("sls_round_End", "sls_kability_End")
@@ -1330,6 +1372,10 @@ function GM.MAP.Killer:UseAbility(ply)
 		if !deerling_ability_used then
 			deerling_ability_active = true
 			deerling_ability_used = true
+				net.Start( "notificationSlasher" )
+				net.WriteTable({"class_ability_used"})
+				net.WriteString("safe")
+				net.Send(ply)
 			ply:EmitSound("deerling/voice/deerling_ability.ogg", 511)
 			timer.Create("sls_deerling_ability_disable", 15, 1, function()
 				deerling_ability_active = false
@@ -1342,22 +1388,6 @@ function GM.MAP.Killer:UseAbility(ply)
 			end)
 		end)
 		end
-	end
-	
-	function CreateBloodPool(rag, boneid, color, flags)
-		if not IsValid(rag) then return end
-		
-		local boneid = boneid or 0
-		local flags = flags or 0
-		local color = color or BLOOD_COLOR_RED
-	
-		local effectdata = EffectData()
-		effectdata:SetEntity(rag)
-		effectdata:SetAttachment(boneid)
-		effectdata:SetFlags(flags)
-		effectdata:SetColor(color)
-	
-		util.Effect("blood_pool", effectdata, true, true)
 	end
 
 hook.Add("EntityTakeDamage", "sls_deerling_ability", function(ply, dmg)
@@ -1389,10 +1419,10 @@ end)
 hook.Add("PlayerFootstep", "sls_deerling_second_ability", function(ply, pos, foot, sound, volume)
 	if GM.MAP.Killer.Name != "the Deerling" then return end
 	if ply:Team() == TEAM_KILLER && !deerling_ability_active then
-		return true
+		return false
 	elseif deerling_ability_active then
 		ply:EmitSound( "NPC_Dog.Footstep" ) -- Play the footsteps hunter is using
-		return true -- Don't allow default footsteps, or other addon footsteps
+		return false -- Don't allow default footsteps, or other addon footsteps
 	end
 end)
 
@@ -1422,5 +1452,59 @@ elseif rndnumber == 24 then
 		GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_bacteria")
 		GM.MAP.Killer.Icon = Material("icons/bacteria.png")
 	end
+elseif rndnumber == 25 then
+	-- Killer
+	GM.MAP.Killer.Name = "Mute"
+	GM.MAP.Killer.Model = "models/player/fusion/bellkiller/bellkiller_pm.mdl"
+	GM.MAP.Killer.WalkSpeed = 120
+	GM.MAP.Killer.RunSpeed = 150
+	GM.MAP.Killer.ExtraWeapons = {"mute_knife"}
+	
+	if CLIENT then
+		GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_mute")
+		GM.MAP.Killer.Icon = Material("icons/mute.png")
+	end
+
+		local mute_ability_used = false
+hook.Add("PlayerFootstep", "sls_mute_second_ability", function(ply, pos, foot, sound, volume)
+		if GM.MAP.Killer.Name != "Mute" then return end
+		if mute_ability_used then
+			return false -- Don't allow default footsteps, or other addon footsteps
+		end
+	end)
+
+
+	function GM.MAP.Killer:UseAbility(ply)
+			if GM.MAP.Killer.Name != "Mute" then return end
+			if !mute_ability_used then
+				ply:SetNWBool("sls_terror_disabled", true)
+				mute_ability_used = true
+				if SERVER then
+					net.Start( "notificationSlasher" )
+					net.WriteTable({"class_ability_used"})
+					net.WriteString("safe")
+					net.Send(ply)
+				end
+				timer.Create("sls_mute_ability_disable", 15, 1, function()
+					ply:SetNWBool("sls_terror_disabled", false)
+				timer.Create("sls_mute_ability_cooldown", 15, 1, function()
+					mute_ability_used = false
+					if SERVER then
+					net.Start( "notificationSlasher" )
+					net.WriteTable({"class_ability_time"})
+					net.WriteString("safe")
+					net.Send(ply)
+					end
+				end)
+			end)
+			end
+	end
+
+	hook.Add("sls_round_End", "sls_kability_End", function()
+		mute_ability_used = false
+		timer.Remove("sls_mute_ability_cooldown")
+		hook.Remove("PlayerFootstep", "sls_mute_second_ability")
+		hook.Remove("sls_round_End", "sls_kability_End")
+	end)
 
 end

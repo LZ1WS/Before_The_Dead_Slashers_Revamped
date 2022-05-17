@@ -39,7 +39,7 @@ function playermeta:SetSurvClass(class)
 	self.ClassID = class
 end
 
-local unique_weapons = {"Michael Myers", "Scrake", "Tadero", "The Machine", "SCP-049", "the Deerling", "Bacteria", "Slenderman"}
+local unique_weapons = {"Michael Myers", "Scrake", "Tadero", "The Machine", "SCP-049", "the Deerling", "Bacteria", "Slenderman", "Mute"}
 
 function playermeta:SetupKiller()
 	self:StripWeapons()
@@ -196,7 +196,7 @@ ply:SetNWBool("steveabilused", true)
 ply.SteveResist = true
 net.Start("SteveAbil_WH")
 net.WriteTable({ply})
-net.Send(GM.MAP.Killer)
+net.Send(GM.ROUND.Killer)
 	net.Start( "notificationSlasher" )
 	net.WriteTable({"class_ability_used"})
 	net.WriteString("safe")
