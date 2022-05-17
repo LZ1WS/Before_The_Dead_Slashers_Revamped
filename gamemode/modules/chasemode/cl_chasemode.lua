@@ -61,6 +61,7 @@ hook.Add("Think", "sls_SurvivorInView", HaveASurvivorInSight)
 local function chasekillerMusic()
 	curtime = CurTime()
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
+	if LocalPlayer():GetNWBool("sls_chase_disabled", false) then return end
 	if (!LocalPlayer():Alive()) then return end
 		if (LocalPlayer().LastViewKillerTime > curtime - 3 && !LocalPlayer().ChaseSoundPlaying) then
 timer.Simple(1, function()
@@ -92,6 +93,7 @@ local function chaseMusic()
 	curtime = CurTime()
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if (!LocalPlayer():Alive()) then return end
+	if LocalPlayer():GetNWBool("sls_chase_disabled", false) then return end
 	if !LocalPlayer().LastViewByKillerTime then return end
 --print(LocalPlayer().LastViewByKillerTime)
 

@@ -1136,7 +1136,7 @@ GM.MAP.Killer.Name = "the Impostor"
 GM.MAP.Killer.Model = "models/josephthekp/amongdrip.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
+GM.MAP.Killer.ExtraWeapons = {"weapon_flashlight"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_amogus")

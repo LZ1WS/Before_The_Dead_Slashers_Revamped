@@ -85,7 +85,7 @@ local function GetPercentSurvivorDead()
 end
 
 local function StartAmbient(level)
-if game.GetMap() == "gm_liminal_space_slashers" then return end
+if game.GetMap() == "slash_liminal_space" then return end
 	if GM.MAP.Killer.Name == "Slenderman" then
 	sound.PlayFile("sound/slashers/ambient/slender_stage" .. level .. ".wav", "noplay", function(station)
 		if IsValid(station) then
@@ -172,6 +172,7 @@ local function JumpScare()
 		local unitPos = pos:GetNormalized()
 		if unitPos:Dot(aimVec) > 0.80 then
 			local trace = util.QuickTrace(shootPos, pos, LocalPlayer())
+			if killer:GetNWBool("sls_chase_disabled", false) or killer:GetNWBool("sls_terror_disabled", false) then return end
 			if trace.Hit and trace.Entity ~= killer then return end
 			if LocalPlayer().lastJumpscare && LocalPlayer().lastJumpscare + jumpscare.cooldown > CurTime() then return end
 
