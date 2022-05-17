@@ -81,15 +81,13 @@ end
 end
 hook.Add("sls_round_PostStart", "sls_round_PostStart", PostStart)
 
+local sls_killerseverywhere
+
 net.Receive("sls_plykiller", function()
 --local mapsLuaPath = "slashers/gamemode/maps"
 	SetGlobalInt("RNDKiller", net.ReadInt(8))
 			--include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-			if GetConVar("slashers_unserious_killers"):GetInt() == 1 then
-				include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_funny.lua")
-				else
-				include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_serious.lua")
-			end
+				include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery")
 end)
 
 

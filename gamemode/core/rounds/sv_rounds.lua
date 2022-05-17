@@ -33,6 +33,7 @@ SetGlobalInt("sls_killerrnd", rndnumber)
 print(GetGlobalInt("sls_killerrnd", 1))
 end)
 end]]--
+local sls_killerseverywhere
 
 function GM.ROUND:ViewInitCam(enable)
 	GM.ROUND.CameraEnable = enable
@@ -88,6 +89,7 @@ function GM.ROUND:Start(forceKiller)
 	local rnd_killer_number
 	for number, killer in RandomPairs(GM.MAP.KILLERS) do
 		if (killer.map) and killer.map != game.GetMap() then continue end
+		if (killer.joke) and GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.joke == true then continue end
 		rnd_killer_number = number
 	end
 	local killer = GM.ROUND.Killer:GetNWInt("choosen_killer", rnd_killer_number)
@@ -95,13 +97,8 @@ function GM.ROUND:Start(forceKiller)
 --local mapsLuaPath = "slashers/gamemode/maps"
 			--AddCSLuaFile(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
 			--include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-			if GetConVar("slashers_unserious_killers"):GetInt() == 1 then
-			AddCSLuaFile("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_funny.lua")
-			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_funny.lua")
-			else
-			AddCSLuaFile("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_serious.lua")
-			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery_serious.lua")
-			end
+			AddCSLuaFile("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
+			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
 	net.Start("sls_plykiller")
 	net.WriteInt(killer, 8)
 	net.Broadcast()

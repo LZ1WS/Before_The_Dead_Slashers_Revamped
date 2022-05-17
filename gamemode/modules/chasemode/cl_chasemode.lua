@@ -70,7 +70,6 @@ timer.Simple(1, function()
 		net.SendToServer()
 		end)
 	elseif LocalPlayer().ChaseSoundPlaying && LocalPlayer().LastViewKillerTime < curtime - 5  then
-		print(CalloutUsed)
 		ChaseSound:FadeOut(1.2)
 		LocalPlayer().ChaseSoundPlaying = false
 	end

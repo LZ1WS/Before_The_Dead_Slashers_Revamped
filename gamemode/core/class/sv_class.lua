@@ -39,7 +39,7 @@ function playermeta:SetSurvClass(class)
 	self.ClassID = class
 end
 
-local unique_weapons = {"Michael Myers", "Scrake", "Tadero", "The Machine", "SCP-049", "the Deerling", "Bacteria"}
+local unique_weapons = {"Michael Myers", "Scrake", "Tadero", "The Machine", "SCP-049", "the Deerling", "Bacteria", "Slenderman"}
 
 function playermeta:SetupKiller()
 	self:StripWeapons()

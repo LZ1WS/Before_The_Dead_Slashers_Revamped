@@ -300,7 +300,7 @@ GM.MAP.Killer.Name = "Slenderman"
 GM.MAP.Killer.Model = "models/player/lordvipes/slenderman/slenderman_playermodel_cvp.mdl"
 GM.MAP.Killer.WalkSpeed = 120
 GM.MAP.Killer.RunSpeed = 160
-GM.MAP.Killer.ExtraWeapons = {"blink_swep"}
+GM.MAP.Killer.ExtraWeapons = {"weapon_static"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_slender")
@@ -624,7 +624,7 @@ GM.MAP.Killer.Name = "The Machine"
 GM.MAP.Killer.Model = "models/tetTris/FNaF/SB/Burntrap_inkmanspm.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {"weapon_fists"}
+GM.MAP.Killer.ExtraWeapons = {"tfa_nmrih_fists"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_springtrap")
