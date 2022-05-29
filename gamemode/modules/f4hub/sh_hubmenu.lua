@@ -243,7 +243,7 @@ GM.MAP.KILLERS =
 		["name"] = "Ghostface",
 		["icon"] = "icons/icon_ghostface.png",
 		["description"] = "class_desc_ghostface",
-		["model"] = "models/player/dbd/oman_killer.mdl",
+		["model"] = "models/player/cla/classic_ghostface.mdl",
 		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
 		},
 		[12] = {
@@ -265,7 +265,7 @@ GM.MAP.KILLERS =
 		["name"] = "Tirsiak",
 		["icon"] = "icons/tirsiak.png",
 		["description"] = "class_desc_uspecimen4",
-		["model"] = "models/Lucifer/helltaker/rstar/Lucifer/Lucifer.mdl",
+		["model"] = "models/dreadhunger/player/hunter.mdl",
 		["stats"] = "\nWalk Speed = 190\nRun Speed = 210",
 		},
 		[15] = {
