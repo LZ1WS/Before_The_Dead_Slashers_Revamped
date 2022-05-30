@@ -25,7 +25,6 @@ The content of this version is huge, I'll promise you will have fun!
 ## Links:
 - [Required Content](https://steamcommunity.com/sharedfiles/filedetails/?id=2492025221)
 - [Discord](https://discord.gg/MRs5zBXq9z)
-- [Steam group](https://steamcommunity.com/groups/SLSBTD)
 
 **The original gamemode is made by Utopia Games.**
 
