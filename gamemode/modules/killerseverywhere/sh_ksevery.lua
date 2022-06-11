@@ -2,12 +2,6 @@ local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
 
 local GM = GM or GAMEMODE
 
-if SERVER then
-	util.AddNetworkString("Halo_ADD_DetectedCloaker")
-	util.AddNetworkString("Halo_ADD_DetectedK")
-	util.AddNetworkString("sls_tirsiakfreeze")
-end
-
 if rndnumber == 1 then
 GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_jason.wav"
 GM.MAP.ChaseMusic = "jason/chase/chase.wav"
@@ -108,6 +102,10 @@ elseif rndnumber == 25 then
 	GM.MAP.StartMusic = "sound/slender/voice/intro.mp3"
 	GM.MAP.ChaseMusic = "mute/chase/chase.wav"
 	GM.MAP.TerrorMusic = "mute/terror/terror.wav"
+elseif rndnumber == 26 then
+	GM.MAP.StartMusic = "sound/nightmare/voice/intro.mp3"
+	GM.MAP.ChaseMusic = "nightmare/chase/chase.wav"
+	GM.MAP.TerrorMusic = "nightmare/terror/terror.wav"
 end
 
 if rndnumber == 1 then
@@ -116,6 +114,7 @@ GM.MAP.Killer.Name = "Jason"
 GM.MAP.Killer.Model = "models/player/mkx_jason.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
@@ -230,6 +229,7 @@ GM.MAP.Killer.Name = "KAMENSHIK"
 GM.MAP.Killer.Model = "models/player/kamenshik.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_kamen")
@@ -283,6 +283,7 @@ GM.MAP.Killer.Name = "the Huntress"
 GM.MAP.Killer.Model = "models/players/mj_dbd_bear.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {"weapon_throwable_axe"}
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_huntress")
@@ -304,6 +305,7 @@ GM.MAP.Killer.Name = "Slenderman"
 GM.MAP.Killer.Model = "models/player/lordvipes/slenderman/slenderman_playermodel_cvp.mdl"
 GM.MAP.Killer.WalkSpeed = 120
 GM.MAP.Killer.RunSpeed = 160
+GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"weapon_static"}
 
 if CLIENT then
@@ -356,6 +358,7 @@ GM.MAP.Killer.Name = "Michael Myers"
 GM.MAP.Killer.Model = "models/player/dewobedil/mike_myers/default_p.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"mm_kitchen_knife"}
 
 if CLIENT then
@@ -368,6 +371,7 @@ GM.MAP.Killer.Name = "the Proxy"
 GM.MAP.Killer.Model = "models/slender_arrival/chaser.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
@@ -631,6 +635,7 @@ GM.MAP.Killer.Name = "The Machine"
 GM.MAP.Killer.Model = "models/tetTris/FNaF/SB/Burntrap_inkmanspm.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"tfa_nmrih_fists"}
 
 if CLIENT then
@@ -683,6 +688,7 @@ GM.MAP.Killer.Name = "Albert Wesker"
 GM.MAP.Killer.Model = "Models/Player/slow/amberlyn/re5/wesker/slow.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
@@ -757,6 +763,7 @@ GM.MAP.Killer.Name = "Scrake"
 GM.MAP.Killer.Model = "models/Splinks/KF2/zeds/Player_Scrake.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"hillbilly_chainsaw"}
 
 if CLIENT then
@@ -774,6 +781,7 @@ GM.MAP.Killer.Name = "T-800"
 GM.MAP.Killer.Model = "models/player/t-800/t800nw.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {"weapon_pwb_remington_870"}
 
 if CLIENT then
@@ -786,6 +794,7 @@ GM.MAP.Killer.Name = "Ghostface"
 GM.MAP.Killer.Model = "models/player/cla/classic_ghostface.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
@@ -883,6 +892,7 @@ GM.MAP.Killer.Name = "Cloaker"
 GM.MAP.Killer.Model = "models/mark2580/payday2/pd2_cloaker_zeal_player.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
@@ -938,6 +948,7 @@ GM.MAP.Killer.Name = "Specimen 8"
 GM.MAP.Killer.Model = "models/violetqueen/sjsm/deerlord.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 190
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 GM.MAP.Killer.VoiceCallouts = {"deerlord/voice/DL_01.ogg", "deerlord/voice/DL_02.ogg", "deerlord/voice/DL_03.ogg", "deerlord/voice/DL_04.ogg", "deerlord/voice/DL_05.ogg"}
 
@@ -976,6 +987,7 @@ GM.MAP.Killer.Name = "Tirsiak"
 GM.MAP.Killer.Model = "models/dreadhunger/player/hunter.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 210
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 GM.MAP.Killer.VoiceCallouts = {"tirsiak/voice/Tirsiak1.ogg", "tirsiak/voice/Tirsiak2.ogg", "tirsiak/voice/Tirsiak3.ogg", "tirsiak/voice/Tirsiak4.ogg"}
 
@@ -1024,6 +1036,7 @@ GM.MAP.Killer.Name = "Leo Kasper"
 GM.MAP.Killer.Model = "models/svotnik/Leo_Kasper/Leo_Kasper_PM.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 210
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
@@ -1077,6 +1090,7 @@ GM.MAP.Killer.Name = "Metal Worker"
 GM.MAP.Killer.Model = "models/materials/humans/group03m/male_08.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 210
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {"weapon_alertropes", "fnafgm_securitytablet_sa", "weapon_weld"}
 
 if CLIENT then
@@ -1089,6 +1103,7 @@ GM.MAP.Killer.Name = "the Intruder"
 GM.MAP.Killer.Model = "models/steinman/slashers/intruder_pm.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {"weapon_beartrap", "weapon_alertropes", "weapon_dooraxe"}
 
 if CLIENT then
@@ -1136,6 +1151,7 @@ GM.MAP.Killer.Name = "the Impostor"
 GM.MAP.Killer.Model = "models/josephthekp/amongdrip.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {"weapon_flashlight"}
 
 if CLIENT then
@@ -1186,6 +1202,7 @@ GM.MAP.Killer.Name = "White Face"
 GM.MAP.Killer.Model = "models/imscared/whiteface.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
 
 if CLIENT then
@@ -1259,6 +1276,7 @@ GM.MAP.Killer.Name = "Norman Bates"
 GM.MAP.Killer.Model = "models/steinman/slashers/bates_pm.mdl"
 GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {"weapon_batesmother"}
 
 if CLIENT then
@@ -1324,7 +1342,8 @@ GM.MAP.Killer.Name = "Tadero the Necromancer"
 GM.MAP.Killer.Model = "models/players/an_cc_necromancer.mdl"
 GM.MAP.Killer.WalkSpeed = 160
 GM.MAP.Killer.RunSpeed = 160
-GM.MAP.Killer.ExtraWeapons = {"necromancer_swep", "weapon_dmcscythe"}
+GM.MAP.Killer.UniqueWeapon = true
+GM.MAP.Killer.ExtraWeapons = {"weapon_bur_magic", "weapon_dmcscythe"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_tadero")
@@ -1336,6 +1355,7 @@ GM.MAP.Killer.Name = "SCP-049"
 GM.MAP.Killer.Model = "models/lolozaure/scp49.mdl"
 GM.MAP.Killer.WalkSpeed = 120
 GM.MAP.Killer.RunSpeed = 200
+GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"weapon_scp049"}
 GM.MAP.Killer.VoiceCallouts = {"plaguescp/voice/spotted1.mp3", "plaguescp/voice/spotted2.mp3", "plaguescp/voice/spotted3.mp3", "plaguescp/voice/spotted4.mp3", "plaguescp/voice/spotted5.mp3", "plaguescp/voice/spotted6.mp3", "plaguescp/voice/spotted7.mp3"}
 
@@ -1355,6 +1375,7 @@ GM.MAP.Killer.Name = "the Deerling"
 GM.MAP.Killer.Model = "models/bala/monsterboys_pm.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
+GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {"tfa_iw7_tactical_knife"}
 
 if CLIENT then
@@ -1445,6 +1466,7 @@ elseif rndnumber == 24 then
 	GM.MAP.Killer.Model = "models/player/Bacteria.mdl"
 	GM.MAP.Killer.WalkSpeed = 190
 	GM.MAP.Killer.RunSpeed = 220
+	GM.MAP.Killer.UniqueWeapon = true
 	GM.MAP.Killer.ExtraWeapons = {"demogorgon_claws"}
 	
 	if CLIENT then
@@ -1457,6 +1479,7 @@ elseif rndnumber == 25 then
 	GM.MAP.Killer.Model = "models/bellkiller_cw.mdl"
 	GM.MAP.Killer.WalkSpeed = 150
 	GM.MAP.Killer.RunSpeed = 180
+	GM.MAP.Killer.UniqueWeapon = true
 	GM.MAP.Killer.ExtraWeapons = {"mute_knife"}
 	
 	if CLIENT then
@@ -1505,5 +1528,18 @@ hook.Add("PlayerFootstep", "sls_mute_second_ability", function(ply, pos, foot, s
 		hook.Remove("PlayerFootstep", "sls_mute_second_ability")
 		hook.Remove("sls_round_End", "sls_kability_End")
 	end)
-
+elseif rndnumber == 26 then
+	-- Killer
+	GM.MAP.Killer.Name = "the Nightmare"
+	GM.MAP.Killer.Model = "models/players/mj_dbd_fred.mdl"
+	GM.MAP.Killer.WalkSpeed = 190
+	GM.MAP.Killer.RunSpeed = 220
+	GM.MAP.Killer.UniqueWeapon = true
+	GM.MAP.Killer.ExtraWeapons = {"freddi_swep"}
+	GM.MAP.Killer.VoiceCallouts = {"nightmare/voice/freddy1.mp3", "nightmare/voice/freddy2.mp3", "nightmare/voice/freddy3.mp3"}
+	
+	if CLIENT then
+		GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_nightmare")
+		GM.MAP.Killer.Icon = Material("icons/nightmare.png")
+	end
 end

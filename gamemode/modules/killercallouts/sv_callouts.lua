@@ -18,7 +18,7 @@ net.Receive( "sls_killerseesurvivor_callout", function(len, killer)
 		local rnd_callout = tostring(table.Random(GM.MAP.Killer.VoiceCallouts))
 		CalloutUsed = true
 			killer:EmitSound(rnd_callout)
-			timer.Simple(math.random(SoundDuration(rnd_callout) * 6, SoundDuration(rnd_callout) * 10), function()
+			timer.Simple(math.random(30, 60), function()
 				CalloutUsed = false
 			end)
 

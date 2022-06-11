@@ -1,168 +1,4 @@
-if CLIENT then
 local GM = GM or GAMEMODE
-
---[[GM.MAP.KILLERS =
-{
-["slash_summercamp"] = {
-		[1] = {
-		["name"] = "Jason Voorhees",
-		["icon"] = "icons/icon_jason.png",
-		["description"] = "class_desc_jason",
-		["model"] = "models/player/mkx_jason.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210"
-		},
-		[2] = {
-		["name"] = "KAMENSHIK",
-		["icon"] = "icons/xleb.png",
-		["description"] = "class_desc_kamen",
-		["model"] = "models/player/kamenshik.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240"
-		},
-		[3] = {
-		["name"] = "Huntress",
-		["icon"] = "icons/huntress.png",
-		["description"] = "class_desc_huntress",
-		["model"] = "models/players/mj_dbd_bear.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		},
-		[4] = {
-		["name"] = "Slenderman",
-		["icon"] = "icons/slenderman.png",
-		["description"] = "class_desc_slender",
-		["model"] = "models/player/lordvipes/slenderman/slenderman_playermodel_cvp.mdl",
-		["stats"] = "\nWalk Speed = 120\nRun Speed = 160",
-		["map"] = "slash_summercamp",
-		},
-	},
-["slash_subway"] = {
-		[1] = {
-		["name"] = "the Proxy",
-		["icon"] = "icons/icon_proxy.png",
-		["description"] = "class_desc_proxy",
-		["model"] = "models/slender_arrival/chaser.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[2] = {
-		["name"] = "Springtrap",
-		["icon"] = "icons/springtrap.png",
-		["description"] = "class_desc_wip",
-		["model"] = "models/player/Maximo/springtrap1.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[3] = {
-		["name"] = "Albert Wesker",
-		["icon"] = "icons/wesker.png",
-		["description"] = "class_desc_wesker",
-		["model"] = "Models/Player/slow/amberlyn/re5/wesker/slow.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		["map"] = "slash_subway",
-		},
-		[4] = {
-		["name"] = "Scrake",
-		["icon"] = "icons/no_icon_red.png",
-		["description"] = "class_desc_scrake",
-		["model"] = "models/Splinks/KF2/zeds/Player_Scrake.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[5] = {
-		["name"] = "T-800",
-		["icon"] = "icons/t800.png",
-		["description"] = "class_desc_t800",
-		["model"] = "models/player/t-800/t800nw.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-	},
-["slash_highschool"] = {
-		[1] = {
-		["name"] = "Ghostface",
-		["icon"] = "icons/icon_ghostface.png",
-		["description"] = "class_desc_ghostface",
-		["model"] = "models/player/dbd/oman_killer.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		},
-		[2] = {
-		["name"] = "Cloaker",
-		["icon"] = "icons/cloaker.png",
-		["description"] = "class_desc_cloaker",
-		["model"] = "models/mark2580/payday2/pd2_cloaker_zeal_player.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		},
-		[3] = {
-		["name"] = "Specimen 8",
-		["icon"] = "icons/spec8.png",
-		["description"] = "class_desc_specimen8",
-		["model"] = "models/violetqueen/sjsm/deerlord.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 190",
-		},
-		[4] = {
-		["name"] = "Tirsiak",
-		["icon"] = "icons/tirsiak.png",
-		["description"] = "class_desc_uspecimen4",
-		["model"] = "models/Lucifer/helltaker/rstar/Lucifer/Lucifer.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210",
-		},
-		[5] = {
-		["name"] = "Leo Kasper",
-		["icon"] = "icons/kasper.png",
-		["description"] = "class_desc_kasper",
-		["model"] = "models/svotnik/Leo_Kasper/Leo_Kasper_PM.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210",
-		},
-		[6] = {
-		["name"] = "Metallyst",
-		["icon"] = "icons/metalworker.png",
-		["description"] = "class_desc_metallyst",
-		["model"] = "models/materials/humans/group03m/male_08.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210",
-		},
-	},
-["slash_lodge"] = {
-		[1] = {
-		["name"] = "the Intruder",
-		["icon"] = "icons/icon_intruder.png",
-		["description"] = "class_desc_intruder",
-		["model"] = "models/steinman/slashers/intruder_pm.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[2] = {
-		["name"] = "AMOGUS",
-		["icon"] = "icons/amogus.png",
-		["description"] = "NONONONONO! GET OUT OF MY HEAD!",
-		["model"] = "models/josephthekp/amongdrip.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[3] = {
-		["name"] = "White Face",
-		["icon"] = "icons/whiteface.png",
-		["description"] = "class_desc_whiteface",
-		["model"] = "models/imscared/whiteface.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200\nRage Walk/Run Speed = 300",
-		},
-	},
-["slash_motel"] = {
-		[1] = {
-		["name"] = "Norman Bates",
-		["icon"] = "icons/icon_bates.png",
-		["description"] = "class_desc_bates",
-		["model"] = "models/steinman/slashers/bates_pm.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[2] = {
-		["name"] = "Tadero the Necromancer",
-		["icon"] = "icons/tadero.png",
-		["description"] = "class_desc_tadero",
-		["model"] = "models/players/an_cc_necromancer.mdl",
-		["stats"] = "\nWalk Speed = 160\nRun Speed = 160",
-		},
-		[3] = {
-		["name"] = "SCP-049",
-		["icon"] = "icons/scp049.png",
-		["description"] = "class_desc_scp049",
-		["model"] = "models/lolozaure/scp49.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-	},
-}]]--
 
 GM.MAP.KILLERS =
 {
@@ -346,6 +182,13 @@ GM.MAP.KILLERS =
 			["model"] = "models/bellkiller_cw.mdl",
 			["stats"] = "\nWalk Speed = 120\nRun Speed = 150",
 		},
+		[26] = {
+			["name"] = "the Nightmare",
+			["icon"] = "icons/nightmare.png",
+			["description"] = "class_desc_nightmare",
+			["model"] = "models/players/mj_dbd_fred.mdl",
+			["stats"] = "\nWalk Speed = 190\nRun Speed = 220",
+		},
 }
 
 GM.MAP.SURVIVORS = {
@@ -416,14 +259,7 @@ GM.MAP.SURVIVORS = {
 		["stats"] = "\nHP = 140\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
 	},
 }
-
-hook.Add( "InitPostEntity", "sls_share_killers_list", function()
-	net.Start("sls_share_killers_list")
-	net.WriteTable(GM.MAP.KILLERS)
-	net.SendToServer()
-	print("sls_share_killers_list")
-hook.Remove("InitPostEntity", "sls_share_killers_list")
-end )
+if CLIENT then
 
 local sls_ply_choosen_killer_model
 local sls_ply_choosen_killer_description
@@ -693,7 +529,6 @@ if SERVER then
 util.AddNetworkString("sls_OpenHUB")
 util.AddNetworkString("sls_hub_choosekiller")
 util.AddNetworkString("sls_killer_choose_nw")
-util.AddNetworkString("sls_share_killers_list")
 
 hook.Add("ShowSpare2", "sls_hub_ShowSpare2", function(ply)
 net.Start("sls_OpenHUB")
@@ -702,11 +537,6 @@ end)
 
 net.Receive("sls_hub_choosekiller", function(len, ply)
 	ply:SetNWInt("choosen_killer", net.ReadInt(6))
-end)
-
-net.Receive("sls_share_killers_list", function(len, ply)
-	local GM = GM or GAMEMODE
-	GM.MAP.KILLERS = net.ReadTable()
 end)
 
 net.Receive("sls_killer_choose_nw", function(len, ply)

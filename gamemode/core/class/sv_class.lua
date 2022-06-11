@@ -39,13 +39,11 @@ function playermeta:SetSurvClass(class)
 	self.ClassID = class
 end
 
-local unique_weapons = {"Michael Myers", "Scrake", "Tadero", "The Machine", "SCP-049", "the Deerling", "Bacteria", "Slenderman", "Mute"}
-
 function playermeta:SetupKiller()
 	self:StripWeapons()
 	self:SetTeam(TEAM_KILLER)
 	self:AllowFlashlight(false)
-if table.HasValue(unique_weapons, GM.MAP.Killer.Name) == false then
+if GM.MAP.Killer.UniqueWeapon == false then
 	self.InitialWeapon = table.Random(GM.CONFIG["killer_weapons"])
 	self:Give(self.InitialWeapon)
 end
