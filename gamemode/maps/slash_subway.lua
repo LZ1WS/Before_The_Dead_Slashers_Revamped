@@ -6,30 +6,8 @@
 -- @Last Modified time: 2017-08-13T14:30:13+02:00
 
 local GM = GM or GAMEMODE
---local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
 GM.MAP.Name = "Subway"
 GM.MAP.EscapeDuration = 240
---[[if rndnumber == 1 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
-GM.MAP.ChaseMusic = "slashers/ambient/chase_proxy.wav"
-GM.MAP.TerrorMusic = "slender/terror/terrorslender.wav"
-elseif rndnumber == 2 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
-GM.MAP.ChaseMusic = "springtrap/chase/springtrapchase.wav"
-GM.MAP.TerrorMusic = "springtrap/terror/terrorspring.wav"
-elseif rndnumber == 3 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
-GM.MAP.ChaseMusic = "albertwesker/chase/chase.wav"
-GM.MAP.TerrorMusic = "albertwesker/terror/terror.wav"
-elseif rndnumber == 4 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
-GM.MAP.ChaseMusic = "scrake/chase/chase.wav"
-GM.MAP.TerrorMusic = "scrake/terror/terror.wav"
-elseif rndnumber == 5 then
-GM.MAP.StartMusic = "sound/slender/voice/intro.mp3"
-GM.MAP.ChaseMusic = "t800/chase/chase.wav"
-GM.MAP.TerrorMusic = "t800/terror/terror.wav"
-end]]--
 GM.MAP.Goal = {
 	Generator = {
 		{type="sls_generator", pos=Vector( 	1555.2901611328	,	625.43389892578	,	-475.79974365234	 ), ang=Angle(	-0.047894809395075	,	77.103637695313	,	-0.008544921875	),},
@@ -72,6 +50,32 @@ GM.MAP.Goal = {
 
 	},
 
+	Locker = {
+		{type="prop_huntress_locker", pos=Vector(-65.71875, 1651.53125, -126.4375), ang=Angle(0, -89.9375, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(57.75, 1651.6875, -126.5), ang=Angle(0, -89.9375, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(-376, 2037.46875, 1.5), ang=Angle(-0.03125, -90.09375, -0.25),},
+		{type="prop_huntress_locker", pos=Vector(-566.21875, 2035.46875, 1.5625), ang=Angle(-0.03125, -90.0625, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(-872.4375, 1766.46875, 1.5625), ang=Angle(0, 179.90625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-549.3125, 504.25, 1.59375), ang=Angle(0, 62.28125, -0.25),},
+		{type="prop_huntress_locker", pos=Vector(-486.28125, 492.46875, 1.53125), ang=Angle(0, 90.125, -0.21875),},
+		{type="prop_huntress_locker", pos=Vector(143.65625, 215.71875, -350.40625), ang=Angle(-0.03125, 179.875, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(143.71875, 172.9375, -350.46875), ang=Angle(0, 180, 0),},
+		{type="prop_huntress_locker", pos=Vector(-1921.96875, -131.46875, -222.40625), ang=Angle(0, 90, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-2009.65625, -131.53125, -222.4375), ang=Angle(-0.03125, 89.9375, 0),},
+		{type="prop_huntress_locker", pos=Vector(62.65625, -220.4375, -318.40625), ang=Angle(0, -89.84375, 0),},
+		{type="prop_huntress_locker", pos=Vector(-73.1875, -220.3125, -318.4375), ang=Angle(0.0625, -89.9375, 0.0625),},
+		{type="prop_huntress_locker", pos=Vector(1624.34375, 598.34375, -478.4375), ang=Angle(0.1875, -178.78125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(1625.8125, 544.125, -478.40625), ang=Angle(0.125, -179.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(520.25, -51.71875, -382.375), ang=Angle(0.09375, 89.9375, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(446.28125, -51.4375, -382.46875), ang=Angle(-0.09375, 90, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(598.78125, 620.53125, -382.40625), ang=Angle(-0.03125, 90.09375, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(467.4375, 243.75, 321.5625), ang=Angle(-0.03125, 179.90625, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(467.53125, 139.21875, 322.21875), ang=Angle(0, -179.84375, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-1704.84375, 737.09375, -62.53125), ang=Angle(0, 89.96875, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(449.5, 1154.75, -254.40625), ang=Angle(-0.0625, -159.25, 0),},
+		{type="prop_huntress_locker", pos=Vector(473.03125, 1092.25, -254.40625), ang=Angle(0, -159.4375, -0.03125),},
+		},
+
 	Radio = {
 		 {type="sls_radio", pos=Vector( 	154.13287353516	,	1127.8270263672	,	44.406784057617	 ), ang=Angle(	-0.1512143611908	,	-76.766105651855	,	0.0056725949980319	),},
 		 {type="sls_radio", pos=Vector( 	-458.69750976563	,	817.68774414063	,	71.051460266113	 ), ang=Angle(	-0.068640872836113	,	-16.761373519897	,	-0.132568359375	),},
@@ -94,371 +98,3 @@ GM.MAP.Vaccine = {
 		 {type="sls_vaccine", pos=Vector(606.138855, 981.217407, -316.508484), ang=Angle(0, -90, 0),},
 }
 }
-
---[[if rndnumber == 1 then
--- Killer
-GM.MAP.Killer.Name = "the Proxy"
-GM.MAP.Killer.Model = "models/slender_arrival/chaser.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_proxy")
-	GM.MAP.Killer.Icon = Material("icons/icon_proxy.png")
-end
-
-
--- Ability
-
-if CLIENT then
-	local PlyInvisible = false
-
-	net.Receive( "sls_kability_Invisible", function( len, pl )
-		PlyInvisible = net.ReadBool()
-	end )
-
-	local RED = Color(255,0,0,255)
-	local GREEN = Color(0,255,0,255)
-	local Visible
-
-	local function isVisible()
-		Visible = net.ReadBool()
-
-	end
-	net.Receive("sls_kability_InvisibleIndic", isVisible)
-
-	local function InvisibleVision()
-		if !GM.ROUND.Active || !GM.ROUND.Survivors || LocalPlayer():Team() != TEAM_KILLER then return end
-
-		if PlyInvisible and LocalPlayer():Alive() then
-
-			DrawMaterialOverlay( "effects/dodge_overlay.vmt", -0.42 )
-			DrawSharpen( 1.2, 1.2 )
-		end
-	end
-	hook.Add( "RenderScreenspaceEffects", "sls_kability_BinocDraw", InvisibleVision )
-
-	local TimerView = 0
-	local function CheckKillerInSight()
-		local v = team.GetPlayers(TEAM_KILLER)[1]
-		local curtime = CurTime()
-		local ply = LocalPlayer()
-if (v) then
-		if !ply:IsLineOfSightClear( v ) or !v:IsValid() or v == ply then return end
-
-
-		local TargetPosMax= v:GetPos()+ v:OBBMaxs() - Vector(10,0,0)
-		local TargetPosCenter = v:GetPos()+v:OBBCenter()
-		local TargetPosMin = v:GetPos()+ v:OBBMins() + Vector(10,0,0)
-
-		local ScreenPosMax = TargetPosMax:ToScreen()
-		local ScreenPosCenter = TargetPosCenter:ToScreen()
-		local ScreenPosMin = TargetPosMin:ToScreen()
-
-		posPlayer = ply:GetPos()
-		if ( TimerView < curtime) and (posPlayer:Distance( v:GetPos()) < 150) then
-				net.Start( "sls_kability_survivorseekiller" )
-					net.WriteFloat( curtime )
-				net.SendToServer()
-				TimerView = curtime + 0.2
-
-
-		elseif (TimerView < curtime) and (ScreenPosMax.x < ScrW() and ScreenPosMax.y < ScrH() and ScreenPosMin.x > 0 and ScreenPosMin.y > 0) then
-				-- print("KILLERSIGHT")
-				net.Start( "sls_kability_survivorseekiller" )
-					net.WriteFloat( curtime )
-				net.SendToServer()
-				TimerView = curtime + 0.2
-		end
-	end
-	end
-	hook.Add ("Think","sls_kability_IHaveTheKillerInView",CheckKillerInSight)
-
-	local proxyPos
-	local showProxy
-	local function receiveProxyPos()
-
-		proxyPos = net.ReadVector()
-		showProxy = net.ReadBool()
-
-	end
-	net.Receive("sls_proxy_sendpos",receiveProxyPos)
-
-	local function drawIconOnProxy()
-		if !showProxy or !proxyPos  then return end
-		local pos = proxyPos:ToScreen()
-		surface.SetDrawColor(Color(255, 255, 255))
-		surface.SetMaterial(GM.MAP.Killer.Icon)
-		surface.DrawTexturedRect(pos.x - 64, pos.y - 64, 64, 64)
-	end
-	hook.Add("HUDPaintBackground","sls_proxyicon_draw",drawIconOnProxy)
-
-else
-	util.AddNetworkString( "sls_kability_Invisible" )
-	util.AddNetworkString( "sls_kability_InvisibleIndic" )
-	util.AddNetworkString( "sls_kability_survivorseekiller" )
-	util.AddNetworkString("sls_proxy_sendpos")
-
-
-	local KInvisible = Color(255,255,255,0)
-	local KNormal = Color(255,255,255,255)
-	local InitialSpawnK = false
-	--local keyPressed = false
-	local KillerInView
-	local LastKillerInView = 0
-
-	local function CandisapearV2()
-		local curtime = CurTime()
-
-
-		if LastKillerInView > curtime - 0.5 then
-			KillerInView = true
-		else
-			KillerInView = false
-		end
-
-	end
-	hook.Add("Think","sls_kability_UpdateKillerInView",CandisapearV2)
-
-
-	function ResponsePlayerSeeKiller()
-		LastKillerInView = net.ReadFloat()
-	end
-	net.Receive("sls_kability_survivorseekiller", ResponsePlayerSeeKiller)
-
-	function GM.MAP.Killer:UseAbility(ply)
-if GM.MAP.Killer.Name ~= "the Proxy" then return end
-		local PlayerWeapon = ply:GetActiveWeapon()
-		if KillerInView then
-			net.Start( "notificationSlasher" )
-				net.WriteTable({"killerhelp_cant_use_ability"})
-				net.WriteString("cross")
-			net.Send(ply)
-			return
-		end
-
-		if !ply.InvisibleActive  and !KillerInView then
-
-			ply:EmitSound( "slashers/effects/proxy_power_on.wav" )
-
-			timer.Simple( 0.6, function ()
-
-				ply:SetColor(KInvisible )
-				ply:SetWalkSpeed( 400 )
-				ply:SetRunSpeed(400)
-				ply:StripWeapon(PlayerWeapon:GetClass())
-
-				ply:SetRenderMode(RENDERMODE_NONE )
-				ply:DrawShadow( false )
-				ply:AddEffects(EF_NOSHADOW)
-				ply.InvisibleActive = true
-				ply:CrosshairDisable()
-
-				net.Start("sls_kability_Invisible")
-						net.WriteBool(true)
-				net.Send(ply)
-
-			end)
-
-		elseif ply.InvisibleActive and !KillerInView  then
-			ply:EmitSound( "slashers/effects/proxy_power_off.wav" )
-
-			timer.Simple( 1, function ()
-			--	ply:AddKey( IN_ATTACK )
-			--	ply:AddKey( IN_ZOOM )
-				ply:Give(ply.InitialWeapon)
-				ply:SetColor( KNormal )
-				ply:SetRunSpeed( 400 )
-				ply:DrawShadow( true )
-				ply:SetWalkSpeed(GM.MAP.Killer.WalkSpeed)
-				ply:SetRunSpeed(GM.MAP.Killer.RunSpeed)
-				ply:SetRenderMode(RENDERMODE_TRANSALPHA )
-
-				ply.InvisibleActive = false
-
-				net.Start("sls_kability_Invisible")
-					net.WriteBool(false)
-				net.Send(ply)
-
-			end)
-		end
-	end
-
-
-	local function ResetVisibility()
-	for k,v in pairs(player.GetAll()) do
-		v:DrawShadow( true )
-		if IsValid(GAMEMODE.CLASS.Killers) and GM.ROUND.Killer:Team() == TEAM_KILLER then
-			v:SetWalkSpeed(GAMEMODE.CLASS.Killers[CLASS_KILL_PROXY].walkspeed)
-			v:SetRunSpeed(GAMEMODE.CLASS.Killers[CLASS_KILL_PROXY].walkspeed)
-			GM.ROUND.Killer.InvisibleActive = false
-		end
-		v:SetRenderMode(RENDERMODE_TRANSALPHA )
-		v:SetColor(Color(255,255,255))
-	end
-	if (!GAMEMODE.ROUND.Killer) then return end
-		net.Start("sls_kability_Invisible")
-			net.WriteBool(false)
-		net.Send(GAMEMODE.ROUND.Killer)
-	end
-hook.Add("PostPlayerDeath","sls_kability_ResetViewKiller",ResetVisibility)
-hook.Add("sls_round_PostStart","sls_kability_ResetViewKillerAfterEnd",ResetVisibility)
-
-local timerSend = 0
-local function sendPosWhenInvisible()
-	if IsValid(GM.ROUND.Killer) &&   GM.ROUND.Active && timerSend < CurTime()  then
-		timerSend = CurTime() + 0.5
-		local shygirl = getSurvivorByClass(CLASS_SURV_SHY)
-		if !shygirl then return end
-		if !shygirl:IsLineOfSightClear(GM.ROUND.Killer) or  !GM.ROUND.Killer.InvisibleActive then
-			net.Start("sls_proxy_sendpos")
-			net.WriteVector(Vector(0,0,0))
-			net.WriteBool(false)
-			net.Send(shygirl)
-			return
-		end
-
-		net.Start("sls_proxy_sendpos")
-		net.WriteVector(GM.ROUND.Killer:GetPos())
-		net.WriteBool(true)
-		net.Send(shygirl)
-	end
-	if !GM.ROUND.Active && timerSend < CurTime() then
-			timerSend = CurTime() + 1
-			net.Start("sls_proxy_sendpos")
-			net.WriteVector(Vector(0,0,0))
-			net.WriteBool(false)
-			net.Broadcast()
-	end
-end
-hook.Add("Think","sls_sendposkillerwheninvisible",sendPosWhenInvisible)
-end
-
-local function initCol()
-	local allentities = ents.GetAll()
-	for k, v in pairs(allentities) do
-		if (v:IsPlayer()) or (v:GetClass() == "prop_door_rotating") then
-			v:SetCustomCollisionCheck( true )
-		end
-	end
-end
-hook.Add( "InitPostEntity", "sls_kability_CustomInit", initCol)
-hook.Add("sls_round_PostStart","sls_kability_TestInit", initCol)
-
-
-local function ShouldCollide( ent1, ent2 )
-	if ent1:IsPlayer() and ent1:GetColor().a == 0 and  ent2:GetClass() == "prop_door_rotating" or
-		ent2:IsPlayer() and ent2:GetColor().a == 0 and  ent1:GetClass() == "prop_door_rotating" then
-		return false
-	end
-	if ent1:IsPlayer() and ent1:GetColor().a == 0 or
-		ent2:IsPlayer() and ent2:GetColor().a == 0 then
-		return false
-	end
-	return true
-end
-hook.Add("ShouldCollide", "sls_kability_ShouldCollide", ShouldCollide)
-elseif rndnumber == 2 then
-GM.MAP.Killer.Name = "The Machine"
-GM.MAP.Killer.Model = "models/player/Maximo/springtrap1.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_wip")
-	GM.MAP.Killer.Icon = Material("icons/springtrap.png")
-end
-hook.Add("sls_round_PostStart", "introfixspring", function()
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play springtrap/voice/intro.mp3")
-end
-hook.Remove("sls_round_PostStart", "introfixspring")
-end)
-elseif rndnumber == 3 then
-GM.MAP.Killer.Name = "Albert Wesker"
-GM.MAP.Killer.Model = "Models/Player/slow/amberlyn/re5/wesker/slow.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_wesker")
-	GM.MAP.Killer.Icon = Material("icons/wesker.png")
-end
-
-hook.Add("sls_round_PostStart", "introfixwesker", function()
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play albertwesker/voice/intro.mp3")
-end
-hook.Remove("sls_round_PostStart", "introfixwesker")
-end)
-
-if CLIENT then
-hook.Add( "RenderScreenspaceEffects", "wesker_infection_hud", function() -------------- Render screen effects(blue lines + lifeline)
-	local ply = LocalPlayer()
-	if ply:GetNWBool('sls_wesker_infected',false) == true then
-	DrawMaterialOverlay( "overlays/wesker/wesker_lifeline", 0 )
-	DrawMaterialOverlay( "overlays/wesker/wesker_contamination", 0 )
-	end
-end )
-end
-
-if SERVER then
-hook.Add( "PlayerShouldTakeDamage", "Wesker_infection", function( ply, attacker )
-if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and attacker:Team() == TEAM_KILLER and ply:GetNWBool("sls_wesker_infected", false) == false then
-ply:SetNWBool("sls_wesker_infected", true)
-timer.Create("wesker_infection" .. ply:SteamID64(), 15, 0, function()
-if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == true then
-ply:TakeDamage(25, attacker, attacker:GetActiveWeapon())
-elseif ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == false and timer.Exists("wesker_infection" .. ply:SteamID64()) then
-timer.Remove("wesker_infection" .. ply:SteamID64())
-elseif ply:Team() == TEAM_SURVIVORS and ply:GetNWBool("sls_wesker_infected", false) == true and ply:Alive() == false then
-timer.Remove("wesker_infection" .. ply:SteamID64())
-ply:SetNWBool("sls_wesker_infected", false)
-end
-end)
-end
-end )
-end
-	hook.Add("sls_round_End", "sls_kability_End_wesker", function()
-		if SERVER then
-hook.Remove("PlayerShouldTakeDamage", "Wesker_infection")
-for _,players in pairs(player.GetAll()) do
-if timer.Exists("wesker_infection" .. players:SteamID64()) then
-timer.Remove("wesker_infection" .. players:SteamID64())
-players:SetNWBool("sls_wesker_infected", false)
-end
-end
-	end
-end)
-elseif rndnumber == 4 then
-GM.MAP.Killer.Name = "Scrake"
-GM.MAP.Killer.Model = "models/Splinks/KF2/zeds/Player_Scrake.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_scrake")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-hook.Add("sls_round_PostStart", "introfixscrake", function()
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play scrake/voice/intro.mp3")
-end
-hook.Remove("sls_round_PostStart", "introfixscrake")
-end)
-elseif rndnumber == 5 then
-GM.MAP.Killer.Name = "T-800"
-GM.MAP.Killer.Model = "models/player/t-800/t800nw.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {"weapon_pwb_remington_870"}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_t800")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-	end]]--

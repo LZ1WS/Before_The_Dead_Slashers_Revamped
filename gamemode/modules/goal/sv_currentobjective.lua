@@ -12,7 +12,7 @@ util.AddNetworkString( "modifyObjectiveSlasher" )
 local GM = GM or GAMEMODE
 
 hook.Add( "sls_round_PostStart", "StartObjectives", function( ply, text, public )
-if GM.MAP.Killer.Name == "Slenderman" then
+if GM.MAP.Killer.SpecialRound == "GM.MAP.Pages" then
 		CurrentObjective = "find_pages"
 		NbPagesToFind = math.ceil( (#player.GetAll() / 2) )
 		NbPagesToFound = NbPagesToFind

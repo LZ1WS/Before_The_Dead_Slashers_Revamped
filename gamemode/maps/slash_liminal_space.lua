@@ -33,6 +33,32 @@ GM.MAP.Goal = {
 
 	},
 
+	Locker = {
+		{type="prop_huntress_locker", pos=Vector(3683.5625, 1932.25, 161.5625), ang=Angle(0, -179.71875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(3683.625, 1685.0625, 161.53125), ang=Angle(0, -179.875, -0.1875),},
+		{type="prop_huntress_locker", pos=Vector(3885.3125, 691.5, 129.5625), ang=Angle(0, -89.90625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(3763, 435.46875, 129.53125), ang=Angle(0, -89.9375, 0),},
+		{type="prop_huntress_locker", pos=Vector(3839.0625, 435.5, 129.5625), ang=Angle(0, -89.90625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(2388.5, -268.4375, 49.5625), ang=Angle(-0.03125, -89.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(3144.8125, -1996.5, 49.59375), ang=Angle(-0.0625, -90.03125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(3203.25, -1996.53125, 49.5625), ang=Angle(-0.0625, -89.84375, 0),},
+		{type="prop_huntress_locker", pos=Vector(-3469.375, -1299.4375, 137.59375), ang=Angle(-0.09375, 0.21875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-3532.375, -1299.65625, 137.5), ang=Angle(0, 179.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(-227.5, 710.875, 129.53125), ang=Angle(0, 0.15625, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-227.5, 955.25, 129.5625), ang=Angle(-0.03125, -0.03125, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(503.15625, 1379.625, 129.5625), ang=Angle(0, -89.90625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(498.8125, 1180.5625, 129.59375), ang=Angle(-0.0625, 90.1875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(2963.5, 1811.5, 161.53125), ang=Angle(0, 179.90625, 0),},
+		{type="prop_huntress_locker", pos=Vector(2963.4375, 1751.78125, 161.53125), ang=Angle(0, 179.90625, 0),},
+		{type="prop_huntress_locker", pos=Vector(-431.15625, -220.5, 129.53125), ang=Angle(-0.03125, -90.03125, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-365.125, -220.59375, 129.4375), ang=Angle(0.09375, -89.96875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(556.4375, 112.4375, 129.5625), ang=Angle(0, -0.0625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-344.0625, 371.4375, 129.5625), ang=Angle(-0.03125, -90.09375, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-103.875, 371.28125, 129.4375), ang=Angle(0, -89.96875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(2130.78125, 3548.4375, 129.5625), ang=Angle(0, 90.09375, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(1998.4375, 3548.46875, 129.5), ang=Angle(0, 89.96875, -0.125),},
+		},
+
 	Generator = {
 		 {type="sls_generator", pos=Vector( -195.109512, 709.968201, 128.031250 ), ang=Angle(0, -90.913345, 0.000000),},
 		 {type="sls_generator", pos=Vector( 1991.368164, 3725.457031, 128.212204 ), ang=Angle(0, -90, 0),},

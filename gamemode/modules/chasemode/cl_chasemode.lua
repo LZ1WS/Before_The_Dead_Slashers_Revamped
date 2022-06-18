@@ -35,7 +35,7 @@ local function HaveASurvivorInSight()
 	local SurvivorsPly = player.GetAll()
 	for k,v in pairs(SurvivorsPly) do
 
-		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1000 && LocalPlayer():IsLineOfSightClear( v )  && v:IsValid() && v != LocalPlayer() && v:Team() != TEAM_KILLER  then
+		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1000 && LocalPlayer():IsLineOfSightClear( v )  && v:IsValid() && v != LocalPlayer() && v:Team() != TEAM_KILLER && !v:GetNWBool( 'IsInsideLocker', false )  then
 			local TargetPosMax = v:GetPos() + v:OBBMaxs() - Vector(10,0,0)
 			local TargetPosMin = v:GetPos() + v:OBBMins() + Vector(10,0,0)
 

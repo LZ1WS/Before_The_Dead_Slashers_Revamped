@@ -59,7 +59,7 @@ local function HUDPaint()
 		end
 	elseif LocalPlayer():Team() == TEAM_KILLER then
 		DrawHUDKiller()
-	elseif LocalPlayer():Team() == TEAM_KILLER and GM.MAP.Killer.Name == "Металлист" then
+	elseif LocalPlayer():Team() == TEAM_KILLER and GM.MAP.Killer.Name == "Metal Worker" then
 			DrawHUDBlack(2)
 	end
 end

@@ -5,23 +5,9 @@
 -- @Last modified by:   Guilhem PECH
 -- @Last modified time: 21-Oct-2018
 local GM = GM or GAMEMODE
---local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
 
 GM.MAP.Name = "Motel"
 GM.MAP.EscapeDuration = 90
---[[if rndnumber == 1 or rndnumber == 4 or rndnumber == 5 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_bates.wav"
-GM.MAP.ChaseMusic = "slashers/ambient/chase_bates.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-elseif rndnumber == 2 or rndnumber == 6 or rndnumber == 7 then
-GM.MAP.StartMusic = "sound/necromancer/voice/intro.mp3"
-GM.MAP.ChaseMusic = "necromancer/chase/chasenecrom.wav"
-GM.MAP.TerrorMusic = "necromancer/terror/terrornecrom.wav"
-elseif rndnumber == 3 or 8 then
-GM.MAP.StartMusic = "sound/slashers/effects/notif_2.wav"
-GM.MAP.ChaseMusic = "plaguescp/chase/chase.wav"
-GM.MAP.TerrorMusic = "plaguescp/terror/terror.wav"
-end]]--
 
 GM.MAP.Goal = {
 	Jerrican = {
@@ -133,6 +119,28 @@ GM.MAP.Goal = {
 			ang = Angle(-0.084948137402534, 90.007133483887, -0.004180908203125)
 		}
 	},
+
+	Locker = {
+		{type="prop_huntress_locker", pos=Vector(1349.5, 429.4375, -12.40625), ang=Angle(-0.03125, 0.125, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(1349.53125, 289.1875, -12.40625), ang=Angle(-0.03125, 0.09375, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(1082.5625, 163.625, 144.53125), ang=Angle(0, -179.875, -0.28125),},
+		{type="prop_huntress_locker", pos=Vector(1368.40625, 199.46875, 144.5), ang=Angle(0, 0.03125, 0),},
+		{type="prop_huntress_locker", pos=Vector(1368.46875, 276.59375, 144.5625), ang=Angle(0, 0, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(1446.6875, 491.46875, -204.40625), ang=Angle(0, -89.96875, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(1294.375, 337.59375, -204.4375), ang=Angle(0, 0.0625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-105.21875, 994.03125, -60.59375), ang=Angle(0, 13.9375, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-123.8125, 1068.71875, -60.625), ang=Angle(0, 13.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(154.5, -1332.46875, -286.40625), ang=Angle(-0.03125, -89.96875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(78.03125, -1153.46875, -286.25), ang=Angle(0, -89.96875, -0.46875),},
+		{type="prop_huntress_locker", pos=Vector(372.4375, -1688.5, -286.375), ang=Angle(-0.0625, -179.90625, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(148.25, -1861.46875, -286.40625), ang=Angle(0, -90.03125, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(339.8125, -2077.46875, -286.40625), ang=Angle(0, -90, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(130.4375, -2697.90625, -286.125), ang=Angle(-0.0625, 179.78125, 0.625),},
+		{type="prop_huntress_locker", pos=Vector(3606.78125, -1111.3125, 118.53125), ang=Angle(0.03125, -90, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(2887.1875, -6162.5, 364.53125), ang=Angle(0, 89.90625, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(3153.40625, -6162.46875, 364.5625), ang=Angle(-0.03125, 89.9375, -0.0625),},
+		},
+
 	Generator = {
 		{
 			type = "sls_generator",
@@ -156,100 +164,3 @@ GM.MAP.Goal = {
 		}
 	}
 }
---[[if rndnumber == 1 or rndnumber == 4 or rndnumber == 5 then
--- Killer
-GM.MAP.Killer.Name = "Norman Bates"
-GM.MAP.Killer.Model = "models/steinman/slashers/bates_pm.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {"weapon_batesmother"}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_bates")
-	GM.MAP.Killer.Icon = Material("icons/icon_bates.png")
-end
-
--- Convars
-CreateConVar("slashers_bates_far_radius", 400, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set the first radius (far).")
-CreateConVar("slashers_bates_medium_radius", 200, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set the second radius (medium).")
-CreateConVar("slashers_bates_close_radius", 100, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set the third radius (close).")
-
--- Ability
--------------------The other part of the ability code is in the 'Mother' entity code
-if CLIENT then
-	function GM:playSoundMother(file)
-		if IsValid(GM.SoundPlayed) then
-			GM.SoundPlayed:Stop()
-		end
-		sound.PlayFile( file, "", function( station,num,err )
-			if ( IsValid( station ) ) then
-				station:Play()
-				station:EnableLooping(true)
-				GM.SoundPlayed = station
-			end
-		end)
-	end
-
-	function autoEnd()
-		if IsValid(GM.SoundPlayed) then
-			GM.SoundPlayed:Stop()
-		end
-	end
-	hook.Add('sls_round_End',"sls_musicEndRound", autoEnd)
-	hook.Add('sls_round_End',"sls_musicEndRound", autoEnd)
-
-	function GM:SoundToPlay(level)
-		if(LocalPlayer():Team() == 1) then return end
-		if level == 3 then
-			GM:playSoundMother("sound/slashers/effects/whisper_loop_high.wav")
-		elseif level == 2 then
-			GM:playSoundMother("sound/slashers/effects/whisper_loop_medium.wav")
-		elseif level == 1 then
-			GM:playSoundMother("sound/slashers/effects/whisper_loop_small.wav")
-		else
-			if GM.SoundPlayed then
-				GM.SoundPlayed:Stop()
-			end
-		end
-	end
-
-	net.Receive( "sls_motherradar", function( len, ply )
-		local distLevel = net.ReadUInt(2)
-		if GM.oldLevel != distLevel then
-			GM.oldLevel = distLevel
-			GM:SoundToPlay(distLevel)
-		end
-	end)
-end
-elseif rndnumber == 2 or rndnumber == 6 or rndnumber == 7 then
--- Killer
-GM.MAP.Killer.Name = "Tadero"
-GM.MAP.Killer.Model = "models/players/an_cc_necromancer.mdl"
-GM.MAP.Killer.WalkSpeed = 160
-GM.MAP.Killer.RunSpeed = 160
-GM.MAP.Killer.ExtraWeapons = {"necromancer_swep"}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_tadero")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-elseif rndnumber == 3 or 8 then
--- Killer
-GM.MAP.Killer.Name = "SCP-049"
-GM.MAP.Killer.Model = "models/lolozaure/scp49.mdl"
-GM.MAP.Killer.WalkSpeed = 120
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {"weapon_scp049"}
-GM.MAP.Killer.VoiceCallouts = {"plaguescp/voice/spotted1.mp3", "plaguescp/voice/spotted2.mp3", "plaguescp/voice/spotted3.mp3", "plaguescp/voice/spotted4.mp3", "plaguescp/voice/spotted5.mp3", "plaguescp/voice/spotted6.mp3", "plaguescp/voice/spotted7.mp3"}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_scp049")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-	hook.Add("sls_round_PostStart", "introfix049", function()
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play plaguescp/voice/intro" .. math.random(1, 3) .. ".mp3")
-end
-hook.Remove("sls_round_PostStart", "introfix049")
-end)
-end]]--

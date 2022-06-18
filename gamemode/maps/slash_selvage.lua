@@ -6,13 +6,9 @@
 -- @Last modified time: 21-Oct-2018
 
 local GM = GM or GAMEMODE
-local rndnumber = GetGlobalInt("rndnumber",3) --GetGlobalInt("sls_killerrnd", 1)
 
 GM.MAP.Name = "Selvage"
 GM.MAP.EscapeDuration = 120
---[[GM.MAP.StartMusic = "sound/halloween/Shape_Menu_Theme.mp3"
-GM.MAP.ChaseMusic = "shape/chase/happyhalloween.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"]]--
 GM.MAP.Goal = {
 	Jerrican = {
 		{type="sls_jerrican", pos=Vector( 	-22.718750, -1.750000, 31.187500	 ), ang=Angle(	0.264, 130.913, -0.088	),},
@@ -59,6 +55,35 @@ GM.MAP.Goal = {
 
 	},
 
+	Locker = {
+		{type="prop_huntress_locker", pos=Vector(-1587.53125, 1757.40625, 1.46875), ang=Angle(0, 0, 0),},
+		{type="prop_huntress_locker", pos=Vector(-1587.59375, 1828.375, 2.125), ang=Angle(0.09375, 0.0625, 0.96875),},
+		{type="prop_huntress_locker", pos=Vector(-1817.65625, 1384.21875, 2.46875), ang=Angle(0, -89.9375, 0),},
+		{type="prop_huntress_locker", pos=Vector(-1719.9375, 1383.4375, 2.4375), ang=Angle(0.03125, -90.03125, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(-910.71875, 947.5, 2.5625), ang=Angle(0, -90, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-824.21875, 947.59375, 2.5625), ang=Angle(0, -90, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(105.3125, 2060.78125, 2.46875), ang=Angle(0, 90.25, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(21.90625, 2060.46875, 2.46875), ang=Angle(0, 89.9375, -0.15625),},
+		{type="prop_huntress_locker", pos=Vector(1548.4375, 1488.71875, 1.5), ang=Angle(0, -0.03125, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(1548.375, 1578, 1.5), ang=Angle(0, 0.09375, -0.25),},
+		{type="prop_huntress_locker", pos=Vector(20.59375, -81.59375, 17.6875), ang=Angle(-0.09375, 0.21875, 0.15625),},
+		{type="prop_huntress_locker", pos=Vector(20.3125, -2.34375, 17.71875), ang=Angle(0, 0, -0.625),},
+		{type="prop_huntress_locker", pos=Vector(12.5, 97.21875, 425.59375), ang=Angle(-0.0625, 0.09375, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(12.59375, 29.6875, 425.75), ang=Angle(-0.0625, 0.09375, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(735.375, 316.46875, 9.5625), ang=Angle(0, 89.96875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(613.71875, 316.5, 9.5625), ang=Angle(0, 90, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(435.5625, 1232.03125, 2.65625), ang=Angle(0.15625, 179.9375, 1.53125),},
+		{type="prop_huntress_locker", pos=Vector(435.5625, 1082, 2.1875), ang=Angle(0, 179.9375, -1.15625),},
+		{type="prop_huntress_locker", pos=Vector(-879.9375, -652.46875, 9.4375), ang=Angle(0, -90, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(-943.90625, -652.375, 9.40625), ang=Angle(0, -89.9375, -0.25),},
+		{type="prop_huntress_locker", pos=Vector(-336.34375, 2128.90625, 2.5), ang=Angle(0.03125, -179.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(-336.4375, 2069.78125, 2.53125), ang=Angle(0, 179.875, 0),},
+		{type="prop_huntress_locker", pos=Vector(-1508.28125, -1368.46875, 2.53125), ang=Angle(0, -90, 0),},
+		{type="prop_huntress_locker", pos=Vector(-1433.15625, -1368.5, 2.5), ang=Angle(-0.03125, -89.78125, 0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-2132.09375, -524.5, -2.6875), ang=Angle(0, -89.9375, -0.3125),},
+		{type="prop_huntress_locker", pos=Vector(-2029.25, -524.40625, 1.5), ang=Angle(0.03125, -90.09375, -0.0625),},
+		},
+
 	Radio = {
 		{type="sls_radio", pos=Vector( 	31.81,1029.38,50.84	 ), ang=Angle(	0.044,180.000,0.000	),},
 		{type="sls_radio", pos=Vector( 	-482.13,1799.31,50.88	 ), ang=Angle(	0.352,-177.891,-0.044	),},
@@ -75,168 +100,3 @@ GM.MAP.Goal = {
 
 	}
 }
-
---[[-- Killer
-GM.MAP.Killer.Name = "Michael Myers"
-GM.MAP.Killer.Model = "models/player/dewobedil/mike_myers/default_p.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_myers")
-	GM.MAP.Killer.Icon = Material("icons/icon_myers.png")
-end
-
--- Convars
-CreateConVar("slashers_myers_wallhack_cooldown", 10, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set Myers's wallhack cooldown.")
-CreateConVar("slashers_myers_wallhack_duration", 10, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set Myers's wallhack duration.")
-
--- Ability
-
-if CLIENT then
-	local ICON_VICTIM = Material("icons/icon_target.png")
-	local victimPos
-
-	local function updateMyersAbility()
-		local status = net.ReadInt(2)
-		if status == 2 then
-			-- Available !
-		elseif status == 1 then
-			surface.PlaySound("slashers/effects/michael_ability_on.wav")
-		elseif status == 0 then
-			-- Deactivated !
-		end
-	end
-	net.Receive("sls_kability_update_myersability",updateMyersAbility)
-
-	local function HUDPaintBackground()		
-		if LocalPlayer():Team() != TEAM_KILLER || !GM.ROUND.Active || !victimPos then return end
-		local curtime = CurTime()
-		local pos = victimPos:ToScreen()
-		surface.SetDrawColor(Color(255, 255, 255))
-		surface.SetMaterial(ICON_VICTIM)
-		surface.DrawTexturedRect(pos.x - 64, pos.y - 64, 128, 128)
-		surface.DrawTexturedRect(ScrW()-110,10,100,100)
-	end
-	hook.Add("HUDPaintBackground", "sls_kability_HUDPaintBackground", HUDPaintBackground)
-
-	local function Reset()
-		victimPos = nil
-	end
-	hook.Add("sls_round_PreStart", "sls_kability_PreStart", Reset)
-	hook.Add("sls_round_End", "sls_kability_End", Reset)
-
-	local function Wallhack()
-		local tempPos = net.ReadVector()
-		if tempPos == Vector(42, 42, 42) then
-			victimPos = nil
-		else
-			victimPos = tempPos
-		end
-	end
-	net.Receive("sls_kability_Wallhack", Wallhack)
-
-else
-	util.AddNetworkString("sls_kability_update_myersability")
-	util.AddNetworkString("sls_kability_Wallhack")
-
-	local VictimMyers
-	local Timer1 = 0
-
-	local function findVictim()
-		for _, v in ipairs(GM.ROUND:GetSurvivorsAlive()) do
-			if v.ClassID != CLASS_SURV_SHY then
-				return v
-			end
-		end
-	end
-
-	local lastRequestMyers = 0
-	local myersAbilityActivated = false
-	function GM.MAP.Killer:UseAbility( ply )
-		if CurTime() - lastRequestMyers < GetConVar("slashers_myers_wallhack_cooldown"):GetFloat()  then
-			net.Start( "notificationSlasher" )
-				net.WriteTable({"killerhelp_cant_use_ability"})
-				net.WriteString("cross")
-				net.Send(ply)
-			return
-		end
-		if myersAbilityActivated then return end
-		net.Start("sls_kability_update_myersability")
-		net.WriteInt(1,2)
-		net.Send(ply)
-		myersAbilityActivated = true
-		timer.Simple(GetConVar("slashers_myers_wallhack_duration"):GetFloat(),function ()
-
-			myersAbilityActivated = false
-			lastRequestMyers = CurTime()
-			if !GM.ROUND.Active then return end
-			net.Start("sls_kability_update_myersability")
-			net.WriteInt(0,2)
-			net.Send(GM.ROUND.Killer)
-		end)
-	end
-
-	local function Think()
-		local curtime = CurTime()
-
-		if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then
-			myersAbilityActivated = false
-			return
-		end
-
-		if Timer1 < curtime && IsValid(VictimMyers) && VictimMyers.ClassID != CLASS_SURV_SHY  then
-			if myersAbilityActivated then
-				net.Start("sls_kability_Wallhack")
-					net.WriteVector(VictimMyers:GetPos() + Vector(0, 0, 50))
-				net.Send(GM.ROUND.Killer)
-			else
-				net.Start("sls_kability_Wallhack")
-					net.WriteVector(Vector(42, 42, 42))
-				net.Send(GM.ROUND.Killer)
-			end
-			Timer1 = curtime + 0.5
-		end
-		if  CurTime() - lastRequestMyers == GM.CONFIG["myers_cooldown"] then
-			net.Start("sls_kability_update_myersability") --Send a message if the ability is available again
-			net.WriteInt(2,2)
-			net.Send(GM.ROUND.Killer)
-		end
-
-	end
-	hook.Add("Think", "sls_kability_Think", Think)
-
-	local function PostPlayerDeath(ply)
-		-- Help Myers
-		if GM.ROUND.Active && IsValid(GM.ROUND.Killer) && GM.ROUND.Killer:Team() == TEAM_KILLER && ply == VictimMyers then
-			VictimMyers = findVictim()
-			if !IsValid(VictimMyers) then
-				net.Start("sls_kability_Wallhack")
-					net.WriteVector(Vector(42, 42, 42))
-				net.Send(GM.ROUND.Killer)
-			end
-		end
-	end
-	hook.Add("PostPlayerDeath", "sls_kability_PostPlayerDeath", PostPlayerDeath)
-
-	local function PostStart()
-		if !GM.ROUND.Killer then return end
-
-		VictimMyers = findVictim()
-for _,v in ipairs(player.GetAll()) do
-		v:SetNWInt( 'EvilPoints', 700 )
-	end
-
-	end
-	hook.Add("sls_round_PostStart", "sls_kability_PostStart", PostStart)
-
-	local function resetEndRound()
-		myersAbilityActivated = false
-		lastRequestMyers = 0
-		net.Start("sls_kability_update_myersability")
-		net.WriteInt(0,2)
-		net.Send(GM.ROUND.Killer)
-	end
-	hook.Add("sls_round_End","sls_kreset_myersamility",resetEnRound)
-end]]--

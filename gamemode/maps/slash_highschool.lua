@@ -6,35 +6,9 @@
 -- @Last Modified time: 2017-08-12T21:52:21+02:00
 
 local GM = GM or GAMEMODE
---local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
 
 GM.MAP.Name = "Highschool"
 GM.MAP.EscapeDuration = 240
---[[if rndnumber == 1 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_ghostface.wav"
-GM.MAP.ChaseMusic = "slashers/ambient/chase_ghostface.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-elseif rndnumber == 2 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_ghostface.wav"
-GM.MAP.ChaseMusic = "cloaker/chase/cloakerchase.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-elseif rndnumber == 3 then
-GM.MAP.StartMusic = "sound/deerlord/voice/intro.wav"
-GM.MAP.ChaseMusic = "deerlord/chase/chase.wav"
-GM.MAP.TerrorMusic = "deerlord/voice/intro.wav"
-elseif rndnumber == 4 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_ghostface.wav"
-GM.MAP.ChaseMusic = "tirsiak/chase/chase.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-elseif rndnumber == 5 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_ghostface.wav"
-GM.MAP.ChaseMusic = "kasper/chase/chase.wav"
-GM.MAP.TerrorMusic = "kasper/terror/terror.wav"
-elseif rndnumber == 6 then
-GM.MAP.StartMusic = "sound/metalworker/voice/intro.mp3"
-GM.MAP.ChaseMusic = "metalworker/chase/chase.wav"
-GM.MAP.TerrorMusic = "metalworker/terror/terror.wav"
-end]]--
 GM.MAP.Goal = {
 	Generator = {
 		{type="sls_generator", pos=Vector( 	-230.557007, 567.435425, 0.243941	 ), ang=Angle(	-0.104, 179.841, 0.022	),spw=false,},
@@ -75,6 +49,48 @@ GM.MAP.Goal = {
 
 	},
 
+	Locker = {
+		{type="prop_huntress_locker", pos=Vector(-2461.9375, 2016.125, -254.5), ang=Angle(0, 90, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(-2539.34375, 2016.09375, -254.625), ang=Angle(0, 90, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(-3131.1875, 1735.15625, -254.25), ang=Angle(0, 89.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(-3198.6875, 1735.1875, -254.25), ang=Angle(0, 89.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(-2045.375, 2155.53125, 1.46875), ang=Angle(0, -89.96875, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-1547.375, 2155.09375, 1.5625), ang=Angle(-0.25, -89.9375, 0.0625),},
+		{type="prop_huntress_locker", pos=Vector(596.5, 1847.46875, 1.59375), ang=Angle(-0.03125, 0, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-1125.34375, 1812.40625, 1.5625), ang=Angle(0, 89.96875, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(1140.4375, 1847.96875, 1.5625), ang=Angle(0, 0, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(1651.625, 3098.46875, -38.53125), ang=Angle(0, -179.9375, 0.09375),},
+		{type="prop_huntress_locker", pos=Vector(1651.65625, 3030.96875, -38.40625), ang=Angle(0, -179.9375, 0.09375),},
+		{type="prop_huntress_locker", pos=Vector(178.625, 4233.40625, 33.5), ang=Angle(0, -89.9375, -0.28125),},
+		{type="prop_huntress_locker", pos=Vector(246.15625, 4233.5, 33.15625), ang=Angle(0, -89.9375, -0.28125),},
+		{type="prop_huntress_locker", pos=Vector(1307.875, 4235.40625, 33.5625), ang=Angle(-0.0625, -89.8125, 0),},
+		{type="prop_huntress_locker", pos=Vector(1375.40625, 4235.625, 33.5625), ang=Angle(-0.0625, -89.8125, 0),},
+		{type="prop_huntress_locker", pos=Vector(-171.28125, 4050.3125, 1.46875), ang=Angle(0, 180, 0),},
+		{type="prop_huntress_locker", pos=Vector(-171.21875, 3982.78125, 1.5), ang=Angle(-0.09375, -179.90625, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-1087.53125, 3978.625, 1.625), ang=Angle(0, 0, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(-1087.53125, 4048.75, 1.4375), ang=Angle(0, 0, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(-148.34375, 1743.46875, 1.46875), ang=Angle(0, 179.9375, 0),},
+		{type="prop_huntress_locker", pos=Vector(-148.375, 1675.96875, 1.5), ang=Angle(0, 179.9375, 0),},
+		{type="prop_huntress_locker", pos=Vector(-148.6875, 817.0625, 1.53125), ang=Angle(-0.03125, -179.8125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-148.875, 884.5625, 1.625), ang=Angle(-0.03125, -179.8125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(755.59375, 336.21875, 1.46875), ang=Angle(0, 179.84375, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(1223.5, 197.625, 1.34375), ang=Angle(-0.03125, 179.6875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(983.46875, 368.59375, 1.53125), ang=Angle(0.125, 179.90625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(178.46875, -453.6875, 1.5), ang=Angle(0.03125, 0, 0),},
+		{type="prop_huntress_locker", pos=Vector(178.4375, -386.1875, 1.53125), ang=Angle(0.03125, 0, 0),},
+		{type="prop_huntress_locker", pos=Vector(55.21875, -498.65625, 1.4375), ang=Angle(0.03125, 89.9375, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-54.84375, -498.53125, 1.5), ang=Angle(0.125, 89.875, -0.1875),},
+		{type="prop_huntress_locker", pos=Vector(-511.78125, -148.4375, 1.5625), ang=Angle(0, -90.125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-510.8125, 148.4375, 1.5625), ang=Angle(-0.03125, 90.15625, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-1020.84375, -148.4375, 1.46875), ang=Angle(0, -89.8125, -0.15625),},
+		{type="prop_huntress_locker", pos=Vector(-1028.875, 148.4375, 1.5625), ang=Angle(0.125, 90.09375, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-1551.875, 148.59375, 1.625), ang=Angle(-0.125, 90.25, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-2043.40625, -148.4375, 1.46875), ang=Angle(0, -89.84375, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-2051.21875, 148.625, 1.625), ang=Angle(-0.09375, 90.1875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-3178.59375, 2795.40625, 1.5625), ang=Angle(0.28125, -90, -0.15625),},
+		{type="prop_huntress_locker", pos=Vector(-3125.71875, 2795.5, 1.5625), ang=Angle(0, -90, -0.0625),},
+		},
+
 	Radio = {
 		{type="sls_radio", pos=Vector( 1100.4357910156,-322.15875244141,31.403644561768 ), ang=Angle(0.1441543251276,-152.83665466309,-0.03436279296875),},
 		{type="sls_radio", pos=Vector( 525.01519775391,261.17346191406,36.570552825928 ), ang=Angle(-0.051851563155651,133.30648803711,0.1021229326725),},
@@ -86,339 +102,4 @@ GM.MAP.Goal = {
 		{type="sls_radio", pos=Vector( 1208.3638916016,1954.3370361328,40.485179901123 ), ang=Angle(0.021240957081318,155.72518920898,0.01632889918983),},
 	}
 }
-
---[[if rndnumber == 1 then
--- Killer
-GM.MAP.Killer.Name = "Ghostface"
-GM.MAP.Killer.Model = "models/player/dbd/oman_killer.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 240
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_ghostface")
-	GM.MAP.Killer.Icon = Material("icons/icon_ghostface.png")
-end
-
--- Convars
-CreateConVar("slashers_ghostface_door_duration", 3, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set duration when the door is displayed for Ghostface.")
-CreateConVar("slashers_ghostface_door_radius", 1400, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set Ghostface's ability radius. (0 to disable radius)")
-
--- Ability
-
-if CLIENT then
-	local ICON_DOOR = Material("icons/icon_door.png")
-	local doors = {}
-
-	local function AddDoor()
-		local pos, endtime
-		pos = net.ReadVector()
-	endtime = net.ReadInt(16)
-
-	table.insert(doors, {
-		pos = pos,
-	endtime = endtime
-})
-end
-net.Receive("sls_kability_AddDoor", AddDoor)
-
-local function HUDPaintBackground()
-	if LocalPlayer():Team() != TEAM_KILLER then return end
-	local curtime = CurTime()
-
-	for k, v in ipairs(doors) do
-		if curtime > v.endtime then
-			table.remove(doors, k)
-			continue
-		end
-		local pos1 = v.pos:ToScreen()
-		surface.SetDrawColor(Color(255, 255, 255))
-		surface.SetMaterial(ICON_DOOR)
-		surface.DrawTexturedRect(pos1.x - 64, pos1.y - 64, 128, 128)
-	end
-end
-hook.Add("HUDPaintBackground", "sls_kability_HUDPaintBackground", HUDPaintBackground)
-
-local function Reset()
-	doors = {}
-end
-hook.Add("sls_round_PreStart", "sls_kability_PreStart", Reset)
-hook.Add("sls_round_End", "sls_kability_End", Reset)
-
-else
-	util.AddNetworkString("sls_kability_AddDoor")
-
-	local function AddDoor(pos, endtime)
-	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
-	local CV_Radius = GetConVar("slashers_ghostface_door_radius")
-
-	if CV_Radius:GetInt() != 0 then
-		local entsNerby = ents.FindInSphere( pos, CV_Radius:GetInt()	 )
-		local isKillerNerby = table.HasValue( entsNerby, GM.ROUND.Killer )
-		if !isKillerNerby then return end
-	end
-
-	net.Start("sls_kability_AddDoor")
-	net.WriteVector(pos)
-	net.WriteInt(endtime, 16)
-	net.Send(GM.ROUND.Killer)
-end
-
-local function PlayerUse(ply, ent)
-	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
-	if ply:Team() != TEAM_SURVIVORS then return end
-	if ply.ClassID == CLASS_SURV_SHY then return end
-	if !table.HasValue(GM.CONFIG["killerhelp_door_entities"], ent:GetClass()) then return end
-	if ply.kh_use && ply.kh_use[ent:EntIndex()] && CurTime() <= ply.kh_use[ent:EntIndex()] then return end
-	local CV_DoorDuration = GetConVar("slashers_ghostface_door_duration")
-
-	ply.kh_use = ply.kh_use or {}
-	ply.kh_use[ent:EntIndex()] = CurTime() + CV_DoorDuration:GetFloat()
-	AddDoor(ent:GetPos(), CurTime() + CV_DoorDuration:GetFloat())
-end
-
-hook.Add("PlayerUse", "sls_kability_PlayerUse", PlayerUse)
-
-end
-	hook.Add("sls_round_End", "sls_kability_End", function()
-hook.Remove("PlayerUse", "sls_kability_PlayerUse")
-hook.Remove("sls_round_End", "sls_kability_End")
-end)
-elseif rndnumber == 2 then
--- Killer
-GM.MAP.Killer.Name = "Cloaker"
-GM.MAP.Killer.Model = "models/mark2580/payday2/pd2_cloaker_zeal_player.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 240
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_cloaker")
-	GM.MAP.Killer.Icon = Material("icons/cloaker.png")
-end
-local color_green = Color( 0, 153, 0 )
--- Ability
-		if CLIENT then
-local function CloakerWH()
-whused = false
-hook.Add( "CreateMove", "Cloaker_ability", function()
-	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
-	if LocalPlayer():Team() != TEAM_KILLER then return end
-		if LocalPlayer():Alive() and IsValid(LocalPlayer()) then
-	if input.WasMouseDoublePressed(108) and whused == false then
-whused = true
-local plys = {}
-        local plynum = 0
-        for _, ply in pairs(ents.FindInSphere(LocalPlayer():GetPos(), 250)) do
-            if ply:IsPlayer() then
-                plynum = plynum + 1
-                plys[plynum] = ply
-            end
-        end
-net.Start("Halo_ADD_DetectedCloaker")
-net.SendToServer()
-hook.Add("PreDrawHalos", "AddHackedHalos", function()
-        halo.Add(plys,color_green, 2, 2, 2, true, true )
-	timer.Simple("10", function()
-hook.Remove("PreDrawHalos", "AddHackedHalos")
-end)
-end)
-	timer.Simple(30, function()
-whused = false
-end)
-end
-end
-end)
-end
-	hook.Add("sls_round_PreStart", "sls_kability_PreStart", CloakerWH)
-	hook.Add("sls_round_End", "sls_kability_End", function()
-hook.Remove("CreateMove", "Cloaker_ability")
-hook.Remove("sls_round_PreStart", "sls_kability_PreStart")
-hook.Remove("sls_round_End", "sls_kability_End")
-end)
-		end
-	hook.Add("sls_round_PostStart", "introfixcloaker", function()
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play cloaker/voice/intro.mp3")
-end
-hook.Remove("sls_round_PostStart", "introfixcloaker")
-end)
-		net.Receive("Halo_ADD_DetectedCloaker", function(len, ply)
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play cloaker/ability/vuvuvu.mp3")
-end
-ply:SetRunSpeed(ply:GetRunSpeed() + 100)
-timer.Simple("10", function()
-ply:SetRunSpeed(GM.MAP.Killer.RunSpeed)
-end)
-	end)
-elseif rndnumber == 3 then
--- Killer
-GM.MAP.Killer.Name = "Specimen 8"
-GM.MAP.Killer.Model = "models/violetqueen/sjsm/deerlord.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 190
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_specimen8")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-
-	hook.Add("sls_round_PreStart", "sls_kability_PreStart", function()
-if CLIENT then
-local ourMat = Material( "overlays/rad" )
-local tab2 = {
-[ "$pp_colour_brightness" ] = 0,
-}
-hook.Add("RenderScreenspaceEffects", "Specimen8_static", function()
-if LocalPlayer():Team() != TEAM_KILLER then
-	render.SetMaterial( ourMat )
-	render.DrawScreenQuad()
-	DrawColorModify( tab2 )
-end
-end)
-end
-hook.Add("ShouldCollide", "sls_Specimen8", function(ent1, ent2)
-	if (ent1:IsPlayer() and ent1:Team() == TEAM_KILLER and ent2:GetClass() == "prop_door_rotating") or (ent2:IsPlayer() and ent2:Team() == TEAM_KILLER and ent1:GetClass() == "prop_door_rotating") then
-	return false
-	end
-	return true
-end)
-end)
-	hook.Add("sls_round_End", "sls_kability_End", function()
-hook.Remove("ShouldCollide", "sls_Specimen8")
-hook.Remove("RenderScreenspaceEffects", "Specimen8_static")
-hook.Remove("sls_round_PreStart", "sls_kability_PreStart")
-hook.Remove("sls_round_End", "sls_kability_End")
-end)
-elseif rndnumber == 4 then
--- Killer
-GM.MAP.Killer.Name = "Tirsiak"
-GM.MAP.Killer.Model = "models/Lucifer/helltaker/rstar/Lucifer/Lucifer.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 210
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_uspecimen4")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-local function Tirsiak()
-		if CLIENT then
-abilityusedtirsiak = false
-hook.Add( "CreateMove", "sls_tirsiakfreeze", function()
-	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
-	if LocalPlayer():Team() != TEAM_KILLER then return end
-	if input.WasMouseDoublePressed(108) and abilityusedtirsiak == false then
-abilityusedtirsiak = true
-LocalPlayer():ConCommand("play tirsiak/ability/freeze.mp3")
-for _,v in ipairs(ents.FindInSphere(LocalPlayer():GetPos(), 300)) do
-if v:IsPlayer() and v:Team() == TEAM_SURVIVORS then
-v:SetRunSpeed(v:GetRunSpeed() - 50)
-v:ConCommand("play tirsiak/ability/freeze.mp3")
-timer.Create(v:GetName() .. " freeze_timer", 10, 1, function()
-v:SetRunSpeed(v:GetRunSpeed() + 50)
-end)
-end
-timer.Simple(30, function()
-abilityusedtirsiak = false
-end)
-end
-end
-end)
-end
-	hook.Add("sls_round_PreStart", "sls_kability_PreStart", Tirsiak)
-	hook.Add("sls_round_End", "sls_kability_End", function()
-hook.Remove("CreateMove", "sls_tirsiakfreeze")
-hook.Remove("sls_round_PreStart", "sls_kability_PreStart")
-hook.Remove("sls_round_End", "sls_kability_End")
-end) end
-	hook.Add("sls_round_PostStart", "introfixtirsiak", function()
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play tirsiak/voice/intro.mp3")
-end
-hook.Remove("sls_round_PostStart", "introfixtirsiak")
-end)
-elseif rndnumber == 5 then
-abilityusedtirsiak = false
--- Killer
-GM.MAP.Killer.Name = "Leo Kasper"
-GM.MAP.Killer.Model = "models/svotnik/Leo_Kasper/Leo_Kasper_PM.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 210
-GM.MAP.Killer.ExtraWeapons = {}
-
-if SERVER then
-util.AddNetworkString("Halo_ADD_DetectedK")
-end
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_kasper")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-	hook.Add("sls_round_PostStart", "introfixkasper", function()
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play kasper/voice/intro.mp3")
-end
-hook.Remove("sls_round_PostStart", "introfixkasper")
-end)
-		if CLIENT then
-local function KasperWH()
-local color_green = Color( 0, 153, 0 )
-kwhused = false
-hook.Add( "CreateMove", "Kasper_ability", function()
-	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
-	if LocalPlayer():Team() != TEAM_KILLER then return end
-		if LocalPlayer():Alive() and IsValid(LocalPlayer()) then
-	if input.WasMouseDoublePressed(108) and kwhused == false then
-kwhused = true
-local plys = {}
-        local plynum = 0
-        for _, ply in pairs(player.GetAll()) do 
-            if ply:IsPlayer() and ply:Team() ~= TEAM_KILLER then
-                plynum = plynum + 1
-                plys[plynum] = ply
-            end
-        end
-net.Start("Halo_ADD_DetectedK")
-net.SendToServer()
-hook.Add("PreDrawHalos", "AddHackedHalos", function()
-        halo.Add(plys,color_green, 2, 2, 2, true, true )
-	timer.Simple("3", function()
-hook.Remove("PreDrawHalos", "AddHackedHalos")
-end)
-end)
-	timer.Simple(30, function()
-kwhused = false
-end)
-end
-end
-end)
-end
-	hook.Add("sls_round_PreStart", "sls_kability_PreStart", KasperWH)
-	hook.Add("sls_round_End", "sls_kability_End", function()
-hook.Remove("CreateMove", "Kasper_ability")
-hook.Remove("sls_round_PreStart", "sls_kability_PreStart")
-hook.Remove("sls_round_End", "sls_kability_End")
-end)
-		end
-		net.Receive("Halo_ADD_DetectedK", function(len, ply)
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play kasper/ability/ability.mp3")
-end
-	end)
-elseif rndnumber == 6 then
--- Killer
-GM.MAP.Killer.Name = "Metal Worker"
-GM.MAP.Killer.Model = "models/materials/humans/group03m/male_08.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 210
-GM.MAP.Killer.ExtraWeapons = {"weapon_alertropes", "fnafgm_securitytablet_sa", "weapon_weld"}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_metallyst")
-	GM.MAP.Killer.Icon = Material("icons/metalworker.png")
-end
-end]]--
 

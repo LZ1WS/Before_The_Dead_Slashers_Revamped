@@ -5,29 +5,10 @@
 -- @Last Modified by:   Garrus2142
 -- @Last Modified time: 2017-08-09 13:41:40
 
---local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
-
 local GM = GM or GAMEMODE
 
 GM.MAP.Name = "Summercamp"
 GM.MAP.EscapeDuration = 240
---[[if rndnumber == 1 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_jason.wav"
-GM.MAP.ChaseMusic = "jason/chase/chase.wav"
-GM.MAP.TerrorMusic = "jason/terror/terror.wav"
-elseif rndnumber == 2 then
-GM.MAP.StartMusic = "sound/kamenshik/voice/intro.mp3"
-GM.MAP.ChaseMusic = "kamenshik/chase/madness.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-elseif rndnumber == 3 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slashers_start_game_freddy.wav"
-GM.MAP.ChaseMusic = "slashers/ambient/chase_jason.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-elseif rndnumber == 4 then
-GM.MAP.StartMusic = "sound/slender/voice/intro.mp3"
-GM.MAP.ChaseMusic = "slender/chase/slenderchase.wav"
-GM.MAP.TerrorMusic = "slender/terror/terrorslender.wav"
-end]]--
 GM.MAP.Goal = {
 	Generator = {
 		{type="sls_generator", pos=Vector( 	1678.174683, 5552.737305, 215.173004	 ), ang=Angle(	-0.483, 6.740, -0.121	),spw=false ,},
@@ -54,6 +35,32 @@ GM.MAP.Goal = {
 		{type="sls_jerrican", pos=Vector( 	5475.315918, 3365.187500, 223.280289	 ), ang=Angle(	-0.747, 7.454, -0.005	),spw = false,},
 		{type="sls_jerrican", pos=Vector( 	-792.936462, 5763.221191, 263.126678	 ), ang=Angle(	82.183, -179.995,169.547	),spw = false,},
 	},
+	Locker = {
+		{type="prop_huntress_locker", pos=Vector(-762.96875, -380.4375, 65.5625), ang=Angle(0, -90.0625, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(-235.25, 317.65625, 65.5625), ang=Angle(0.125, 0.09375, -0.3125),},
+		{type="prop_huntress_locker", pos=Vector(788.59375, 322.5, 65.5625), ang=Angle(0, -0.3125, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(1195.46875, -1346.59375, 65.5), ang=Angle(-0.03125, 179.90625, 0.09375),},
+		{type="prop_huntress_locker", pos=Vector(171.46875, -1346.34375, 65.46875), ang=Angle(0.03125, -179.9375, 0),},
+		{type="prop_huntress_locker", pos=Vector(-763.8125, 2691.625, 261.4375), ang=Angle(0, -90.03125, 0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-235.40625, 3394.5, 261.46875), ang=Angle(0, 0.03125, -0.21875),},
+		{type="prop_huntress_locker", pos=Vector(789, 3392.40625, 261.5), ang=Angle(0, -0.15625, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(1195, 1725.46875, 261.46875), ang=Angle(0, 179.9375, 0),},
+		{type="prop_huntress_locker", pos=Vector(171.53125, 1727.46875, 261.53125), ang=Angle(0.21875, -179.96875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(1053.375, 5097.0625, 202.875), ang=Angle(-0.65625, -89.34375, -0.46875),},
+		{type="prop_huntress_locker", pos=Vector(1148.59375, 5098.09375, 202.03125), ang=Angle(-0.65625, -89.34375, -0.46875),},
+		{type="prop_huntress_locker", pos=Vector(1044.53125, 5158.1875, 261.46875), ang=Angle(-0.03125, 0.0625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(1641.125, 5478.28125, 261.4375), ang=Angle(-0.40625, -90.40625, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(1694.0625, 5477.875, 261.34375), ang=Angle(-0.40625, -90.40625, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(3870.625, 3875.53125, 205.84375), ang=Angle(-2.09375, 179.84375, 0.40625),},
+		{type="prop_huntress_locker", pos=Vector(3870.5, 3809.5625, 206.34375), ang=Angle(-2.09375, 179.84375, 0.40625),},
+		{type="prop_huntress_locker", pos=Vector(3840.28125, 5011.59375, 225.46875), ang=Angle(0, -90.09375, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(3840.75, 5228.40625, 225.53125), ang=Angle(-0.03125, 89.96875, -0.34375),},
+		{type="prop_huntress_locker", pos=Vector(6431.4375, -1605.875, 10.65625), ang=Angle(0.125, 135.8125, 0.46875),},
+		{type="prop_huntress_locker", pos=Vector(6381.875, -1656.90625, 11.28125), ang=Angle(0.125, 135.8125, 0.46875),},
+		{type="prop_huntress_locker", pos=Vector(-2547.5, -1535.375, 12.96875), ang=Angle(0.34375, -0.09375, 0.71875),},
+		{type="prop_huntress_locker", pos=Vector(-2547.65625, -1617.03125, 11.90625), ang=Angle(0.34375, -0.09375, 0.71875),},
+		},
+		
 
 	Radio = {
 		{type="sls_radio", pos=Vector( 	1226.423584, 5450.633301, 304.424774	 ), ang=Angle(	-0.137, -43.237, 0.044	),spw = false,},
@@ -90,194 +97,3 @@ GM.MAP.Shotgun = {
 		{type="sr2_sg", pos=Vector( 	4618.899902, -671.850220, 31.748055	 ), ang=Angle(	1.165, 101.294, 0.220	),spw = false,},
 	}
 }
-
---[[if rndnumber == 1 then
--- Killer
-GM.MAP.Killer.Name = "Jason"
-GM.MAP.Killer.Model = "models/player/mkx_jason.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 240
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_jason")
-	GM.MAP.Killer.Icon = Material("icons/icon_jason.png")
-end
-
--- Convars
-CreateConVar("slashers_jason_step_duration", 30, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set duration when the footstep is displayed for Jason.")
-
--- Ability
-
-if CLIENT then
-	local ICON_STEP = Material("icons/footsteps.png")
-	local steps = {}
-
-	local function AddStep()
-		local ply, pos, ang, endtime
-
-		ply = net.ReadEntity()
-		pos = net.ReadVector()
-		ang = net.ReadAngle()
-		endtime = net.ReadInt(16)
-
-		ang.p = 0
-		ang.r = 0
-
-		local fpos = pos
-		if ply.LastFoot then
-			fpos = fpos + ang:Right() * 5
-		else
-			fpos = fpos + ang:Right() * -5
-		end
-		ply.LastFoot = !ply.LastFoot
-
-		local trace = {}
-		trace.start = fpos
-		trace.endpos = trace.start + Vector(0, 0, -10)
-		trace.filter = ply
-		local tr = util.TraceLine(trace)
-
-		if tr.Hit then
-			local tbl = {}
-			tbl.pos = tr.HitPos
-			tbl.foot = foot
-			tbl.endtime = endtime
-			tbl.angle = ang.y
-			tbl.normal = Vector(0, 0, 1)
-			table.insert(steps, tbl)
-		end
-	end
-	net.Receive("sls_kability_AddStep", AddStep)
-
-	local maxDistance = 600 ^ 2
-	local function PostDrawTranslucentRenderables()
-		local pos = EyePos()
-
-		cam.Start3D(pos, EyeAngles())
-			render.SetMaterial(ICON_STEP)
-			for k, v in ipairs(steps) do
-				if CurTime() > v.endtime then
-					table.remove(steps, k)
-					continue
-				end
-				if (v.pos - pos):LengthSqr() < maxDistance then
-					render.DrawQuadEasy(v.pos + v.normal, v.normal, 10, 20, Color(255, 255, 255), v.angle)
-				end
-			end
-		cam.End3D()
-	end
-	hook.Add("PostDrawTranslucentRenderables", "sls_kability_PostDrawTranslucentRenderables", PostDrawTranslucentRenderables)
-
-	local function Reset()
-		steps = {}
-	end
-	hook.Add("sls_round_PreStart", "sls_kability_PreStart", Reset)
-	hook.Add("sls_round_End", "sls_kability_End", Reset)
-
-else
-	util.AddNetworkString("sls_kability_AddStep")
-
-	local function PlayerFootstep(ply, pos, foot, sound, volume, filter)
-		if ply:GetColor() == Color(255,255,255,0) then return true end
-		if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
-		if ply:Team() != TEAM_SURVIVORS then return end
-		if ply.ClassID == CLASS_SURV_SHY then return end
-
-		net.Start("sls_kability_AddStep")
-			net.WriteEntity(ply)
-			net.WriteVector(pos)
-			net.WriteAngle(ply:GetAimVector():Angle())
-			net.WriteInt(CurTime() + GetConVar("slashers_jason_step_duration"):GetFloat(), 16)
-		net.Send(GM.ROUND.Killer)
-	end
-	hook.Add("PlayerFootstep", "sls_kability_PlayerFootstep", PlayerFootstep)
-end
-
-hook.Add( "PlayerFootstep", "sls_kability_CDisableSoundFootStepsUnique", function( ply, pos, foot, sound, volume, filter )
-	if ply:GetColor().a == 0  then
-		return true
-	else
-		return
-	end
-end )
-elseif rndnumber == 2 then
--- Killer
-GM.MAP.Killer.Name = "KAMENSHIK"
-GM.MAP.Killer.Model = "models/player/kamenshik.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 240
-GM.MAP.Killer.ExtraWeapons = {}
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_kamen")
-	GM.MAP.Killer.Icon = Material("icons/xleb.png")
-end
--- Ability
-		local function ChargeAbility()
-hook.Add( "StartCommand", "Mason_ability", function(ply, mv)
-	--if !IsFirstTimePredicted() then return end
-	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
-	if ply:Team() != TEAM_KILLER then return end
-	--print(mv:KeyDown(2048))
-	if ply:GetNWBool("Mason_ability", false) == true then return end
-	if mv:KeyDown(2048) == true then
-		ply:SetNWBool("Mason_ability", true)
-		for i = 10, 5000 do
-					ply:SetVelocity( ply:GetForward() * i )
-					--ply:ViewPunch( Angle( i, 0, 0 ) )
-				end
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play kamenshik/ability/ohblyahleb.wav")
-end
-timer.Simple(30, function() ply:SetNWBool("Mason_ability", false) end)
-			end
-		end)
-end
-	hook.Add("sls_round_PostStart", "sls_kability_PostStart", ChargeAbility)
-
-	hook.Add("sls_round_End", "sls_kability_End", function()
-hook.Remove("StartCommand", "Mason_ability")
-end)
-hook.Add("sls_round_PostStart", "intro_fixkamen", function()
-hook.Remove("PlayerFootstep", "sls_kability_PlayerFootstep")
-hook.Remove("sls_round_PostStart", "sls_kability_PostStart")
-hook.Remove("sls_round_PostStart", "intro_fixkamen")
-end)
-elseif rndnumber == 3 then
--- Killer
-GM.MAP.Killer.Name = "the Huntress"
-GM.MAP.Killer.Model = "models/players/mj_dbd_bear.mdl"
-GM.MAP.Killer.WalkSpeed = 190
-GM.MAP.Killer.RunSpeed = 240
-GM.MAP.Killer.ExtraWeapons = {"weapon_throwable_axe"}
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_huntress")
-	GM.MAP.Killer.Icon = Material("icons/huntress.png")
-end
-hook.Add("sls_round_PostStart", "intro_fixhuntress", function()
-for _,v in ipairs(player.GetAll()) do
-	if v:Team() == TEAM_KILLER then
-	v:EmitSound("huntress/chase/sound_2.wav", 150)
-	else
-	v:StopSound("huntress/chase/sound_2.wav")
-	end
-end
-hook.Remove("PlayerFootstep", "sls_kability_PlayerFootstep")
-hook.Remove("sls_round_PostStart", "intro_fixhuntress")
-end)
-elseif rndnumber == 4 then
-GM.MAP.Killer.Name = "Slenderman"
-GM.MAP.Killer.Model = "models/player/lordvipes/slenderman/slenderman_playermodel_cvp.mdl"
-GM.MAP.Killer.WalkSpeed = 120
-GM.MAP.Killer.RunSpeed = 160
-GM.MAP.Killer.ExtraWeapons = {"blink_swep"}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_slender")
-	GM.MAP.Killer.Icon = Material("icons/slenderman.png")
-end
-hook.Add("sls_round_PostStart", "intro_fixslender", function()
-hook.Remove("PlayerFootstep", "sls_kability_PlayerFootstep")
-hook.Remove("sls_round_PostStart", "intro_fixslender")
-end)
-end]]--

@@ -8,11 +8,13 @@
 local GM = GM or GAMEMODE
 
 local function Spawn_SlashGen()
-	if GM.MAP.Goal and GM.MAP.Killer.Name ~= "Slenderman" then --If we have data for this map
+	if GM.MAP.Goal and GM.MAP.Killer.SpecialRound == "NONE" or GM.MAP.Killer.SpecialRound == "GM.MAP.Vaccine" then --If we have data for this map
 		for k, v in pairs( GM.MAP.Goal ) do
 
 			if (v == GM.MAP.Goal.Jerrican) then
 				nbEntToSpawn = 3 *  math.ceil( (#player.GetAll() / 3) )
+			elseif (v == GM.MAP.Goal.Locker) then
+				nbEntToSpawn = -1
 			else
 				nbEntToSpawn = 0
 			end
@@ -41,8 +43,31 @@ local function Spawn_SlashGen()
 end
 hook.Add( "sls_round_PostStart", "Slasher Generator Spawn", Spawn_SlashGen )
 
+local function Spawn_SlashLocker()
+	if GM.MAP.Goal then --If we have data for this map
+		for k, locker in pairs( GM.MAP.Goal.Locker ) do
+
+				if !locker.spw then
+					--get the type of entity
+					local entType = locker.type
+					--spawn it
+					local newEnt = ents.Create(entType)
+					if locker.model then newEnt:SetModel(locker.model) end --set model
+					if locker.ang then newEnt:SetAngles(locker.ang) end --set angle
+					if locker.pos then newEnt:SetPos(locker.pos) end --set position
+					newEnt:Spawn()
+
+					newEnt:Activate()
+
+					locker.spw = true
+			end
+		end
+	end
+end
+hook.Add( "sls_round_PostStart", "Slasher Locker Spawn", Spawn_SlashLocker )
+
 local function Spawn_SlashVaccine()
-	if game.GetMap() == "slash_subway" and GM.MAP.Killer.Name == "Альберт Вескер" and (GM.MAP.Vaccine) then --If we have data for this map
+	if GM.MAP.Killer.SpecialRound == "GM.MAP.Vaccine" and (GM.MAP.Vaccine) then --If we have data for this map
 		for k, v in pairs( GM.MAP.Vaccine ) do
 
 			if (v == GM.MAP.Vaccine.Box) then
@@ -76,7 +101,7 @@ end
 hook.Add( "sls_round_PostStart", "Slasher Vaccine Spawn", Spawn_SlashVaccine )
 
 local function Spawn_SlashPages()
-	if GM.MAP.Killer.Name == "Slenderman" and (GM.MAP.Pages) then --If we have data for this map
+	if GM.MAP.Killer.SpecialRound == "GM.MAP.Pages" and (GM.MAP.Pages) then --If we have data for this map
 		for k, v in pairs( GM.MAP.Pages ) do
 
 			if (v == GM.MAP.Pages.Page) then

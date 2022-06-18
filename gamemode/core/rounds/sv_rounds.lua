@@ -161,6 +161,7 @@ function GM.ROUND:Start(forceKiller)
 		end
 	)
 	print("Start round " .. GM.ROUND.Count .. "/" .. GetConVar("slashers_round_max"):GetInt())
+	for _,ent in ipairs(ents.FindByClass("prop_physics")) do if (ent:GetPhysicsObject()) then ent:GetPhysicsObject():EnableMotion(false) end end
 end
 
 function GM.ROUND:StartWaitingPolice()

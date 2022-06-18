@@ -107,7 +107,7 @@ elseif rndnumber == 26 then
 	GM.MAP.ChaseMusic = "nightmare/chase/chase.wav"
 	GM.MAP.TerrorMusic = "nightmare/terror/terror.wav"
 end
-
+GM.MAP.Killer.SpecialRound = "NONE"
 if rndnumber == 1 then
 -- Killer
 GM.MAP.Killer.Name = "Jason"
@@ -283,7 +283,7 @@ GM.MAP.Killer.Name = "the Huntress"
 GM.MAP.Killer.Model = "models/players/mj_dbd_bear.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 240
-GM.MAP.Killer.UniqueWeapon = false
+GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"weapon_throwable_axe"}
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_huntress")
@@ -307,6 +307,7 @@ GM.MAP.Killer.WalkSpeed = 120
 GM.MAP.Killer.RunSpeed = 160
 GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"weapon_static"}
+GM.MAP.Killer.SpecialRound = "GM.MAP.Pages"
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_slender")
@@ -690,6 +691,7 @@ GM.MAP.Killer.WalkSpeed = 200
 GM.MAP.Killer.RunSpeed = 200
 GM.MAP.Killer.UniqueWeapon = false
 GM.MAP.Killer.ExtraWeapons = {}
+GM.MAP.Killer.SpecialRound = "GM.MAP.Vaccine"
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_wesker")

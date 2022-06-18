@@ -193,6 +193,21 @@ if CLIENT then
 	GM.CLASS.Survivors[CLASS_SURV_RANGER].icon = Material("icons/ranger.png")
 end
 
+GM.CLASS.Survivors[CLASS_SURV_DREAMER] = {}
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].name = "Dreamer"
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].walkspeed = 130
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].life = 120
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].stamina = 110
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].model = "models/h-d/2sg/simonplayer.mdl"
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].die_sound = "slashers/effects/scream_man_1.wav"
+GM.CLASS.Survivors[CLASS_SURV_DREAMER].weapons = {"dreamers_dream"}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_DREAMER].dispname = "Simon Henriksson"
+	GM.CLASS.Survivors[CLASS_SURV_DREAMER].description = GM.LANG:GetString("class_desc_dreamer")
+	GM.CLASS.Survivors[CLASS_SURV_DREAMER].icon = Material("icons/dreamer.png")
+end
+
 local function StartRound()
 	for _, v in ipairs(player.GetAll()) do
 		v.ClassID = nil

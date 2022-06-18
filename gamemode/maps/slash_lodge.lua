@@ -6,23 +6,9 @@
 -- @Last Modified time: 2017-08-10T16:24:10+02:00
 
 local GM = GM or GAMEMODE
---local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
 
 GM.MAP.Name = "Lodge"
 GM.MAP.EscapeDuration = 60
---[[if rndnumber == 1 or rndnumber == 4 or rndnumber == 5 then
-GM.MAP.StartMusic = "sound/slashers/ambient/slasher_start_game_intruder.wav"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-GM.MAP.ChaseMusic = "slashers/ambient/chase_intruder.wav"
-elseif rndnumber == 2 or rndnumber == 6 or rndnumber == 7 then
-GM.MAP.StartMusic = "sound/amogus/voice/intro.mp3"
-GM.MAP.TerrorMusic = "defaultkiller/terror/terror.wav"
-GM.MAP.ChaseMusic = "amogus/chase/amoguschase.wav"
-elseif rndnumber == 3 or 8 then
-GM.MAP.StartMusic = "sound/whiteface/voice/intro.mp3"
-GM.MAP.TerrorMusic = "whiteface/terror/terror.wav"
-GM.MAP.ChaseMusic = "whiteface/chase/chase.wav"
-end]]--
 GM.MAP.Goal = {
 	Jerrican = {
 		 {type="sls_jerrican", pos=Vector( -430.8125,-909.71875,15.15625 ), ang=Angle(0.3076171875,40.693359375,-0.087890625),},
@@ -55,6 +41,44 @@ GM.MAP.Goal = {
 		 {type="sls_radio", pos=Vector( -659.6875,-206.8125,48.34375 ), ang=Angle(0.0439453125,-13.6669921875,0),},
 
 	},
+	
+	Locker = {
+		{type="prop_huntress_locker", pos=Vector(57.1875, 28.53125, -174.46875), ang=Angle(-0.09375, 90.03125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(56.6875, -28.625, -174.5), ang=Angle(0, -89.71875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(547.21875, -28.53125, -174.53125), ang=Angle(0, -90.3125, -0.25),},
+		{type="prop_huntress_locker", pos=Vector(547.8125, 28.4375, -174.53125), ang=Angle(0, 90.03125, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(-163.5, -720.09375, -174.5), ang=Angle(-0.03125, 0.34375, 0),},
+		{type="prop_huntress_locker", pos=Vector(-220.8125, -719.0625, -174.53125), ang=Angle(0, 179.96875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(763.6875, -871.5, -174.40625), ang=Angle(0, 179.8125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(820.4375, -873, -174.4375), ang=Angle(-0.03125, 0.25, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(157.53125, 363.125, 1.71875), ang=Angle(-0.65625, 0, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(157.6875, 17.96875, 1.75), ang=Angle(-0.78125, -0.15625, 0.09375),},
+		{type="prop_huntress_locker", pos=Vector(-498.375, -8.96875, 1.71875), ang=Angle(-0.75, -0.15625, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-498.40625, 54.09375, 1.6875), ang=Angle(-0.6875, 0, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(-597.03125, -148.34375, 1.40625), ang=Angle(0, -90, -0.09375),},
+		{type="prop_huntress_locker", pos=Vector(52.6875, -1053.9375, 1.40625), ang=Angle(-0.0625, 0.1875, -0.125),},
+		{type="prop_huntress_locker", pos=Vector(163.5, -894.96875, 1.53125), ang=Angle(0, 179.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(52.65625, -423.59375, 1.53125), ang=Angle(-0.125, -0.0625, 0.0625),},
+		{type="prop_huntress_locker", pos=Vector(163.4375, -589.40625, 1.46875), ang=Angle(0, -179.84375, 0.03125),},
+		{type="prop_huntress_locker", pos=Vector(532.46875, -586.03125, 1.5625), ang=Angle(-0.03125, 0.03125, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(643.5, -430.4375, 1.5625), ang=Angle(0, 179.96875, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(532.4375, -907.40625, 1.53125), ang=Angle(0, -0.0625, 0),},
+		{type="prop_huntress_locker", pos=Vector(643.5625, -1057.1875, 1.65625), ang=Angle(0, -179.875, -0.625),},
+		{type="prop_huntress_locker", pos=Vector(643.5625, -423.65625, 201.53125), ang=Angle(0, 179.96875, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(532.46875, -584.1875, 201.5625), ang=Angle(0, 0, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(532.40625, -901.28125, 201.53125), ang=Angle(0, -0.0625, 0),},
+		{type="prop_huntress_locker", pos=Vector(643.53125, -1058.1875, 201.53125), ang=Angle(0, 179.875, 0),},
+		{type="prop_huntress_locker", pos=Vector(162.78125, -901.40625, 201.5625), ang=Angle(-0.1875, 178.59375, -0.15625),},
+		{type="prop_huntress_locker", pos=Vector(52.40625, -1061.625, 201.5625), ang=Angle(0, 0, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(52.46875, -422.53125, 201.53125), ang=Angle(0, 0, -0.1875),},
+		{type="prop_huntress_locker", pos=Vector(163.53125, -583.125, 201.53125), ang=Angle(0.03125, -179.8125, 0),},
+		{type="prop_huntress_locker", pos=Vector(-467.5, 291.53125, 201.59375), ang=Angle(-0.15625, -90, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(-412.6875, 290.15625, 201.5), ang=Angle(0.125, -89.03125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(449.1875, 288.9375, 217.53125), ang=Angle(0.09375, -91.03125, -0.0625),},
+		{type="prop_huntress_locker", pos=Vector(542.96875, 289.53125, 217.46875), ang=Angle(0, -89.96875, 0),},
+		{type="prop_huntress_locker", pos=Vector(906.40625, 443.78125, 201.71875), ang=Angle(-0.71875, 179.8125, -0.03125),},
+		{type="prop_huntress_locker", pos=Vector(677.46875, 442.875, 201.65625), ang=Angle(-0.65625, 0.03125, 0),},
+		},
 
 	Generator = {
 		 {type="sls_generator", pos=Vector( -541.0625,-1289.0625,0.21875 ), ang=Angle(-0.087890625,-7.91015625,0),},
@@ -64,132 +88,3 @@ GM.MAP.Goal = {
 
 	}
 }
---[[if rndnumber == 1 or rndnumber == 4 or rndnumber == 5 then
--- Killer
-GM.MAP.Killer.Name = "the Intruder"
-GM.MAP.Killer.Model = "models/steinman/slashers/intruder_pm.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {"weapon_beartrap", "weapon_alertropes", "weapon_dooraxe"}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_intruder")
-	GM.MAP.Killer.Icon = Material("icons/icon_intruder.png")
-	local trapsEntity = {}
-	local function getEntityToDrawHalo()
-		trapsEntity = net.ReadTable()
-	end
-	net.Receive("sls_trapspos",getEntityToDrawHalo)
-
-	hook.Add( "PreDrawHalos", "AddHalos", function()
-		if LocalPlayer().ClassID != CLASS_SURV_SHY then return end
-		halo.Add( trapsEntity, Color( 255, 0, 0 ), 5, 5, 2 )
-	end )
-else
-	util.AddNetworkString("sls_trapspos")
-	local timerTrap = 0
-	local function sendTrapProximity()
-			if IsValid(GM.ROUND.Killer)  &&   GM.ROUND.Active && timerTrap < CurTime()  then
-			timerTrap = CurTime() + 1
-			local shygirl = getSurvivorByClass(CLASS_SURV_SHY)
-			if !shygirl then return end
-			local entsAround = ents.FindInSphere( shygirl:GetPos(), 700 )
-			local trapsAround = {}
-			for k,v in pairs(entsAround) do
-				if v:GetClass() == "beartrap" or  v:GetClass() == "alertropes" or  v.trapeddoor == 1 then
-						table.insert( trapsAround, v )
-				end
-			end
-			net.Start("sls_trapspos")
-				net.WriteTable(trapsAround)
-			net.Send(shygirl)
-		end
-	end
-	hook.Add("Think","sls_detectProximityTraps",sendTrapProximity)
-end
-	hook.Add("sls_round_End", "sls_kability_End", function()
-hook.Remove("Think","sls_detectProximityTraps")
-hook.Remove("PreDrawHalos","AddHalos")
-hook.Remove("sls_round_End", "sls_kability_End")
-end)
-elseif rndnumber == 2 or rndnumber == 6 or rndnumber == 7 then
-GM.MAP.Killer.Name = "the Impostor"
-GM.MAP.Killer.Model = "models/josephthekp/amongdrip.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = "NONONONONO! GET OUT OF MY HEAD!"
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-elseif rndnumber == 3 or 8 then
-GM.MAP.Killer.Name = "White Face"
-GM.MAP.Killer.Model = "models/imscared/whiteface.mdl"
-GM.MAP.Killer.WalkSpeed = 200
-GM.MAP.Killer.RunSpeed = 200
-GM.MAP.Killer.ExtraWeapons = {}
-
-if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_whiteface")
-	GM.MAP.Killer.Icon = Material("icons/no_icon_red.png")
-end
-WFAbil = {
-["$pp_colour_brightness"] = 0,
-	["$pp_colour_addr"] = 0,
-	["$pp_colour_addg"] = 0,
-	["$pp_colour_addb"] = 0,
-	--["$pp_colour_contrast"] = 1,
-	["$pp_colour_colour"] = 1,
-	["$pp_colour_mulr"] = 0,
-	["$pp_colour_mulg"] = 0,
-	["$pp_colour_mulb"] = 0
-}
-local function WFDontleaveme()
-hook.Add("PlayerPostThink", "sls_WFability", function(ply)
-if GM.ROUND.Escape == true then
-for _,v in ipairs(player.GetAll()) do
-if v:Team() == TEAM_KILLER then
-v:SetRunSpeed(300)
-v:SetWalkSpeed(300)
-end
-v:ConCommand("play whiteface/ability/ability.mp3")
-end
-if CLIENT then
-hook.Add("RenderScreenspaceEffects", "WFRage", function()
-if LocalPlayer():Alive() then
-	--render.SetMaterial( ourMat )
-	--render.DrawScreenQuad()
-if WFAbil["$pp_colour_colour"] < 3 then
-WFAbil["$pp_colour_colour"] = WFAbil["$pp_colour_colour"] + 0.001
-end
-if WFAbil["$pp_colour_brightness"] > -0.2 then
-WFAbil["$pp_colour_brightness"] = WFAbil["$pp_colour_brightness"] - 0.001
-end
-DrawColorModify( WFAbil )
-DrawBloom( 0.65, 2, 10, 10, 3, 1, 1, 1, 1)
-    end
-end)
-	end
-hook.Remove("PlayerPostThink", "sls_WFability")
-end
-end)
-	end
-	hook.Add("sls_round_PostStart", "sls_kability_PostStart", WFDontleaveme)
-	hook.Add("sls_round_End", "sls_kability_End", function()
-WFAbil = {
-["$pp_colour_brightness"] = 0,
-	["$pp_colour_addr"] = 0,
-	["$pp_colour_addg"] = 0,
-	["$pp_colour_addb"] = 0,
-	--["$pp_colour_contrast"] = 1,
-	["$pp_colour_colour"] = 1,
-	["$pp_colour_mulr"] = 0,
-	["$pp_colour_mulg"] = 0,
-	["$pp_colour_mulb"] = 0
-}
-hook.Remove("RenderScreenspaceEffects", "WFRage")
-hook.Remove("sls_round_PostStart", "sls_kability_PostStart")
-hook.Remove("sls_round_End", "sls_kability_End")
-end)
-	end]]--

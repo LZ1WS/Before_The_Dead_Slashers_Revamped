@@ -258,6 +258,12 @@ GM.MAP.SURVIVORS = {
 		["model"] = "models/v92/characters/park-ranger/bm/rogers/player.mdl",
 		["stats"] = "\nHP = 140\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
 	},
+	["Simon Henriksson"] = {
+		["icon"] = "icons/dreamer.png",
+		["description"] = "class_desc_dreamer",
+		["model"] = "models/h-d/2sg/simonplayer.mdl",
+		["stats"] = "\nHP = 120\nWalk Speed = 130\nRun Speed = 240\nStamina = 110",
+	},
 }
 if CLIENT then
 

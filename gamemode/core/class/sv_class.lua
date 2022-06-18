@@ -43,13 +43,13 @@ function playermeta:SetupKiller()
 	self:StripWeapons()
 	self:SetTeam(TEAM_KILLER)
 	self:AllowFlashlight(false)
-if GM.MAP.Killer.UniqueWeapon == false then
-	self.InitialWeapon = table.Random(GM.CONFIG["killer_weapons"])
-	self:Give(self.InitialWeapon)
-end
 	self:SetNoCollideWithTeammates(false)
 	self:SetModel(GM.MAP.Killer.Model)
 	self:SetupHands()
+	if !GM.MAP.Killer.UniqueWeapon then
+		self.InitialWeapon = table.Random(GM.CONFIG["killer_weapons"])
+		self:Give(self.InitialWeapon)
+	end
 
 	if GM.MAP.Killer.ExtraWeapons then
 		for _, v in ipairs(GM.MAP.Killer.ExtraWeapons) do
