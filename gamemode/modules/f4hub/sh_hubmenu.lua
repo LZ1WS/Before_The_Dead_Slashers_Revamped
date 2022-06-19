@@ -240,52 +240,99 @@ GM.MAP.SURVIVORS = {
 		["model"] = "models/steinman/slashers/sheriff_pm.mdl",
 		["stats"] = "\nHP = 130\nWalk Speed = 150\nRun Speed = 240\nStamina = 140",
 	},
-	["Steve Harrington"] = {
+	["Steve"] = {
 		["icon"] = "icons/steve.png",
 		["description"] = "class_desc_babysit",
 		["model"] = "models/players/mj_dbd_qm.mdl",
 		["stats"] = "\nHP = 120\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
 	},
-	["Mitch Floyd"] = {
+	["Mitch"] = {
 		["icon"] = "icons/hippy.png",
 		["description"] = "class_desc_hippy",
 		["model"] = "models/players/mj_dbd_quentin.mdl",
 		["stats"] = "\nHP = 110\nWalk Speed = 140\nRun Speed = 240\nStamina = 110",
 	},
-	["Sheldon Riddell"] = {
+	["Sheldon"] = {
 		["icon"] = "icons/ranger.png",
 		["description"] = "class_desc_ranger",
 		["model"] = "models/v92/characters/park-ranger/bm/rogers/player.mdl",
 		["stats"] = "\nHP = 140\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
 	},
-	["Simon Henriksson"] = {
+	["Simon"] = {
 		["icon"] = "icons/dreamer.png",
 		["description"] = "class_desc_dreamer",
 		["model"] = "models/h-d/2sg/simonplayer.mdl",
 		["stats"] = "\nHP = 120\nWalk Speed = 130\nRun Speed = 240\nStamina = 110",
 	},
+	["Theodore"] = {
+		["icon"] = "icons/pharmacist.png",
+		["description"] = "class_desc_pharmacist",
+		["model"] = "models/taggart/police02/male_02.mdl",
+		["stats"] = "\nHP = 130\nWalk Speed = 150\nRun Speed = 240\nStamina = 140",
+	},
+	["Drake"] = {
+		["icon"] = "icons/rapper.png",
+		["description"] = "class_desc_rapper",
+		["model"] = "models/sentry/gtav/ballas/ogbalpm.mdl",
+		["stats"] = "\nHP = 120\nWalk Speed = 140\nRun Speed = 240\nStamina = 130",
+	},
 }
 if CLIENT then
+
+	surface.CreateFont( "Roboto F4", {
+		font = "Roboto Bold", --  Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+		extended = false,
+		size = 20,
+		weight = 500,
+		blursize = 0,
+		scanlines = 0,
+		antialias = true,
+		underline = false,
+		italic = false,
+		strikeout = false,
+		symbol = false,
+		rotary = false,
+		shadow = false,
+		additive = false,
+		outline = false,
+	} )
 
 local sls_ply_choosen_killer_model
 local sls_ply_choosen_killer_description
 local sls_ply_choosen_killer_stats
 
 function OpenHUBMENU()
-	if IsValid(HUBMENU) then return end --or !(GM.MAP.KILLERS[game.GetMap()]) then return end
+	if IsValid(HUBMENU) then HUBMENU:Remove() end
 HUBMENU = vgui.Create( "DFrame" )
 HUBMENU:SetSize( ScrW(), ScrH() )
 HUBMENU:SetTitle("")
 HUBMENU:Center()
 HUBMENU:MakePopup()
+HUBMENU:SetDraggable(false)
+HUBMENU:ShowCloseButton(false)
+HUBMENU.Think = function(me)
+	if input.IsKeyDown(KEY_ESCAPE) then
+		return me:Remove()
+	end
+end
 
 function HUBMENU:Paint( w, h )
-draw.RoundedBox( 8, 0, 0, w, h, Color( 255, 255, 255 ) )
 Derma_DrawBackgroundBlur(self)
 end
 
-local sheet = vgui.Create( "DPropertySheet", HUBMENU )
+local sheet = vgui.Create( "DColumnSheet", HUBMENU )
 sheet:Dock( FILL )
+
+local hub_close = HUBMENU:Add("DImageButton")
+hub_close:AlignRight(-10)
+hub_close:SetImage( "icon16/cancel.png" )
+hub_close:SetSize(ScrW() * 0.025, ScrH() * 0.044)
+hub_close:SetKeepAspect(true)
+hub_close.DoClick = function()
+	HUBMENU:Remove()
+end
+
+sheet.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 52, 73, 94, 80 ) ) end
 
 local sls_killer_Checkbox = HUBMENU:Add( "DCheckBoxLabel" ) -- Create the checkbox
 	sls_killer_Checkbox:Dock(TOP)
@@ -299,30 +346,67 @@ function sls_killer_Checkbox:OnChange( val )
 		net.WriteBool(val)
 		net.SendToServer()
 end
+local Checkbox_w, Checkbox_h = sls_killer_Checkbox:GetChild(1):GetSize()
+sls_killer_Checkbox.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, ScrW() * Checkbox_w * 1.16 / ScrW(), h, Color( 236, 240, 241, 80 ) ) end
+sls_killer_Checkbox:SetIndent( 4 )
+sls_killer_Checkbox:SetTextColor(Color(243, 156, 18, 255))
+
 
 local survshow = vgui.Create( "DPanel", sheet )
-survshow.Paint = function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, Color( 0, 128, 255, self:GetAlpha() ) ) end 
-sheet:AddSheet( GM.LANG:GetString("hub_survivorshow"), survshow, "icon16/vcard.png" )
+survshow:Dock(FILL)
+survshow.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 44, 62, 80, self:GetAlpha() ) ) end 
+local survshow_sheet = sheet:AddSheet( GM.LANG:GetString("hub_survivorshow"), survshow, "icon16/vcard.png" )
+survshow_sheet.Button.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 22, 160, 133, self:GetAlpha() ) ) end
+survshow_sheet.Button:SetSize(60, 60)
+survshow_sheet.Button:SetContentAlignment(5)
+survshow_sheet.Button:SetFontInternal("Roboto F4")
+for _,v in ipairs(survshow_sheet.Button:GetChildren()) do
+	v:Remove()
+end
 
 local killerchoose = vgui.Create( "DPanel", sheet )
-killerchoose.Paint = function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, Color( 0, 128, 255, self:GetAlpha() ) ) end 
-sheet:AddSheet( GM.LANG:GetString("hub_killerchoose"), killerchoose, "icon16/vcard_edit.png" )
+killerchoose:Dock(FILL)
+killerchoose.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 44, 62, 80, self:GetAlpha() ) ) end 
+local killerchoose_sheet = sheet:AddSheet( GM.LANG:GetString("hub_killerchoose"), killerchoose, "icon16/vcard_edit.png" )
+killerchoose_sheet.Button.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 142, 68, 173, self:GetAlpha() ) ) end 
+killerchoose_sheet.Button:SetSize(60, 60)
+killerchoose_sheet.Button:SetContentAlignment(5)
+killerchoose_sheet.Button:SetFontInternal("Roboto F4")
+for _,v in ipairs(killerchoose_sheet.Button:GetChildren()) do
+	v:Remove()
+end
 
 local descriptionpanel = vgui.Create( "DPanel", sheet )
-descriptionpanel.Paint = function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, Color( 0, 128, 255, self:GetAlpha() ) ) end 
-sheet:AddSheet( GM.LANG:GetString("hub_description"), descriptionpanel, "icon16/page.png" )
+descriptionpanel:Dock(FILL)
+descriptionpanel.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 44, 62, 80, self:GetAlpha() ) ) end 
+local descriptionpanel_sheet = sheet:AddSheet( GM.LANG:GetString("hub_description"), descriptionpanel, "icon16/page.png" )
+descriptionpanel_sheet.Button.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 41, 128, 185, self:GetAlpha() ) ) end 
+descriptionpanel_sheet.Button:SetSize(60, 60)
+descriptionpanel_sheet.Button:SetContentAlignment(5)
+descriptionpanel_sheet.Button:SetFontInternal("Roboto F4")
+for _,v in ipairs(descriptionpanel_sheet.Button:GetChildren()) do
+	v:Remove()
+end
 
 local description = descriptionpanel:Add("RichText")
 description:Dock( FILL )
 
 function description:PerformLayout()
-	self:SetFontInternal( "Trebuchet18" )
+	self:SetFontInternal( "Roboto F4" )
 	self:SetBGColor( Color( 0, 16, 32 ) )
 end
 
 local modelpanel = vgui.Create( "DPanel", sheet )
-modelpanel.Paint = function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, Color( 0, 128, 255, self:GetAlpha() ) ) end 
-sheet:AddSheet( GM.LANG:GetString("hub_model"), modelpanel, "icon16/user_gray.png" )
+modelpanel:Dock(FILL)
+modelpanel.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 0, 128, 255, 0 ) ) end 
+local modelpanel_sheet = sheet:AddSheet( GM.LANG:GetString("hub_model"), modelpanel, "icon16/user_gray.png" )
+modelpanel_sheet.Button.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 127, 140, 141, self:GetAlpha() ) ) end 
+modelpanel_sheet.Button:SetSize(60, 60)
+modelpanel_sheet.Button:SetContentAlignment(5)
+modelpanel_sheet.Button:SetFontInternal("Roboto F4")
+for _,v in ipairs(modelpanel_sheet.Button:GetChildren()) do
+	v:Remove()
+end
 
 HUBMENUSSURVCROLL = vgui.Create("DScrollPanel", survshow)
 HUBMENUSSURVCROLL:Dock( FILL )
@@ -335,13 +419,13 @@ List2:SetSpaceX( 5 )
 for survname, survivor in pairs(GM.MAP.SURVIVORS) do
 local DermaImageButton2 = List2:Add( "DImageButton" )
 local survnameimage = DermaImageButton2:Add("DLabel")
-survnameimage:Dock(TOP)
-survnameimage:SetFont("ChatFont")
+survnameimage:SetFont("Roboto F4")
 survnameimage:SetText(survname)
-survnameimage:SetContentAlignment(8)
-survnameimage:SizeToContents()
+survnameimage:SetTextColor(Color(255, 255, 255, 45))
+survnameimage:Dock(BOTTOM)
 survnameimage:SetWrap(true)
 survnameimage:SetAutoStretchVertical( true )
+survnameimage:SizeToContents()
 
 DermaImageButton2:SetImage(survivor["icon"])
 DermaImageButton2:SetSize(116, 116)
@@ -387,10 +471,10 @@ List:SetSpaceX( 5 )
 
 local sls_killer_random_button = List:Add( "DImageButton" )
 local sls_killer_random_button_name = sls_killer_random_button:Add("DLabel")
-sls_killer_random_button_name:Dock(TOP)
+sls_killer_random_button_name:Dock(BOTTOM)
 sls_killer_random_button_name:SetText(GM.LANG:GetString("hub_killer_random"))
-sls_killer_random_button_name:SetFont("ChatFont")
-sls_killer_random_button_name:SetContentAlignment(8)
+sls_killer_random_button_name:SetFont("Roboto F4")
+sls_killer_random_button_name:SetTextColor(Color(255, 255, 255, 45))
 sls_killer_random_button_name:SizeToContents()
 sls_killer_random_button_name:SetWrap(true)
 sls_killer_random_button_name:SetAutoStretchVertical( true )
@@ -448,10 +532,10 @@ for k, killer in pairs(GM.MAP.KILLERS) do --pairs(GM.MAP.KILLERS[game.GetMap()])
 
 local DermaImageButton = List:Add( "DImageButton" )
 local killername = DermaImageButton:Add("DLabel")
-killername:Dock(TOP)
-killername:SetFont("ChatFont")
-killername:SetContentAlignment(8)
+killername:Dock(BOTTOM)
+killername:SetFont("Roboto F4")
 killername:SetText(killer["name"])
+killername:SetTextColor(Color(255, 255, 255, 45))
 killername:SizeToContents()
 killername:SetWrap(true)
 killername:SetAutoStretchVertical( true )

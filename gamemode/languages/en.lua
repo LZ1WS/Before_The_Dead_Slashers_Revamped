@@ -21,7 +21,9 @@ LANG["class_desc_sherif"] = "You have a revolver. Use it to stun the killer and 
 LANG["class_desc_babysit"] = "You can use your skill on Q, it will give everyone around (including you) a damage resist (0.5) for 10 seconds, but at the same time it will highlight you for 30 seconds."
 LANG["class_desc_hippy"] = "You are a fan of Mary Huana and are well acquainted with Marty. Maybe the tobacco tube has its disadvantages in communicating with the police, but in case of a killer encounter, you can quickly organize a smoke screen."
 LANG["class_desc_ranger"] = "Forest zones or wild territories with which you have learned to communicate can sometimes be very useful. You can use your knowledge to create traps that make it difficult to move (Unimplemented)."
-LANG["class_desc_dreamer"] = "You've always knew that you have a connection to something much darker than everyday world. You can use your powers to see from the eyes of the dark being."
+LANG["class_desc_dreamer"] = "A sense of danger and intuition are not the words that can describe your peculiarity in the ability to detect an approaching threat.\n Darkness and troubles seem to find you by themselves. The constant feeling of persecution and observation by otherworldly beings has affected your mental state.\n You can use it to see the world through the eyes of a creature."
+LANG["class_desc_pharmacist"] = "A medical officer with extensive experience in his specialty.\n Not a fan of listening to instructions and, for the most part, self-taught, trusting his criteria for assessing the condition of patients.\n Nevertheless, he copes well with his work, which proves the effectiveness of his methods."
+LANG["class_desc_rapper"] = "A survivor using a boombox to distract attention. Has only one 'Box' with him, therefore, and one chance to get rid of unnecessary attention for a certain time."
 --		Killers
 LANG["class_desc_jason"] = "You're the fastest killer and have the ability to see footprints left by the survivors to follow them. Listen carefully, you may hear survivors' hearbeat."
 LANG["class_desc_ghostface"] = "You have the ability to see when a survivor open or close a door, use it to find them quickly. Think about closing opened doors to force the survivors to open door again. Listen carefully, you may hear survivors' hearbeat."
@@ -104,8 +106,8 @@ LANG["votemap_extend"] = "Extend"
 LANG["votemap_random"] = "Random"
 
 -- HUB
-LANG["hub_survivorshow"] = "Survivor List"
-LANG["hub_killerchoose"] = "Killer Choosing"
+LANG["hub_survivorshow"] = "Survivors"
+LANG["hub_killerchoose"] = "Killers"
 LANG["hub_description"] = "Description"
 LANG["hub_model"] = "Model"
 LANG["hub_killer_checkbox"] = "Allow to choose you as killer"

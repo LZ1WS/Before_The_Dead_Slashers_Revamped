@@ -158,7 +158,7 @@ GM.CLASS.Survivors[CLASS_SURV_BABYSIT].model = "models/players/mj_dbd_qm.mdl"
 GM.CLASS.Survivors[CLASS_SURV_BABYSIT].die_sound = "slashers/effects/scream_man_1.wav"
 GM.CLASS.Survivors[CLASS_SURV_BABYSIT].weapons = {}
 if CLIENT then
-	GM.CLASS.Survivors[CLASS_SURV_BABYSIT].dispname = "Steve Harrington"
+	GM.CLASS.Survivors[CLASS_SURV_BABYSIT].dispname = "Steve"
 	GM.CLASS.Survivors[CLASS_SURV_BABYSIT].description = GM.LANG:GetString("class_desc_babysit")
 	GM.CLASS.Survivors[CLASS_SURV_BABYSIT].icon = Material("icons/steve.png")
 end
@@ -173,7 +173,7 @@ GM.CLASS.Survivors[CLASS_SURV_HIPPY].model = "models/players/mj_dbd_quentin.mdl"
 GM.CLASS.Survivors[CLASS_SURV_HIPPY].die_sound = "slashers/effects/scream_man_1.wav"
 GM.CLASS.Survivors[CLASS_SURV_HIPPY].weapons = {"swep_smokenade"}
 if CLIENT then
-	GM.CLASS.Survivors[CLASS_SURV_HIPPY].dispname = "Mitch Floyd"
+	GM.CLASS.Survivors[CLASS_SURV_HIPPY].dispname = "Mitch"
 	GM.CLASS.Survivors[CLASS_SURV_HIPPY].description = GM.LANG:GetString("class_desc_hippy")
 	GM.CLASS.Survivors[CLASS_SURV_HIPPY].icon = Material("icons/hippy.png")
 end
@@ -186,9 +186,9 @@ GM.CLASS.Survivors[CLASS_SURV_RANGER].life = 140
 GM.CLASS.Survivors[CLASS_SURV_RANGER].stamina = 160
 GM.CLASS.Survivors[CLASS_SURV_RANGER].model = "models/v92/characters/park-ranger/bm/rogers/player.mdl"
 GM.CLASS.Survivors[CLASS_SURV_RANGER].die_sound = "slashers/effects/scream_man_1.wav"
-GM.CLASS.Survivors[CLASS_SURV_RANGER].weapons = {}
+GM.CLASS.Survivors[CLASS_SURV_RANGER].weapons = {"weapon_survivor_beartrap"}
 if CLIENT then
-	GM.CLASS.Survivors[CLASS_SURV_RANGER].dispname = "Sheldon Riddell"
+	GM.CLASS.Survivors[CLASS_SURV_RANGER].dispname = "Sheldon"
 	GM.CLASS.Survivors[CLASS_SURV_RANGER].description = GM.LANG:GetString("class_desc_ranger")
 	GM.CLASS.Survivors[CLASS_SURV_RANGER].icon = Material("icons/ranger.png")
 end
@@ -203,9 +203,39 @@ GM.CLASS.Survivors[CLASS_SURV_DREAMER].model = "models/h-d/2sg/simonplayer.mdl"
 GM.CLASS.Survivors[CLASS_SURV_DREAMER].die_sound = "slashers/effects/scream_man_1.wav"
 GM.CLASS.Survivors[CLASS_SURV_DREAMER].weapons = {"dreamers_dream"}
 if CLIENT then
-	GM.CLASS.Survivors[CLASS_SURV_DREAMER].dispname = "Simon Henriksson"
+	GM.CLASS.Survivors[CLASS_SURV_DREAMER].dispname = "Simon"
 	GM.CLASS.Survivors[CLASS_SURV_DREAMER].description = GM.LANG:GetString("class_desc_dreamer")
 	GM.CLASS.Survivors[CLASS_SURV_DREAMER].icon = Material("icons/dreamer.png")
+end
+
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST] = {}
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].name = "Pharmacist"
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].walkspeed = 150
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].life = 130
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].stamina = 140
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].model = "models/taggart/police02/male_02.mdl"
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].die_sound = "slashers/effects/scream_man_1.wav"
+GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].weapons = {"weapon_medkit"}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].dispname = "Theodore"
+	GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].description = GM.LANG:GetString("class_desc_pharmacist")
+	GM.CLASS.Survivors[CLASS_SURV_PHARMACIST].icon = Material("icons/pharmacist.png")
+end
+
+GM.CLASS.Survivors[CLASS_SURV_RAPPER] = {}
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].name = "Rapper"
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].walkspeed = 140
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].life = 120
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].stamina = 130
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].model = "models/sentry/gtav/ballas/ogbalpm.mdl"
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].die_sound = "slashers/effects/scream_man_1.wav"
+GM.CLASS.Survivors[CLASS_SURV_RAPPER].weapons = {"weapon_boombox"}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_RAPPER].dispname = "Drake"
+	GM.CLASS.Survivors[CLASS_SURV_RAPPER].description = GM.LANG:GetString("class_desc_rapper")
+	GM.CLASS.Survivors[CLASS_SURV_RAPPER].icon = Material("icons/rapper.png")
 end
 
 local function StartRound()

@@ -990,14 +990,14 @@ GM.MAP.Killer.Model = "models/dreadhunger/player/hunter.mdl"
 GM.MAP.Killer.WalkSpeed = 190
 GM.MAP.Killer.RunSpeed = 210
 GM.MAP.Killer.UniqueWeapon = false
-GM.MAP.Killer.ExtraWeapons = {}
+GM.MAP.Killer.ExtraWeapons = {"weapon_blitz_magic"}
 GM.MAP.Killer.VoiceCallouts = {"tirsiak/voice/Tirsiak1.ogg", "tirsiak/voice/Tirsiak2.ogg", "tirsiak/voice/Tirsiak3.ogg", "tirsiak/voice/Tirsiak4.ogg"}
 
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_uspecimen4")
 	GM.MAP.Killer.Icon = Material("icons/tirsiak.png")
 end
-abilityusedtirsiak = false
+--[[abilityusedtirsiak = false
 function GM.MAP.Killer:UseAbility(ply)
 	if CLIENT then return end
 	if GM.MAP.Killer.Name != "Tirsiak" then return end
@@ -1024,7 +1024,7 @@ net.WriteString("safe")
 net.Send(ply)
 end)
 end
-end
+end]]--
 	hook.Add("sls_round_PostStart", "introfixtirsiak", function()
 for _,v in ipairs(player.GetAll()) do
 v:ConCommand("play tirsiak/voice/intro.mp3")
