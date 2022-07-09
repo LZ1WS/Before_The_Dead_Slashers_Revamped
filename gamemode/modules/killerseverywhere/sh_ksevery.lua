@@ -362,6 +362,10 @@ GM.MAP.Killer.RunSpeed = 200
 GM.MAP.Killer.UniqueWeapon = true
 GM.MAP.Killer.ExtraWeapons = {"mm_kitchen_knife"}
 
+for _,v in ipairs(player.GetAll()) do
+	v:SetNWInt( "EvilPoints", 700 )
+end
+
 if CLIENT then
 	GM.MAP.Killer.Desc = GM.LANG:GetString("class_desc_myers")
 	GM.MAP.Killer.Icon = Material("icons/icon_myers.png")

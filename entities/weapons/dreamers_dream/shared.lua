@@ -11,7 +11,7 @@ if CLIENT then
 end
 
 SWEP.Author = "L.Z|W.S"
-SWEP.Instructions = "Left click to see from the eyes of killer"
+SWEP.Instructions = "Left click to see from the killer"
 SWEP.Contact = ""
 SWEP.Purpose = ""
 SWEP.ViewModelFOV = 62
@@ -48,26 +48,25 @@ function SWEP:PrimaryAttack()
 	self:SetNextPrimaryFire(CurTime() + 2)
     if self.DreamUsed then return end
 	self.DreamUsed = true
-    local cur_pos = owner:GetPos()
-    local owner_ragdoll
     local cur_speed = owner:GetRunSpeed()
+    local color_green = Color( 255, 0, 0 )
 
     if SERVER then
-        owner:Spectate(OBS_MODE_IN_EYE)
-        owner:SpectateEntity(GM.ROUND.Killer)
-        owner:CreateRagdoll()
-        owner:SetNoDraw(true)
-        owner_ragdoll = owner:GetRagdollEntity()
-        function owner_ragdoll:OnTakeDamage( dmginfo )
-            owner:TakeDamageInfo( dmginfo )
-        end
-        --owner:SetViewEntity(GM.ROUND.Killer)
         net.Start( "notificationSlasher" )
         net.WriteTable({"class_ability_used"})
         net.WriteString("safe")
         net.Send(owner)
+        net.Start("noticonSlashers")
+        net.WriteVector(GM.ROUND.Killer:GetPos())
+        net.WriteString("info")
+        net.WriteInt(4, 32)
+        net.Send(owner)
     end
     if CLIENT then
+            hook.Add("PreDrawHalos", "AddHalos_Simon", function()
+                if LocalPlayer() ~= owner then return end
+                    halo.Add({GM.ROUND.Killer},color_green, 2, 2, 2, true, true )
+            end)
         surface.PlaySound( "weapons/mm_knife/stalking_1.ogg" )
         owner:ConCommand("pp_mat_overlay effects/tp_eyefx/tpeye2")
     end
@@ -75,16 +74,12 @@ function SWEP:PrimaryAttack()
     timer.Create("dreamers_dream_off", 5, 1, function()
         if !owner:Alive() then return end
         if SERVER then
-            --owner:SetViewEntity()
             owner:SetRunSpeed(cur_speed - 50)
-        	owner:UnSpectate()
-            owner_ragdoll:Remove()
-            owner:SetPos(cur_pos)
-            owner:SetNoDraw(false)
         end
 
         if CLIENT then
         owner:ConCommand('pp_mat_overlay ""')
+        hook.Remove("PreDrawHalos", "AddHalos_Simon")
         end
 
         timer.Create("dreamers_dream_runspeed", 10, 1, function()

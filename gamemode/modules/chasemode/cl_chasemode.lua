@@ -22,7 +22,6 @@ local function InitValue()
 	LocalPlayer().LastViewByKillerTime = 0
 	LocalPlayer().ChaseSoundPlaying = false
 	LocalPlayer().LastViewKillerTime = 0
-	LocalPlayer():SetNWInt( "EvilPoints", 700 )
 end
 hook.Add("sls_round_PostStart", "sls_chasemo_PostStart", InitValue)
 

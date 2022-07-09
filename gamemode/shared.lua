@@ -5,7 +5,7 @@
 -- @Last Modified by:   Garrus2142
 -- @Last Modified time: 2017-07-27 17:08:04
 
-GM.Name = "BTD|Slashers Revamped";
+GM.Name = "Slashers";
 GM.Author = "Garrus2142 & L.Z|W.S";
 GM.Version = "1.1.0"
 GM.Github = "https://github.com/LZ1WS/Before_The_Dead_Slashers_Revamped"
