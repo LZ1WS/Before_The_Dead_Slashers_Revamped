@@ -34,6 +34,7 @@ function playermeta:SetSurvClass(class)
 	self:SetRunSpeed(GM.CLASS.Survivors[class].runspeed)
 	self:SetMaxHealth(GM.CLASS.Survivors[class].life)
 	self:SetHealth(GM.CLASS.Survivors[class].life)
+	self:SetNWInt("sls_addicted_shots", 3)
 	self:GodDisable()
 	--self:SetNWInt("ClassID", class)
 	self.ClassID = class
@@ -185,58 +186,10 @@ end
 end
 end)
 
-util.AddNetworkString("SteveAbil_WH")
-	hook.Add("PlayerButtonDown", "SteveAbil_Bind", function(ply, button)
-		if !IsFirstTimePredicted() then return end
-if ply:GetNWBool("steveabilused", false) == false then
-	if ply.ClassID == 10 and ply:Alive() and button == KEY_Q then
-ply:SetNWBool("steveabilused", true)
-ply.SteveResist = true
-net.Start("SteveAbil_WH")
-net.WriteTable({ply})
-net.Send(GM.ROUND.Killer)
-	net.Start( "notificationSlasher" )
-	net.WriteTable({"class_ability_used"})
-	net.WriteString("safe")
-	net.Send(ply)
-for _,v in pairs(ents.FindInSphere(ply:GetPos(), 300)) do
-if v:IsPlayer() and v:Alive() and v:Team() == TEAM_SURVIVORS then
-v.SteveResist = true
-	net.Start( "notificationSlasher" )
-	net.WriteTable({"steve_resist_used"})
-	net.WriteString("safe")
-	net.Send(v)
-end
-end
-timer.Simple(15, function()
-for _,players in pairs(player.GetAll()) do
-if players.SteveResist then
-players.SteveResist = false
-	net.Start( "notificationSlasher" )
-	net.WriteTable({"steve_resist_off"})
-	net.WriteString("safe")
-	net.Send(player)
-end
-end
-end)
-	timer.Simple(30, function()
-ply:SetNWBool("steveabilused", false)
-	net.Start( "notificationSlasher" )
-	net.WriteTable({"class_ability_time"})
-	net.WriteString("safe")
-	net.Send(player)
-end)
-end
-end		
-	end)
-
 hook.Add("sls_round_PreStart", "sls_sability_PreStart", function()
 for _, ply in pairs(player.GetAll()) do
 if ply.ClassID == 10 and ply:Alive() and IsValid(ply) then
 ply:SetNWBool("steveabilused", false)
 end
 end
-end)
-	hook.Add("sls_round_End", "sls_sability_End", function()
-hook.Remove("PlayerButtonDown", "SteveAbil_Bind")
 end)

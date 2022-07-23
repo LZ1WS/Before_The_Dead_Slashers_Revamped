@@ -83,20 +83,3 @@ local function getUseKey()
 		return input.GetKeyName( cpt )
 	end
 end
-
--- Abilities
-
-net.Receive("SteveAbil_WH", function()
-
-local color_green = Color( 0, 153, 0 )
-local wh = net.ReadTable()
-hook.Add("PreDrawHalos", "AddSteveHalos", function()
-	timer.Simple("10", function()
-hook.Remove("PreDrawHalos", "AddSteveHalos")
-end)
-	local localply = LocalPlayer()
-    if localply:IsValid() and localply:Team() == TEAM_KILLER then
-        halo.Add(wh,color_green, 2, 2, 2, true, true )
-    end
-end)
-end)
