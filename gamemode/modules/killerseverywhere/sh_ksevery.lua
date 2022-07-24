@@ -202,6 +202,7 @@ else
 		if ply:Team() != TEAM_SURVIVORS then return end
 		if ply.ClassID == CLASS_SURV_SHY then return end
 		if GM.MAP.Killer.Name != "Jason" then return end
+		if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 
 		net.Start("sls_kability_AddStep")
 			net.WriteEntity(ply)
@@ -240,6 +241,7 @@ end
 hook.Add( "StartCommand", "Mason_ability", function(ply, mv)
 	--if !IsFirstTimePredicted() then return end
 	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if ply:Team() != TEAM_KILLER then return end
 	--print(mv:KeyDown(2048))
 	if ply:GetNWBool("Mason_ability", false) == true then return end
@@ -320,6 +322,7 @@ local slender_tpused = false
 function GM.MAP.Killer:UseAbility(ply)
 if CLIENT then return end
 	if GM.MAP.Killer.Name != "Slenderman" then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if !slender_tpused then
     local FOV = ply:GetFOV()
 	local aimpoint = ply:GetEyeTrace()
@@ -504,6 +507,7 @@ else
 	net.Receive("sls_kability_survivorseekiller", ResponsePlayerSeeKiller)
 
 	function GM.MAP.Killer:UseAbility(ply)
+		if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 if GM.MAP.Killer.Name ~= "the Proxy" then return end
 		local PlayerWeapon = ply:GetActiveWeapon()
 		if KillerInView then
@@ -653,6 +657,7 @@ local springtrap_trap_placed = false
 -- Ability
 function GM.MAP.Killer:UseAbility(ply)
 	if CLIENT then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if GM.MAP.Killer.Name != "The Machine" then return end
 	if !springtrap_trap_placed and #ents.FindByClass( "sls_springtrap_traps" ) < 5 then
 	springtrap_trap_placed = true
@@ -721,6 +726,7 @@ end
 
 if SERVER then
 hook.Add( "PlayerShouldTakeDamage", "Wesker_infection", function( ply, attacker )
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and attacker:Team() == TEAM_KILLER and ply:GetNWBool("sls_wesker_infected", false) == false then
 ply:SetNWBool("sls_wesker_infected", true)
 if !ply:IsBot() then
@@ -874,6 +880,7 @@ end
 
 local function PlayerUse(ply, ent)
 	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if ply:Team() != TEAM_SURVIVORS then return end
 	if ply.ClassID == CLASS_SURV_SHY then return end
 	if !table.HasValue(GM.CONFIG["killerhelp_door_entities"], ent:GetClass()) then return end
@@ -910,6 +917,7 @@ whused = false
 local color_green = Color( 0, 153, 0 )
 function GM.MAP.Killer:UseAbility(ply)
 	if GM.MAP.Killer.Name != "Cloaker" then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if whused == false then
 		if SERVER then
 			net.Start( "notificationSlasher" )
@@ -1058,6 +1066,7 @@ end)
 kwhused = false
 function GM.MAP.Killer:UseAbility(ply)
 	if GM.MAP.Killer.Name != "Leo Kasper" then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if !kwhused then
         for _, v in pairs(player.GetAll()) do
                 v:ConCommand("play kasper/ability/ability.mp3")
@@ -1130,6 +1139,7 @@ else
 	local timerTrap = 0
 	local function sendTrapProximity()
 			if IsValid(GM.ROUND.Killer)  &&   GM.ROUND.Active && timerTrap < CurTime()  then
+			if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 			timerTrap = CurTime() + 1
 			local shygirl = getSurvivorByClass(CLASS_SURV_SHY)
 			if !shygirl then return end
@@ -1169,6 +1179,7 @@ local disg_used = false
 
 function GM.MAP.Killer:UseAbility(ply)
 	if CLIENT then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if GM.MAP.Killer.Name != "the Impostor" then return end
 	if !disg_used then
 		local rnd_survivor = GM.ROUND.Survivors[ math.random( #GM.ROUND.Survivors ) ]
@@ -1394,6 +1405,7 @@ local deerling_ability_used = false
 
 function GM.MAP.Killer:UseAbility(ply)
 	if CLIENT then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 		if GM.MAP.Killer.Name != "the Deerling" then return end
 		if !deerling_ability_used then
 			deerling_ability_active = true
@@ -1444,6 +1456,7 @@ end)
 
 hook.Add("PlayerFootstep", "sls_deerling_second_ability", function(ply, pos, foot, sound, volume)
 	if GM.MAP.Killer.Name != "the Deerling" then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if ply:Team() == TEAM_KILLER && !deerling_ability_active then
 		return false
 	elseif deerling_ability_active then
@@ -1504,6 +1517,7 @@ hook.Add("PlayerFootstep", "sls_mute_second_ability", function(ply, pos, foot, s
 
 	function GM.MAP.Killer:UseAbility(ply)
 			if GM.MAP.Killer.Name != "Mute" then return end
+			if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 			if !mute_ability_used then
 				ply:SetNWBool("sls_terror_disabled", true)
 				mute_ability_used = true
