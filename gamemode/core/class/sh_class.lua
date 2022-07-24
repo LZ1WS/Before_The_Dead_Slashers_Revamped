@@ -248,7 +248,7 @@ GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].model = "models/anotheronel/playerupsh
 GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].die_sound = "slashers/effects/scream_man_1.wav"
 GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].weapons = {"weapon_camera"}
 if CLIENT then
-	GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].dispname = "Journalist"
+	GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].dispname = "Daniel"
 	GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].description = GM.LANG:GetString("class_desc_journalist")
 	GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].icon = Material("icons/journalist.png")
 end
@@ -263,7 +263,7 @@ GM.CLASS.Survivors[CLASS_SURV_PRIEST].model = "models/player/monk.mdl"
 GM.CLASS.Survivors[CLASS_SURV_PRIEST].die_sound = "vo/ravenholm/madlaugh03.wav"
 GM.CLASS.Survivors[CLASS_SURV_PRIEST].weapons = {"weapon_priest_book"}
 if CLIENT then
-	GM.CLASS.Survivors[CLASS_SURV_PRIEST].dispname = "Priest"
+	GM.CLASS.Survivors[CLASS_SURV_PRIEST].dispname = "David"
 	GM.CLASS.Survivors[CLASS_SURV_PRIEST].description = GM.LANG:GetString("class_desc_priest")
 	GM.CLASS.Survivors[CLASS_SURV_PRIEST].icon = Material("icons/priest.png")
 end
@@ -278,7 +278,7 @@ GM.CLASS.Survivors[CLASS_SURV_ADDICTED].model = "models/player/hostage/hostage_0
 GM.CLASS.Survivors[CLASS_SURV_ADDICTED].die_sound = "slashers/effects/scream_man_1.wav"
 GM.CLASS.Survivors[CLASS_SURV_ADDICTED].weapons = {}
 if CLIENT then
-	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].dispname = "Addicted"
+	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].dispname = "Lucas"
 	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].description = GM.LANG:GetString("class_desc_addicted")
 	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].icon = Material("icons/addicted.png")
 end
