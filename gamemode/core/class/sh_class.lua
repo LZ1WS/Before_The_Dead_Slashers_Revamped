@@ -238,6 +238,51 @@ if CLIENT then
 	GM.CLASS.Survivors[CLASS_SURV_RAPPER].icon = Material("icons/rapper.png")
 end
 
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST] = {}
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].name = "Journalist"
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].walkspeed = 150
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].life = 130
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].stamina = 140
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].model = "models/anotheronel/playerupshur.mdl"
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].die_sound = "slashers/effects/scream_man_1.wav"
+GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].weapons = {"weapon_camera"}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].dispname = "Daniel"
+	GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].description = GM.LANG:GetString("class_desc_journalist")
+	GM.CLASS.Survivors[CLASS_SURV_JOURNALIST].icon = Material("icons/journalist.png")
+end
+
+GM.CLASS.Survivors[CLASS_SURV_PRIEST] = {}
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].name = "Priest"
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].walkspeed = 150
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].life = 130
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].stamina = 140
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].model = "models/player/monk.mdl"
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].die_sound = "vo/ravenholm/madlaugh03.wav"
+GM.CLASS.Survivors[CLASS_SURV_PRIEST].weapons = {"weapon_priest_book"}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_PRIEST].dispname = "David"
+	GM.CLASS.Survivors[CLASS_SURV_PRIEST].description = GM.LANG:GetString("class_desc_priest")
+	GM.CLASS.Survivors[CLASS_SURV_PRIEST].icon = Material("icons/priest.png")
+end
+
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED] = {}
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].name = "Addicted"
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].walkspeed = 150
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].runspeed = 240
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].life = 80
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].stamina = 140
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].model = "models/player/hostage/hostage_04.mdl"
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].die_sound = "slashers/effects/scream_man_1.wav"
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].weapons = {}
+if CLIENT then
+	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].dispname = "Lucas"
+	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].description = GM.LANG:GetString("class_desc_addicted")
+	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].icon = Material("icons/addicted.png")
+end
+
 local function StartRound()
 	for _, v in ipairs(player.GetAll()) do
 		v.ClassID = nil

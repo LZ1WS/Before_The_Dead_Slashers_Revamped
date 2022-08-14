@@ -191,92 +191,6 @@ GM.MAP.KILLERS =
 		},
 }
 
-GM.MAP.SURVIVORS = {
-	["Trent"] = {
-		["icon"] = "icons/icon_sportif.png",
-		["description"] = "class_desc_sports",
-		["model"] = "models/steinman/slashers/sport_pm.mdl",
-		["stats"] = "\nHP = 120\nWalk Speed = 150\nRun Speed = 240\nStamina = 210",
-	},
-	["Lynda"] = {
-		["icon"] = "icons/icon_popular.png",
-		["description"] = "class_desc_popular",
-		["model"] = "models/steinman/slashers/popular_pm.mdl",
-		["stats"] = "\nHP = 80\nWalk Speed = 160\nRun Speed = 240\nStamina = 120",
-	},
-	["Noah"] = {
-		["icon"] = "icons/icon_nerd.png",
-		["description"] = "class_desc_nerd",
-		["model"] = "models/steinman/slashers/nerd_pm.mdl",
-		["stats"] = "\nHP = 100\nWalk Speed = 130\nRun Speed = 240\nStamina = 110",
-	},
-	["Franklin"] = {
-		["icon"] = "icons/icon_fat.png",
-		["description"] = "class_desc_fat",
-		["model"] = "models/steinman/slashers/fat_pm.mdl",
-		["stats"] = "\nHP = 180\nWalk Speed = 130\nRun Speed = 240\nStamina = 80",
-	},
-	["Sydney"] = {
-		["icon"] = "icons/icon_shy.png",
-		["description"] = "class_desc_shy",
-		["model"] = "models/player/korka007/maxc.mdl",
-		["stats"] = "\nHP = 60\nWalk Speed = 140\nRun Speed = 240\nStamina = 140",
-	},
-	["Audrey"] = {
-		["icon"] = "icons/icon_emo.png",
-		["description"] = "class_desc_emo",
-		["model"] = "models/steinman/slashers/emo_pm.mdl",
-		["stats"] = "\nHP = 110\nWalk Speed = 130\nRun Speed = 240\nStamina = 130",
-	},
-	["Roland"] = {
-		["icon"] = "icons/icon_black.png",
-		["description"] = "class_desc_black",
-		["model"] = "models/player/spike/lamar.mdl",
-		["stats"] = "\nHP = 120\nWalk Speed = 140\nRun Speed = 240\nStamina = 130",
-	},
-	["Gale"] = {
-		["icon"] = "icons/icon_sherif.png",
-		["description"] = "class_desc_sherif",
-		["model"] = "models/steinman/slashers/sheriff_pm.mdl",
-		["stats"] = "\nHP = 130\nWalk Speed = 150\nRun Speed = 240\nStamina = 140",
-	},
-	["Steve"] = {
-		["icon"] = "icons/steve.png",
-		["description"] = "class_desc_babysit",
-		["model"] = "models/players/mj_dbd_qm.mdl",
-		["stats"] = "\nHP = 120\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
-	},
-	["Mitch"] = {
-		["icon"] = "icons/hippy.png",
-		["description"] = "class_desc_hippy",
-		["model"] = "models/players/mj_dbd_quentin.mdl",
-		["stats"] = "\nHP = 110\nWalk Speed = 140\nRun Speed = 240\nStamina = 110",
-	},
-	["Sheldon"] = {
-		["icon"] = "icons/ranger.png",
-		["description"] = "class_desc_ranger",
-		["model"] = "models/v92/characters/park-ranger/bm/rogers/player.mdl",
-		["stats"] = "\nHP = 140\nWalk Speed = 150\nRun Speed = 240\nStamina = 160",
-	},
-	["Simon"] = {
-		["icon"] = "icons/dreamer.png",
-		["description"] = "class_desc_dreamer",
-		["model"] = "models/h-d/2sg/simonplayer.mdl",
-		["stats"] = "\nHP = 120\nWalk Speed = 130\nRun Speed = 240\nStamina = 110",
-	},
-	["Theodore"] = {
-		["icon"] = "icons/pharmacist.png",
-		["description"] = "class_desc_pharmacist",
-		["model"] = "models/taggart/police02/male_02.mdl",
-		["stats"] = "\nHP = 130\nWalk Speed = 150\nRun Speed = 240\nStamina = 140",
-	},
-	["Drake"] = {
-		["icon"] = "icons/rapper.png",
-		["description"] = "class_desc_rapper",
-		["model"] = "models/sentry/gtav/ballas/ogbalpm.mdl",
-		["stats"] = "\nHP = 120\nWalk Speed = 140\nRun Speed = 240\nStamina = 130",
-	},
-}
 if CLIENT then
 
 	surface.CreateFont( "Roboto F4", {
@@ -306,22 +220,26 @@ function OpenHUBMENU()
 HUBMENU = vgui.Create( "DFrame" )
 HUBMENU:SetSize( ScrW(), ScrH() )
 HUBMENU:SetTitle("")
-HUBMENU:Center()
+--HUBMENU:Center()
+HUBMENU:SetPos(ScrW()/2, 0)
 HUBMENU:MakePopup()
 HUBMENU:SetDraggable(false)
 HUBMENU:ShowCloseButton(false)
+HUBMENU:MoveTo(0, 0, 1, 0, -1 )    
 HUBMENU.Think = function(me)
 	if input.IsKeyDown(KEY_ESCAPE) then
 		return me:Remove()
 	end
 end
+surface.PlaySound("ui/buttonrollover.wav")
 
 function HUBMENU:Paint( w, h )
 Derma_DrawBackgroundBlur(self)
 end
 
 local sheet = vgui.Create( "DColumnSheet", HUBMENU )
-sheet:Dock( FILL )
+--sheet:Dock( FILL )
+sheet:SetSize(ScrW(), ScrH())
 
 local hub_close = HUBMENU:Add("DImageButton")
 hub_close:AlignRight(-10)
@@ -329,27 +247,39 @@ hub_close:SetImage( "icon16/cancel.png" )
 hub_close:SetSize(ScrW() * 0.025, ScrH() * 0.044)
 hub_close:SetKeepAspect(true)
 hub_close.DoClick = function()
+	surface.PlaySound("ui/buttonclickrelease.wav")
 	HUBMENU:Remove()
 end
 
 sheet.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, w, h, Color( 52, 73, 94, 80 ) ) end
 
 local sls_killer_Checkbox = HUBMENU:Add( "DCheckBoxLabel" ) -- Create the checkbox
-	sls_killer_Checkbox:Dock(TOP)
+	sls_killer_Checkbox:SetPos(0, ScrH() * 0.98)
 	sls_killer_Checkbox:SetText(GM.LANG:GetString("hub_killer_checkbox"))					-- Set the text next to the box
 	sls_killer_Checkbox:SetFont("ChatFont")
 	sls_killer_Checkbox:SetValue( LocalPlayer():GetNWBool("sls_killer_choose", true) )						-- Initial value
-	sls_killer_Checkbox:SizeToContents()						-- Make its size the same as the contents
+	if !LocalPlayer():GetNWBool("sls_killer_choose", true) then
+	sls_killer_Checkbox:SetAlpha(50)
+	end
 function sls_killer_Checkbox:OnChange( val )
 		LocalPlayer():SetNWBool("sls_killer_choose", val)
 		net.Start("sls_killer_choose_nw")
 		net.WriteBool(val)
 		net.SendToServer()
+		surface.PlaySound("ui/buttonrollover.wav")
+		if !val then
+			sls_killer_Checkbox:AlphaTo(50, 0.2)
+		else
+			sls_killer_Checkbox:AlphaTo(255, 0.2)
+		end
 end
 local Checkbox_w, Checkbox_h = sls_killer_Checkbox:GetChild(1):GetSize()
 sls_killer_Checkbox.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, ScrW() * Checkbox_w * 1.16 / ScrW(), h, Color( 236, 240, 241, 80 ) ) end
 sls_killer_Checkbox:SetIndent( 4 )
 sls_killer_Checkbox:SetTextColor(Color(243, 156, 18, 255))
+sls_killer_Checkbox:SizeToContents()						-- Make its size the same as the contents
+local Checkbox_w2, Checkbox_h2 = sls_killer_Checkbox:GetSize()
+sls_killer_Checkbox:SetSize(Checkbox_w2 + 12, Checkbox_h2)
 
 
 local survshow = vgui.Create( "DPanel", sheet )
@@ -363,6 +293,7 @@ survshow_sheet.Button:SetFontInternal("Roboto F4")
 for _,v in ipairs(survshow_sheet.Button:GetChildren()) do
 	v:Remove()
 end
+survshow_sheet.Button:SetAlpha(125)
 
 local killerchoose = vgui.Create( "DPanel", sheet )
 killerchoose:Dock(FILL)
@@ -408,6 +339,46 @@ for _,v in ipairs(modelpanel_sheet.Button:GetChildren()) do
 	v:Remove()
 end
 
+survshow_sheet.Button.DoClick = function()
+	local btn = survshow_sheet.Button
+	btn:AlphaTo(125, 0.6)
+	killerchoose_sheet.Button:AlphaTo(255, 0.2)
+	descriptionpanel_sheet.Button:AlphaTo(255, 0.2)
+	modelpanel_sheet.Button:AlphaTo(255, 0.2)
+	sheet:SetActiveButton(survshow_sheet.Button)
+	surface.PlaySound("ui/buttonclick.wav")
+end
+
+killerchoose_sheet.Button.DoClick = function()
+	local btn = killerchoose_sheet.Button
+	survshow_sheet.Button:AlphaTo(255, 0.2)
+	descriptionpanel_sheet.Button:AlphaTo(255, 0.2)
+	modelpanel_sheet.Button:AlphaTo(255, 0.2)
+	btn:AlphaTo(125, 0.6)
+	sheet:SetActiveButton(killerchoose_sheet.Button)
+	surface.PlaySound("ui/buttonclick.wav")
+end
+
+descriptionpanel_sheet.Button.DoClick = function()
+	local btn = descriptionpanel_sheet.Button
+	btn:AlphaTo(125, 0.6)
+	survshow_sheet.Button:AlphaTo(255, 0.2)
+	killerchoose_sheet.Button:AlphaTo(255, 0.2)
+	modelpanel_sheet.Button:AlphaTo(255, 0.2)
+	sheet:SetActiveButton(descriptionpanel_sheet.Button)
+	surface.PlaySound("ui/buttonclick.wav")
+end
+
+modelpanel_sheet.Button.DoClick = function()
+	local btn = modelpanel_sheet.Button
+	btn:AlphaTo(125, 0.6)
+	survshow_sheet.Button:AlphaTo(255, 0.1)
+	killerchoose_sheet.Button:AlphaTo(255, 0.1)
+	descriptionpanel_sheet.Button:AlphaTo(255, 0.2)
+	sheet:SetActiveButton(modelpanel_sheet.Button)
+	surface.PlaySound("ui/buttonclick.wav")
+end
+
 HUBMENUSSURVCROLL = vgui.Create("DScrollPanel", survshow)
 HUBMENUSSURVCROLL:Dock( FILL )
 
@@ -416,26 +387,32 @@ List2:Dock( FILL )
 List2:SetSpaceY( 5 )
 List2:SetSpaceX( 5 )
 
-for survname, survivor in pairs(GM.MAP.SURVIVORS) do
+for num, survivor in ipairs(GM.CLASS.Survivors) do
 local DermaImageButton2 = List2:Add( "DImageButton" )
 local survnameimage = DermaImageButton2:Add("DLabel")
 survnameimage:SetFont("Roboto F4")
-survnameimage:SetText(survname)
+survnameimage:SetText(survivor["dispname"])
 survnameimage:SetTextColor(Color(255, 255, 255, 45))
 survnameimage:Dock(BOTTOM)
 survnameimage:SetWrap(true)
 survnameimage:SetAutoStretchVertical( true )
 survnameimage:SizeToContents()
 
-DermaImageButton2:SetImage(survivor["icon"])
+DermaImageButton2:SetMaterial(survivor["icon"])
 DermaImageButton2:SetSize(116, 116)
 DermaImageButton2.DoClick = function()
+	surface.PlaySound("ui/buttonclickrelease.wav")
+	if istable(ULib) and LocalPlayer():query("sls_setsurv") then
+	net.Start("sls_survivor_choose_admin")
+	net.WriteInt(num, 6)
+	net.SendToServer()
+	end
 if (string.find(GM.LANG:GetString(survivor["description"]), "Unknow")) then
 description:SetText(survivor["description"])
-description:AppendText(survivor["stats"])
+description:AppendText("\nHP = " .. survivor["life"] .. "\n" .. "Walk Speed = " .. survivor["walkspeed"] .. "\n" .. "Run Speed = " .. survivor["runspeed"] .. "\n" .. "Stamina = " .. survivor["stamina"])
 else
 description:SetText(GM.LANG:GetString(survivor["description"]))
-description:AppendText(survivor["stats"])
+description:AppendText("\nHP = " .. survivor["life"] .. "\n" .. "Walk Speed = " .. survivor["walkspeed"] .. "\n" .. "Run Speed = " .. survivor["runspeed"] .. "\n" .. "Stamina = " .. survivor["stamina"])
 end
 if IsValid(sls_playermodel) then sls_playermodel:Remove() end
 sls_playermodel = modelpanel:Add( "DAdjustableModelPanel" )
@@ -446,7 +423,7 @@ local clickonme_mdl = sls_playermodel:Add("DLabel")
 clickonme_mdl:Dock(TOP)
 clickonme_mdl:SetFont("GModNotify")
 clickonme_mdl:SetText("Click to show model")
-clickonme_mdl:SetTextColor(Color(255, 200, 0))
+clickonme_mdl:SetTextColor(Color(255, 200, 0, 50))
 clickonme_mdl:SetContentAlignment(8)
 clickonme_mdl:SizeToContents()
 
@@ -481,6 +458,7 @@ sls_killer_random_button_name:SetAutoStretchVertical( true )
 sls_killer_random_button:SetImage("icons/no_icon_red.png")
 sls_killer_random_button:SetSize(116, 116)
 sls_killer_random_button.DoClick = function()
+	surface.PlaySound("ui/buttonclickrelease.wav")
 	local rnd_killer
 	for number, killer in RandomPairs(GM.MAP.KILLERS) do
 		if (killer.map) and killer.map != game.GetMap() then continue end
@@ -506,7 +484,7 @@ sls_killer_random_button.DoClick = function()
 		clickonme_mdl:Dock(TOP)
 		clickonme_mdl:SetFont("GModNotify")
 		clickonme_mdl:SetText("Click to show model")
-		clickonme_mdl:SetTextColor(Color(255, 200, 0))
+		clickonme_mdl:SetTextColor(Color(255, 200, 0, 50))
 		clickonme_mdl:SetContentAlignment(8)
 		clickonme_mdl:SizeToContents()
 		sls_playermodel:Dock(FILL)
@@ -564,12 +542,13 @@ local clickonme_mdl = sls_playermodel:Add("DLabel")
 clickonme_mdl:Dock(TOP)
 clickonme_mdl:SetFont("GModNotify")
 clickonme_mdl:SetText("Click to show model")
-clickonme_mdl:SetTextColor(Color(255, 200, 0))
+clickonme_mdl:SetTextColor(Color(255, 200, 0, 50))
 clickonme_mdl:SetContentAlignment(8)
 clickonme_mdl:SizeToContents()
 end
 
 DermaImageButton.DoClick = function()
+	surface.PlaySound("ui/buttonclickrelease.wav")
 net.Start("sls_hub_choosekiller")
 net.WriteInt(k, 6)
 net.SendToServer()
@@ -590,7 +569,7 @@ local clickonme_mdl = sls_playermodel:Add("DLabel")
 clickonme_mdl:Dock(TOP)
 clickonme_mdl:SetFont("GModNotify")
 clickonme_mdl:SetText("Click to show model")
-clickonme_mdl:SetTextColor(Color(255, 200, 0))
+clickonme_mdl:SetTextColor(Color(255, 200, 0, 50))
 clickonme_mdl:SetContentAlignment(8)
 clickonme_mdl:SizeToContents()
 sls_playermodel:Dock(FILL)
@@ -619,6 +598,7 @@ if SERVER then
 util.AddNetworkString("sls_OpenHUB")
 util.AddNetworkString("sls_hub_choosekiller")
 util.AddNetworkString("sls_killer_choose_nw")
+util.AddNetworkString("sls_survivor_choose_admin")
 
 hook.Add("ShowSpare2", "sls_hub_ShowSpare2", function(ply)
 net.Start("sls_OpenHUB")
@@ -627,6 +607,12 @@ end)
 
 net.Receive("sls_hub_choosekiller", function(len, ply)
 	ply:SetNWInt("choosen_killer", net.ReadInt(6))
+end)
+
+net.Receive("sls_survivor_choose_admin", function(len, ply)
+	if istable(ULib) and ply:query("sls_setsurv") then
+	ply:SetSurvClass(net.ReadInt(6))
+	end
 end)
 
 net.Receive("sls_killer_choose_nw", function(len, ply)
