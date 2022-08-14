@@ -129,16 +129,19 @@ hook.Add("EntityTakeDamage", "Resists_abil", function(ply, dmg)
 if ply:IsPlayer() and ply.SteveResist == true then
 dmg:ScaleDamage(0.5)
 end
-if ply:IsPlayer() and attacker:IsPlayer() and attacker:Team() == TEAM_KILLER and ply:Team() != TEAM_KILLER then
+if ply:IsPlayer() and attacker:IsPlayer() and attacker:Team() == TEAM_KILLER and ply:Team() != TEAM_KILLER and !ply:GetNWBool("sls_hit_boost", false) then
 	local previous_speed = ply:GetRunSpeed()
+	ply:SetNWBool("sls_hit_boost", true)
 	ply:SetRunSpeed(previous_speed * 1.75)
 	if !ply:IsBot() then
 	timer.Create("sls_survivor_speedboost_" .. ply:SteamID64(), 3, 1, function()
 		ply:SetRunSpeed(previous_speed)
+		ply:SetNWBool("sls_hit_boost", false)
 	end)
 else
 	timer.Create("sls_survivor_speedboost_" .. ply:EntIndex(), 3, 1, function()
 		ply:SetRunSpeed(previous_speed)
+		ply:SetNWBool("sls_hit_boost", false)
 	end)
 end
 end

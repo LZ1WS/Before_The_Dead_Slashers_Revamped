@@ -43,6 +43,7 @@ function SWEP:Equip(ply)
 	filter:AddAllPlayers()
 	self.PraySFX = CreateSound(ply, "survivors/priest/ability_use.mp3", filter)
 	end
+	sls_priest_prev_health = self.Owner:Health()
 end
 
 function SWEP:Tick()
@@ -84,10 +85,11 @@ function SWEP:Tick()
 				end
 		end
 	end
-	if ( !cmd:KeyDown( IN_ATTACK ) ) and self.Used then
+	if ( !cmd:KeyDown( IN_ATTACK ) or owner:Health() != sls_priest_prev_health ) and self.Used then
 		self.Used = false
 		self.Delay = CurTime() + 5
 		owner:RemoveFlags(FL_ATCONTROLS)
+		sls_priest_prev_health = owner:Health()
 		self:SetNWFloat( 'progressBar', 0)
 		if SERVER and self.PraySFX:IsPlaying() then
 			self.PraySFX:FadeOut(3)

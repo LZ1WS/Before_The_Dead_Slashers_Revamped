@@ -402,7 +402,7 @@ DermaImageButton2:SetMaterial(survivor["icon"])
 DermaImageButton2:SetSize(116, 116)
 DermaImageButton2.DoClick = function()
 	surface.PlaySound("ui/buttonclickrelease.wav")
-	if istable(ULib) and ply:query("sls_setsurv") then
+	if istable(ULib) and LocalPlayer():query("sls_setsurv") then
 	net.Start("sls_survivor_choose_admin")
 	net.WriteInt(num, 6)
 	net.SendToServer()

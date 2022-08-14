@@ -86,35 +86,27 @@ function Addicted:UseSurvAbility( ply )
 	end)
 end
 
-local blur_effect = Material( "pp/blurscreen" )
-
-function HolyWeakenPlayer(ply)
-    local old_speed, old_walk = ply:GetRunSpeed(), ply:GetWalkSpeed()
-
-    ply:SetRunSpeed(old_speed - 50)
-    ply:SetWalkSpeed(old_walk - 50)
-    ply:SetNWBool("sls_holy_weaken_effect", true)
-
-    if CLIENT then
+if CLIENT then
         hook.Add("RenderScreenspaceEffects", "sls_holy_weaken_effect", function()
-            if LocalPlayer():Team() == TEAM_KILLER then
-                surface.SetDrawColor( 255, 255, 255, 255 )
-                surface.SetMaterial( blur_effect )
-                surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
-                DrawMaterialOverlay( "models/props_c17/fisheyelens", -0.06 )
+            if LocalPlayer():Team() == TEAM_KILLER and LocalPlayer():GetNWBool("sls_holy_weaken_effect", false) == true then
+                DrawMotionBlur( 0.02, 1, 0.01 )
             end
             end)
     end
 
-    timer.Simple(5, function()
+function HolyWeakenPlayer(ply)
+    local old_speed, old_walk = ply:GetRunSpeed(), ply:GetWalkSpeed()
+
+    ply:SetRunSpeed(old_speed - 85)
+    ply:SetWalkSpeed(old_walk - 85)
+    ply:SetNWBool("sls_holy_weaken_effect", true)
+
+    timer.Simple(10, function()
         ply:SetRunSpeed(old_speed)
         ply:SetWalkSpeed(old_walk)
 
         ply:SetNWBool("sls_holy_weaken_effect", false)
 
-        if CLIENT then
-		hook.Remove("RenderScreenspaceEffects", "sls_holy_weaken_effect")
-        end
 	end)
 
 

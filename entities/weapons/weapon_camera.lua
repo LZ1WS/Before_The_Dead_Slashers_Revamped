@@ -51,8 +51,10 @@ function SWEP:PrimaryAttack()
 	self:TakePrimaryAmmo( 1 )
 	self:DoShootEffect()
 	for _,killer in ipairs(ents.FindInSphere(self.Owner:GetPos(), 100)) do
-	if killer:IsPlayer() and killer:Team() == TEAM_KILLER then
+	if killer:IsPlayer() and killer != self.Owner and killer:Team() == TEAM_KILLER then
 	killer:ScreenFade(SCREENFADE.IN, color_white, 2, 4)
+	else
+		continue
 	end
 	end
 	-- If we're multiplayer this can be done totally clientside
