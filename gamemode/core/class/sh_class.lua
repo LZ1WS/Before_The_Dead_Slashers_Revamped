@@ -184,7 +184,7 @@ GM.CLASS.Survivors[CLASS_SURV_RANGER].walkspeed = 150
 GM.CLASS.Survivors[CLASS_SURV_RANGER].runspeed = 240
 GM.CLASS.Survivors[CLASS_SURV_RANGER].life = 140
 GM.CLASS.Survivors[CLASS_SURV_RANGER].stamina = 160
-GM.CLASS.Survivors[CLASS_SURV_RANGER].model = "models/v92/characters/park-ranger/bm/rogers/player.mdl"
+GM.CLASS.Survivors[CLASS_SURV_RANGER].model = "models/v92/characters/park_ranger/bm/rogers/player.mdl"
 GM.CLASS.Survivors[CLASS_SURV_RANGER].die_sound = "slashers/effects/scream_man_1.wav"
 GM.CLASS.Survivors[CLASS_SURV_RANGER].weapons = {"weapon_survivor_beartrap"}
 if CLIENT then
