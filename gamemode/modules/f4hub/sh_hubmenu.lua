@@ -216,7 +216,7 @@ local sls_ply_choosen_killer_description
 local sls_ply_choosen_killer_stats
 
 function OpenHUBMENU()
-	if IsValid(HUBMENU) then HUBMENU:Remove() end
+	if IsValid(HUBMENU) then HUBMENU:Remove() return end
 HUBMENU = vgui.Create( "DFrame" )
 HUBMENU:SetSize( ScrW(), ScrH() )
 HUBMENU:SetTitle("")

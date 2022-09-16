@@ -71,7 +71,7 @@ local function Spawn_SlashVaccine()
 		for k, v in pairs( GM.MAP.Vaccine ) do
 
 			if (v == GM.MAP.Vaccine.Box) then
-				nbVacToSpawn = 2 *  math.ceil( (#player.GetAll() / 4) )
+				nbVacToSpawn = 2 *  math.ceil( (#player.GetAll() / 3) )
 			else
 				nbVacToSpawn = 0
 			end
@@ -105,7 +105,7 @@ local function Spawn_SlashPages()
 		for k, v in pairs( GM.MAP.Pages ) do
 
 			if (v == GM.MAP.Pages.Page) then
-				nbPageToSpawn = 4 * math.ceil( (#player.GetAll() / 2) )
+				nbPageToSpawn = 4 * math.ceil( (#player.GetAll() / 2.5) )
 			else
 				nbPageToSpawn = 0
 			end
