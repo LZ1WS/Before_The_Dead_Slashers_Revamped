@@ -39,7 +39,7 @@ function SWEP:PrimaryAttack()
 
 	cleanup.Add(self.Owner, "props", ent)
  
-	undo.Create("beartrap")
+	undo.Create("surv_beartrap")
 		undo.AddEntity(ent)
 		undo.SetPlayer(self.Owner)
 	undo.Finish()

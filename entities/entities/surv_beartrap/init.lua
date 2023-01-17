@@ -85,14 +85,14 @@ function ENT:Initialize()
 end
 
 function ENT:Use(activator, caller, useType, value)
-	if !IsKiller(caller) and self.tapleft > 0 then
+	if !IsSurvivor(caller) and self.tapleft > 0 then
 		if self.playertraped:SteamID() ~= caller:SteamID() then return end
 		self.tapleft = self.tapleft - 10
 		RefreshTap(caller, self)
 		if self.tapleft <= 0 then
 			self:DesactivateOnPlayer(caller, self)
 		end
-	elseif IsKiller(caller) and !self.playertraped then
+	elseif IsSurvivor(caller) and !self.playertraped then
 		caller:GiveAmmo(1, "ammo_beartrap", true)
 		self:Remove()
 	end
