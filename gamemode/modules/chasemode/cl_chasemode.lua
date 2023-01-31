@@ -93,13 +93,13 @@ local function chaseMusic()
 		if (LocalPlayer().LastViewByKillerTime > curtime - 3 && !LocalPlayer().ChaseSoundPlaying) then
 --print("test")
 
-		--timer.Simple(1, function()
+		timer.Simple(1, function()
 			if LocalPlayer().LastViewByKillerTime > curtime - 3 then
 		LocalPlayer().ChaseSoundPlaying = true
 
 				ChaseSound:Play()
 			end
-		--end)
+		end)
 	elseif LocalPlayer().ChaseSoundPlaying && LocalPlayer().LastViewByKillerTime < curtime - 5  then
 		ChaseSound:FadeOut(1.2)
 		LocalPlayer().ChaseSoundPlaying = false

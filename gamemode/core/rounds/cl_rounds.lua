@@ -84,7 +84,8 @@ hook.Add("sls_round_PostStart", "sls_round_PostStart", PostStart)
 net.Receive("sls_plykiller", function()
 --local mapsLuaPath = "slashers/gamemode/maps"
 	SetGlobalInt("RNDKiller", net.ReadInt(8))
-				include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
+	GM.MAP.SetupKillers()
+				--include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
 			--include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
 end)
 
