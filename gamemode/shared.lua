@@ -35,6 +35,33 @@ CLASS_SURV_JOURNALIST = 16
 CLASS_SURV_PRIEST = 17
 CLASS_SURV_ADDICTED = 18
 
+KILLER_JASON = 1
+KILLER_KAMEN = 2
+KILLER_HUNTRESS = 3
+KILLER_SLENDER = 4
+KILLER_MYERS = 5
+KILLER_PROXY = 6
+KILLER_SPRINGTRAP = 7
+KILLER_WESKER = 8
+KILLER_SCRAKE = 9
+KILLER_T800 = 10
+KILLER_GHOSTFACE = 11
+KILLER_CLOAKER = 12
+KILLER_SPECIMEN8 = 13
+KILLER_TIRSIAK = 14
+KILLER_LEOKASPER = 15
+KILLER_METALWORKER = 16
+KILLER_INTRUDER = 17
+KILLER_IMPOSTOR = 18
+KILLER_WHITEFACE = 19
+KILLER_NORMANBATES = 20
+KILLER_TADERO = 21
+KILLER_SCP049 = 22
+KILLER_DEERLING = 23
+KILLER_BACTERIA = 24
+KILLER_MUTE = 25
+KILLER_NIGHTMARE = 26
+
 team.SetUp(TEAM_KILLER, "Murderer", Color(255, 0, 0), false);
 team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255), false);
 
@@ -44,3 +71,47 @@ print("Version: " .. GM.Version)
 print("Workshop: " .. GM.Workshop)
 print("Github: " .. GM.Github)
 print("\n###                 Thanks for playing                ###\n")
+
+--[[function sls.util.IncludeDir(directory, bFromLua, bFromModules)
+
+    -- By default, we include relatively to core.
+    local baseDir = "/core/"
+
+    -- If we're in a modules, include relative to the modules.
+    if (bFromModules) then
+        baseDir = "/modules/"
+    end
+
+    -- Find all of the files within the directory.
+    for _, v in ipairs(file.Find((bFromLua and "" or baseDir)..directory.."/*.lua", "LUA")) do
+        -- Include the file from the prefix.
+        sls.util.Include(directory.."/"..v)
+    end
+
+end
+
+function sls.util.Include(fileName, realm)
+if (!fileName) then
+    error("[BTD] No file name specified for including.")
+end
+
+-- Only include server-side if we're on the server.
+if ((realm == "server" or fileName:find("sv_")) and SERVER) then
+    return include(fileName)
+-- Shared is included by both server and client.
+elseif (realm == "shared" or fileName:find("shared.lua") or fileName:find("sh_")) then
+    if (SERVER) then
+        -- Send the file to the client if shared so they can run it.
+        AddCSLuaFile(fileName)
+    end
+
+    return include(fileName)
+-- File is sent to client, included on client.
+elseif (realm == "client" or fileName:find("cl_")) then
+    if (SERVER) then
+        AddCSLuaFile(fileName)
+    else
+        return include(fileName)
+    end
+end
+end]]--

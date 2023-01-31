@@ -1,8 +1,9 @@
 "btd_slashers"
 {
 	"base"		"base"
-	"title"		"Slashers"
+	"title"		"Before the Dead"
 	"maps"		"^slash_"
 	"menusystem"	"1"
+	"category"		"pvp"
 	"workshopid"	"1092007703"
 }

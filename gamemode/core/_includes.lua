@@ -33,6 +33,9 @@ if SERVER then
 	include("class/sv_class.lua")
 	AddCSLuaFile("class/sh_class.lua")
 	AddCSLuaFile("class/cl_class.lua")
+	-- Killers
+	include("killerseverywhere/sh_ksevery.lua")
+	AddCSLuaFile("killerseverywhere/sh_ksevery.lua")
 	-- Rounds
 	include("rounds/sh_rounds.lua")
 	include("rounds/sv_rounds.lua")
@@ -65,6 +68,8 @@ else
 	-- Class
 	include("class/sh_class.lua")
 	include("class/cl_class.lua")
+	-- Killers
+	include("killerseverywhere/sh_ksevery.lua")
 	-- Rounds
 	include("rounds/sh_rounds.lua")
 	include("rounds/cl_network.lua")

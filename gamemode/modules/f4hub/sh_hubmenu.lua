@@ -1,196 +1,5 @@
 local GM = GM or GAMEMODE
 
-GM.MAP.KILLERS =
-{
-		[1] = {
-		["name"] = "Jason Voorhees",
-		["icon"] = "icons/icon_jason.png",
-		["description"] = "class_desc_jason",
-		["model"] = "models/player/mkx_jason.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210"
-		},
-		[2] = {
-		["name"] = "KAMENSHIK",
-		["icon"] = "icons/xleb.png",
-		["description"] = "class_desc_kamen",
-		["model"] = "models/player/kamenshik.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		["joke"] = true
-		},
-		[3] = {
-		["name"] = "Huntress",
-		["icon"] = "icons/huntress.png",
-		["description"] = "class_desc_huntress",
-		["model"] = "models/players/mj_dbd_bear.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		},
-		[4] = {
-		["name"] = "Slenderman",
-		["icon"] = "icons/slenderman.png",
-		["description"] = "class_desc_slender",
-		["model"] = "models/player/lordvipes/slenderman/slenderman_playermodel_cvp.mdl",
-		["stats"] = "\nWalk Speed = 120\nRun Speed = 160",
-		["map"] = "slash_summercamp",
-		},
-		[5] = {
-		["name"] = "Michael Myers",
-		["icon"] = "icons/icon_myers.png",
-		["description"] = "class_desc_myers",
-		["model"] = "models/player/dewobedil/mike_myers/default_p.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[6] = {
-		["name"] = "the Proxy",
-		["icon"] = "icons/icon_proxy.png",
-		["description"] = "class_desc_proxy",
-		["model"] = "models/slender_arrival/chaser.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[7] = {
-		["name"] = "the Machine",
-		["icon"] = "icons/springtrap.png",
-		["description"] = "class_desc_springtrap",
-		["model"] = "models/tetTris/FNaF/SB/Burntrap_inkmanspm.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[8] = {
-		["name"] = "Albert Wesker",
-		["icon"] = "icons/wesker.png",
-		["description"] = "class_desc_wesker",
-		["model"] = "Models/Player/slow/amberlyn/re5/wesker/slow.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		["map"] = "slash_subway",
-		},
-		[9] = {
-		["name"] = "Scrake",
-		["icon"] = "icons/scrake.png",
-		["description"] = "class_desc_scrake",
-		["model"] = "models/Splinks/KF2/zeds/Player_Scrake.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[10] = {
-		["name"] = "T-800",
-		["icon"] = "icons/t800.png",
-		["description"] = "class_desc_t800",
-		["model"] = "models/player/t-800/t800nw.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[11] = {
-		["name"] = "Ghostface",
-		["icon"] = "icons/icon_ghostface.png",
-		["description"] = "class_desc_ghostface",
-		["model"] = "models/player/cla/classic_ghostface.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		},
-		[12] = {
-		["name"] = "Cloaker",
-		["icon"] = "icons/cloaker.png",
-		["description"] = "class_desc_cloaker",
-		["model"] = "models/mark2580/payday2/pd2_cloaker_zeal_player.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		["joke"] = true
-		},
-		[13] = {
-		["name"] = "Specimen 8",
-		["icon"] = "icons/spec8.png",
-		["description"] = "class_desc_specimen8",
-		["model"] = "models/violetqueen/sjsm/deerlord.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 190",
-		},
-		[14] = {
-		["name"] = "Tirsiak",
-		["icon"] = "icons/tirsiak.png",
-		["description"] = "class_desc_uspecimen4",
-		["model"] = "models/dreadhunger/player/hunter.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210",
-		},
-		[15] = {
-		["name"] = "Leo Kasper",
-		["icon"] = "icons/kasper.png",
-		["description"] = "class_desc_kasper",
-		["model"] = "models/svotnik/Leo_Kasper/Leo_Kasper_PM.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210",
-		},
-		[16] = {
-		["name"] = "Metal Worker",
-		["icon"] = "icons/metalworker.png",
-		["description"] = "class_desc_metallyst",
-		["model"] = "models/materials/humans/group03m/male_08.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 210",
-		},
-		[17] = {
-		["name"] = "the Intruder",
-		["icon"] = "icons/icon_intruder.png",
-		["description"] = "class_desc_intruder",
-		["model"] = "models/steinman/slashers/intruder_pm.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[18] = {
-		["name"] = "the Impostor",
-		["icon"] = "icons/amogus.png",
-		["description"] = "class_desc_amogus",
-		["model"] = "models/josephthekp/amongdrip.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		["joke"] = true
-		},
-		[19] = {
-		["name"] = "White Face",
-		["icon"] = "icons/whiteface.png",
-		["description"] = "class_desc_whiteface",
-		["model"] = "models/imscared/whiteface.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200\nRage Walk/Run Speed = 300",
-		},
-		[20] = {
-		["name"] = "Norman Bates",
-		["icon"] = "icons/icon_bates.png",
-		["description"] = "class_desc_bates",
-		["model"] = "models/steinman/slashers/bates_pm.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[21] = {
-		["name"] = "Tadero the Necromancer",
-		["icon"] = "icons/tadero.png",
-		["description"] = "class_desc_tadero",
-		["model"] = "models/players/an_cc_necromancer.mdl",
-		["stats"] = "\nWalk Speed = 160\nRun Speed = 160",
-		},
-		[22] = {
-		["name"] = "SCP-049",
-		["icon"] = "icons/scp049.png",
-		["description"] = "class_desc_scp049",
-		["model"] = "models/lolozaure/scp49.mdl",
-		["stats"] = "\nWalk Speed = 200\nRun Speed = 200",
-		},
-		[23] = {
-		["name"] = "the Deerling",
-		["icon"] = "icons/deerling.png",
-		["description"] = "class_desc_deerling",
-		["model"] = "models/bala/monsterboys_pm.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 240",
-		},
-		[24] = {
-		["name"] = "Bacteria",
-		["icon"] = "icons/bacteria.png",
-		["description"] = "class_desc_bacteria",
-		["model"] = "models/player/Bacteria.mdl",
-		["stats"] = "\nWalk Speed = 190\nRun Speed = 220",
-		},
-		[25] = {
-			["name"] = "Mute",
-			["icon"] = "icons/mute.png",
-			["description"] = "class_desc_mute",
-			["model"] = "models/bellkiller_cw.mdl",
-			["stats"] = "\nWalk Speed = 120\nRun Speed = 150",
-		},
-		[26] = {
-			["name"] = "the Nightmare",
-			["icon"] = "icons/nightmare.png",
-			["description"] = "class_desc_nightmare",
-			["model"] = "models/players/mj_dbd_fred.mdl",
-			["stats"] = "\nWalk Speed = 190\nRun Speed = 220",
-		},
-}
-
 if CLIENT then
 
 	surface.CreateFont( "Roboto F4", {
@@ -238,7 +47,7 @@ Derma_DrawBackgroundBlur(self)
 end
 
 local sheet = vgui.Create( "DColumnSheet", HUBMENU )
---sheet:Dock( FILL )
+
 sheet:SetSize(ScrW(), ScrH())
 
 local hub_close = HUBMENU:Add("DImageButton")
@@ -460,23 +269,26 @@ sls_killer_random_button:SetSize(116, 116)
 sls_killer_random_button.DoClick = function()
 	surface.PlaySound("ui/buttonclickrelease.wav")
 	local rnd_killer
-	for number, killer in RandomPairs(GM.MAP.KILLERS) do
-		if (killer.map) and killer.map != game.GetMap() then continue end
-		if (killer.joke) and GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.joke == true then continue end
+	for number, killer in RandomPairs(GM.KILLERS) do
+		if (killer.SpecialRound) then
+			if killer.SpecialRound == "GM.MAP.Pages" and !(GM.MAP.Pages) then continue end
+			if killer.SpecialRound == "GM.MAP.Vaccine" and !(GM.MAP.Vaccine) then continue end
+		end
+		if (killer.Joke) and GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.Joke == true then continue end
 		rnd_killer = number
 		net.Start("sls_hub_choosekiller")
 		net.WriteInt(rnd_killer, 6)
 		net.SendToServer()
-	if (string.find(GM.LANG:GetString(killer["description"]), "Unknow")) then
-		description:SetText(killer["description"])
-		description:AppendText(killer["stats"])
-		sls_ply_choosen_killer_description = killer["description"]
-		sls_ply_choosen_killer_stats = killer["stats"]
+	if (string.find(GM.LANG:GetString(killer.Desc), "Unknow")) then
+		description:SetText(killer.Desc)
+		description:AppendText(killer.RunSpeed .. killer.WalkSpeed)
+		sls_ply_choosen_killer_description = killer.Desc
+		sls_ply_choosen_killer_stats = killer.RunSpeed .. killer.WalkSpeed
 		else
-		description:SetText(GM.LANG:GetString(killer["description"]))
-		description:AppendText(killer["stats"])
-		sls_ply_choosen_killer_description = GM.LANG:GetString(killer["description"])
-		sls_ply_choosen_killer_stats = killer["stats"]
+		description:SetText(GM.LANG:GetString(killer.Desc))
+		description:AppendText(killer.RunSpeed .. killer.WalkSpeed)
+		sls_ply_choosen_killer_description = GM.LANG:GetString(killer.Desc)
+		sls_ply_choosen_killer_stats = killer.RunSpeed .. killer.WalkSpeed
 		end
 		if IsValid(sls_playermodel) then sls_playermodel:Remove() end
 		sls_playermodel = modelpanel:Add( "DAdjustableModelPanel" )
@@ -489,7 +301,7 @@ sls_killer_random_button.DoClick = function()
 		clickonme_mdl:SizeToContents()
 		sls_playermodel:Dock(FILL)
 		function sls_playermodel:LayoutEntity( Entity ) return end -- disables default rotation
-		sls_playermodel:SetModel(killer["model"])
+		sls_playermodel:SetModel(killer.Model)
 		
 		if (sls_playermodel.Entity:LookupBone("ValveBiped.Bip01_Head1")) then
 		local headpos = sls_playermodel.Entity:GetBonePosition(sls_playermodel.Entity:LookupBone("ValveBiped.Bip01_Head1"))
@@ -500,24 +312,27 @@ sls_killer_random_button.DoClick = function()
 		sls_playermodel.Entity:SetEyeTarget(headpos-Vector(-15, 0, 0))
 		end
 		
-		sls_ply_choosen_killer_model = killer["model"]
+		sls_ply_choosen_killer_model = killer.Model
 	end
 end
 
 --if (GM.MAP.KILLERS[game.GetMap()]) then
-for k, killer in pairs(GM.MAP.KILLERS) do --pairs(GM.MAP.KILLERS[game.GetMap()]) do
-	if (killer.map) and killer.map != game.GetMap() then continue end
+for k, killer in ipairs(GM.KILLERS) do --pairs(GM.MAP.KILLERS[game.GetMap()]) do
+	if (killer.SpecialRound) then
+		if killer.SpecialRound == "GM.MAP.Pages" and !(GM.MAP.Pages) then continue end
+		if killer.SpecialRound == "GM.MAP.Vaccine" and !(GM.MAP.Vaccine) then continue end
+	end
 
 local DermaImageButton = List:Add( "DImageButton" )
 local killername = DermaImageButton:Add("DLabel")
 killername:Dock(BOTTOM)
 killername:SetFont("Roboto F4")
-killername:SetText(killer["name"])
+killername:SetText(killer.Name)
 killername:SetTextColor(Color(255, 255, 255, 45))
 killername:SizeToContents()
 killername:SetWrap(true)
 killername:SetAutoStretchVertical( true )
-DermaImageButton:SetImage(killer["icon"])
+DermaImageButton:SetMaterial(killer.Icon)
 DermaImageButton:SetSize(116, 116)
 
 if (sls_ply_choosen_killer_model) and (sls_ply_choosen_killer_description) and (sls_ply_choosen_killer_stats) then
@@ -552,16 +367,16 @@ DermaImageButton.DoClick = function()
 net.Start("sls_hub_choosekiller")
 net.WriteInt(k, 6)
 net.SendToServer()
-if (string.find(GM.LANG:GetString(killer["description"]), "Unknow")) then
-description:SetText(killer["description"])
-description:AppendText(killer["stats"])
-sls_ply_choosen_killer_description = killer["description"]
-sls_ply_choosen_killer_stats = killer["stats"]
+if (string.find(GM.LANG:GetString(killer.Desc), "Unknow")) then
+description:SetText(killer.Desc)
+description:AppendText(killer.RunSpeed .. killer.WalkSpeed)
+sls_ply_choosen_killer_description = killer.Desc
+sls_ply_choosen_killer_stats = killer.RunSpeed .. killer.WalkSpeed
 else
-description:SetText(GM.LANG:GetString(killer["description"]))
-description:AppendText(killer["stats"])
-sls_ply_choosen_killer_description = GM.LANG:GetString(killer["description"])
-sls_ply_choosen_killer_stats = killer["stats"]
+description:SetText(GM.LANG:GetString(killer.Desc))
+description:AppendText(killer.RunSpeed .. killer.WalkSpeed)
+sls_ply_choosen_killer_description = GM.LANG:GetString(killer.Desc)
+sls_ply_choosen_killer_stats = killer.RunSpeed .. killer.WalkSpeed
 end
 if IsValid(sls_playermodel) then sls_playermodel:Remove() end
 sls_playermodel = modelpanel:Add( "DAdjustableModelPanel" )
@@ -574,7 +389,7 @@ clickonme_mdl:SetContentAlignment(8)
 clickonme_mdl:SizeToContents()
 sls_playermodel:Dock(FILL)
 function sls_playermodel:LayoutEntity( Entity ) return end -- disables default rotation
-sls_playermodel:SetModel(killer["model"])
+sls_playermodel:SetModel(killer.Model)
 
 if (sls_playermodel.Entity:LookupBone("ValveBiped.Bip01_Head1")) then
 local headpos = sls_playermodel.Entity:GetBonePosition(sls_playermodel.Entity:LookupBone("ValveBiped.Bip01_Head1"))
@@ -585,7 +400,7 @@ sls_playermodel:SetCamPos(headpos-Vector(-15, 0, 0))	-- Move cam in front of fac
 sls_playermodel.Entity:SetEyeTarget(headpos-Vector(-15, 0, 0))
 end
 
-sls_ply_choosen_killer_model = killer["model"]
+sls_ply_choosen_killer_model = killer.Model
 end
 end
 end

@@ -12,14 +12,6 @@ local GM = GM or GAMEMODE
 	ply.TerrorSoundPlaying = false
 	ply.LastViewKillerTime = 0
 end)]]--
-local TerrorSound
-local function InitValue2()
-	if !IsValid(LocalPlayer()) then return end
-
-	TerrorSound = CreateSound( LocalPlayer(), GM.MAP.TerrorMusic)
-	LocalPlayer().TerrorSoundPlaying = false
-end
-hook.Add("sls_round_PostStart", "sls_terror_PostStart", InitValue2)
 
 
 local function Terror()
@@ -30,21 +22,24 @@ local function Terror()
 		if v:GetNWBool("sls_terror_disabled", false) then return end
 if LocalPlayer():GetPos():Distance(v:GetPos()) < 1500  && v:IsValid() && v != LocalPlayer() then
 	if !LocalPlayer():Alive() && LocalPlayer().TerrorSoundPlaying then TerrorSound:FadeOut(1.2) end
-	if LocalPlayer().ChaseSoundPlaying && LocalPlayer().TerrorSoundPlaying then TerrorSound:FadeOut(1.2) end
-	if LocalPlayer().ChaseSoundPlaying then return end
 	if !LocalPlayer():Alive() then return end
+	if LocalPlayer():GetNWBool("sls_ChaseSoundPlaying", false) then return end
 --print(LocalPlayer().LastViewByKillerTime)
 
-		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1500 && (!LocalPlayer().TerrorSoundPlaying) then
---print("test")
+if LocalPlayer().TerrorSoundPlaying && LocalPlayer().ChaseSoundPlaying then
+	TerrorSound:FadeOut(1.2)
+	LocalPlayer().TerrorSoundPlaying = false
+end
 
-		timer.Simple(1, function()
+		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1500 && !LocalPlayer().TerrorSoundPlaying && !LocalPlayer().ChaseSoundPlaying then
+--print("test")
+		--timer.Simple(1, function()
 		LocalPlayer().TerrorSoundPlaying = true
 
 				TerrorSound:Play()
-		end)
+		--end)
 end
-		elseif LocalPlayer().TerrorSoundPlaying && LocalPlayer():GetPos():Distance(v:GetPos()) > 1500 then
+		elseif LocalPlayer().TerrorSoundPlaying && (LocalPlayer():GetPos():Distance(v:GetPos()) > 1500 || !LocalPlayer().ChaseSoundPlaying) then
 		TerrorSound:FadeOut(1.2)
 		LocalPlayer().TerrorSoundPlaying = false
 

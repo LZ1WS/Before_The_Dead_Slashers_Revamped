@@ -79,10 +79,12 @@ function Addicted:UseSurvAbility( ply )
         ply.addicted_used = false
         ply:SetRunSpeed(old_speed)
         ply:SetWalkSpeed(old_walk)
+        if SERVER then
         net.Start( "notificationSlasher" )
         net.WriteTable({"class_ability_time"})
         net.WriteString("safe")
         net.Send(ply)
+        end
 	end)
 end
 
@@ -96,6 +98,9 @@ if CLIENT then
 
 function HolyWeakenPlayer(ply)
     local old_speed, old_walk = ply:GetRunSpeed(), ply:GetWalkSpeed()
+    if ply:Team() == TEAM_KILLER then
+        old_speed, old_walk = GM.MAP.Killer.RunSpeed, GM.MAP.Killer.WalkSpeed
+    end
 
     ply:SetRunSpeed(old_speed - 85)
     ply:SetWalkSpeed(old_walk - 85)

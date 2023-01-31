@@ -86,22 +86,25 @@ function GM.ROUND:Start(forceKiller)
 	else
 		GM.ROUND.Killer = GM.ROUND:ChooseKiller()
 	end
+
+
 	local rnd_killer_number
-	for number, killer in RandomPairs(GM.MAP.KILLERS) do
-		if (killer.map) and killer.map != game.GetMap() then continue end
-		if (killer.joke) and GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.joke == true then continue end
+	for number, killer in RandomPairs(GM.KILLERS) do
+		if (killer.SpecialRound) then
+			if killer.SpecialRound == "GM.MAP.Pages" and !(GM.MAP.Pages) then continue end
+			if killer.SpecialRound == "GM.MAP.Vaccine" and !(GM.MAP.Vaccine) then continue end
+		end
+		if (killer.Joke) and GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.Joke == true then continue end
 		rnd_killer_number = number
 	end
 	local killer = GM.ROUND.Killer:GetNWInt("choosen_killer", rnd_killer_number)
+
 	SetGlobalInt("RNDKiller", killer)
---local mapsLuaPath = "slashers/gamemode/maps"
-			--AddCSLuaFile(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-			--include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-			AddCSLuaFile("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
-			include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
+	GM.MAP.SetupKillers()
 	net.Start("sls_plykiller")
 	net.WriteInt(killer, 8)
 	net.Broadcast()
+
 
 	local i = 0
 	for _, v in ipairs(player.GetAll()) do
@@ -161,7 +164,7 @@ function GM.ROUND:Start(forceKiller)
 		end
 	)
 	print("Start round " .. GM.ROUND.Count .. "/" .. GetConVar("slashers_round_max"):GetInt())
-	for _,ent in ipairs(ents.FindByClass("prop_physics")) do if (ent:GetPhysicsObject()) then ent:GetPhysicsObject():EnableMotion(false) end end
+	timer.Simple(GM.CONFIG["round_freeze_start"], function() for _,ent in ipairs(ents.FindByClass("prop_physics")) do if (ent:GetPhysicsObject()) then ent:GetPhysicsObject():EnableMotion(false) end end end)
 end
 
 function GM.ROUND:StartWaitingPolice()
@@ -323,11 +326,22 @@ local function Think()
 	-- Waiting Players
 	if GM.ROUND.WaitingPlayers && (!GM.ROUND.NextStart || curtime >= GM.ROUND.NextStart) then
 		local count = 0
+
+		for _, v in ipairs(player.GetBots()) do
+			v.IsReady = true
+		end
+
+		if #player.GetAll() >= GetConVar("slashers_round_min_player"):GetInt() then
 		for _, v in ipairs(player.GetAll()) do
-			if v.initialKill then
+			if v.IsReady then
 				count = count + 1
 			end
 		end
+		for _, v in ipairs(player.GetAll()) do
+			--if v.IsReady == true then continue end
+			v:PrintMessage(HUD_PRINTCENTER, "Готово (F1): " .. count .. "/" .. #player.GetAll() .. "|Ready (F1): " .. count .. "/" .. #player.GetAll())
+		end
+	end
 		if count >= GetConVar("slashers_round_min_player"):GetInt() then
 			if timer.Exists("round_starting_in") then
 					for _, v in ipairs(player.GetAll()) do
@@ -349,6 +363,7 @@ local function Think()
 					net.WriteBool(false)
 				net.Broadcast()
 				GM.ROUND:Start()
+				hook.Remove("ShowHelp", "sls_readyup_f1")
 			end)
 		end)
 	end
@@ -361,6 +376,11 @@ local function Think()
 	end
 end
 hook.Add("Think", "sls_round_Think", Think)
+hook.Add( "ShowHelp", "sls_readyup_f1", function( ply )
+	if ply.initialKill then
+		ply.IsReady = !ply.IsReady
+	end
+end)
 
 local function InitPostEntity()
 	-- Create zones

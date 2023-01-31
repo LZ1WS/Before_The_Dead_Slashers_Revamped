@@ -15,15 +15,6 @@ local GM = GM or GAMEMODE
 	ply.ChaseSoundPlaying = false
 	ply.LastViewKillerTime = 0
 end)]]--
-local ChaseSound
-local function InitValue()
-	if !IsValid(LocalPlayer()) then return end
-	ChaseSound = CreateSound( LocalPlayer(), GM.MAP.ChaseMusic)
-	LocalPlayer().LastViewByKillerTime = 0
-	LocalPlayer().ChaseSoundPlaying = false
-	LocalPlayer().LastViewKillerTime = 0
-end
-hook.Add("sls_round_PostStart", "sls_chasemo_PostStart", InitValue)
 
 local function HaveASurvivorInSight()
 	if !IsValid(GM.ROUND.Killer) then return end
@@ -58,7 +49,8 @@ end
 hook.Add("Think", "sls_SurvivorInView", HaveASurvivorInSight)
 
 local function chasekillerMusic()
-	curtime = CurTime()
+	local curtime = CurTime()
+	if LocalPlayer():Team() != TEAM_KILLER then return end
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if LocalPlayer():GetNWBool("sls_chase_disabled", false) then return end
 	if (!LocalPlayer():Alive()) then return end
@@ -81,6 +73,7 @@ hook.Add("Think","sls_ChasemodeKillerMusic",chasekillerMusic)
 
 local function LastViewByKiller()
 	LocalPlayer().LastViewByKillerTime = net.ReadFloat()
+	LocalPlayer():SetNWBool("sls_ChaseSoundPlaying", true)
 
 end
 net.Receive( "sls_chaseactivated", LastViewByKiller)
@@ -89,7 +82,8 @@ net.Receive( "sls_chaseactivated", LastViewByKiller)
 
 
 local function chaseMusic()
-	curtime = CurTime()
+	local curtime = CurTime()
+	if LocalPlayer():Team() == TEAM_KILLER then return end
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if (!LocalPlayer():Alive()) then return end
 	if LocalPlayer():GetNWBool("sls_chase_disabled", false) then return end
@@ -99,16 +93,18 @@ local function chaseMusic()
 		if (LocalPlayer().LastViewByKillerTime > curtime - 3 && !LocalPlayer().ChaseSoundPlaying) then
 --print("test")
 
-		timer.Simple(1, function()
+		--timer.Simple(1, function()
 			if LocalPlayer().LastViewByKillerTime > curtime - 3 then
 		LocalPlayer().ChaseSoundPlaying = true
 
 				ChaseSound:Play()
 			end
-		end)
+		--end)
 	elseif LocalPlayer().ChaseSoundPlaying && LocalPlayer().LastViewByKillerTime < curtime - 5  then
 		ChaseSound:FadeOut(1.2)
 		LocalPlayer().ChaseSoundPlaying = false
+		net.Start( "sls_killerunseesurvivor" )
+		net.SendToServer()
 	end
 
 

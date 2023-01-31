@@ -1,4 +1,36 @@
-local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
+local GM = GM or GAMEMODE
+
+GM.MAP.SetupKillers = function()
+local rndnumber = GetGlobalInt("RNDKiller",1)
+
+GM.MAP.StartMusic = GM.KILLERS[rndnumber].StartMusic
+GM.MAP.ChaseMusic = GM.KILLERS[rndnumber].ChaseMusic
+GM.MAP.TerrorMusic = GM.KILLERS[rndnumber].TerrorMusic
+
+GM.MAP.Killer.SpecialRound = GM.KILLERS[rndnumber].SpecialRound or "NONE"
+
+GM.MAP.Killer.Name = GM.KILLERS[rndnumber].Name
+GM.MAP.Killer.Model = GM.KILLERS[rndnumber].Model
+GM.MAP.Killer.WalkSpeed = GM.KILLERS[rndnumber].WalkSpeed
+GM.MAP.Killer.RunSpeed = GM.KILLERS[rndnumber].RunSpeed
+GM.MAP.Killer.UniqueWeapon = GM.KILLERS[rndnumber].UniqueWeapon
+GM.MAP.Killer.ExtraWeapons = GM.KILLERS[rndnumber].ExtraWeapons
+
+if CLIENT then
+	GM.MAP.Killer.Desc = GM.LANG:GetString(GM.KILLERS[rndnumber].Desc)
+	GM.MAP.Killer.Icon = GM.KILLERS[rndnumber].Icon
+end
+
+if (GM.KILLERS[rndnumber].UseAbility) then
+function GM.MAP.Killer:UseAbility(ply)
+	GM.KILLERS[rndnumber].UseAbility(ply)
+end
+end
+
+end
+
+
+/*local rndnumber = GetGlobalInt("RNDKiller",1) --GetGlobalInt("sls_killerrnd", 1)
 
 local GM = GM or GAMEMODE
 
@@ -1495,7 +1527,7 @@ elseif rndnumber == 24 then
 elseif rndnumber == 25 then
 	-- Killer
 	GM.MAP.Killer.Name = "Mute"
-	GM.MAP.Killer.Model = "models/player/fusion/bellkiller/bellkiller_pm.mdl"
+	GM.MAP.Killer.Model = "models/player/ghost/ghosts.mdl"
 	GM.MAP.Killer.WalkSpeed = 150
 	GM.MAP.Killer.RunSpeed = 180
 	GM.MAP.Killer.UniqueWeapon = true

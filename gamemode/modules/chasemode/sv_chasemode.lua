@@ -8,8 +8,10 @@
 local GM = GM or GAMEMODE
 
 util.AddNetworkString( "sls_killerseesurvivor" )
+util.AddNetworkString( "sls_killerunseesurvivor" )
 util.AddNetworkString( "sls_chaseactivated" )
 util.AddNetworkString( "sls_InitPlayValue" )
+util.AddNetworkString( "sls_chasedeactivated" )
 
 local function relayChase()
 	local ply = net.ReadEntity()
@@ -46,5 +48,16 @@ net.Receive( "sls_killerseesurvivor", function()
 		net.WriteFloat(time)
 	net.Send(ply)
 
+	ply:SetNWBool("sls_ChaseSoundPlaying", true)
+
 	end
+end)
+
+net.Receive( "sls_killerunseesurvivor", function(len, ply)
+	if !IsValid(GM.ROUND.Killer) then return end
+
+	ply:SetNWBool("sls_ChaseSoundPlaying", false)
+	net.Start( "sls_chasedeactivated" )
+	net.Send(ply)
+
 end)
