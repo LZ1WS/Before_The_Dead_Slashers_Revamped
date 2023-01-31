@@ -1,7 +1,7 @@
 
 AddCSLuaFile()
 
-SWEP.ViewModel = Model( "models/weapons/c_arms_animations.mdl" )
+SWEP.ViewModel = Model( "models/weapons/v_camer1.mdl" )
 SWEP.WorldModel = Model( "models/MaxOfS2D/camera.mdl" )
 
 SWEP.Primary.ClipSize		= -1
@@ -24,7 +24,16 @@ SWEP.DrawAmmo		= true
 SWEP.DrawCrosshair	= false
 SWEP.Spawnable		= true
 
-SWEP.ShootSound = Sound( "NPC_CScanner.TakePhoto" )
+SWEP.ShootSound = Sound( "items/camera/snap.wav" )
+
+sound.Add( {
+	name = "Item.Deploy",
+	channel = CHAN_WEAPON,
+	volume = 1.0,
+	level = 60,
+	pitch = {100, 100},
+	sound = "items/deploy.wav"
+} )
 
 if ( SERVER ) then
 
@@ -46,16 +55,39 @@ end
 -- PrimaryAttack - make a screenshot
 --
 function SWEP:PrimaryAttack()
+	local vPos = self.Owner:GetShootPos()
+	local aim = self.Owner:GetAimVector()
+
+	local trace = {}
+	trace.start = vPos
+	trace.endpos = vPos + aim * 1024
+	trace.filter = self.Owner
+	trace.mins = Vector(-4,-4,-4)
+	trace.maxs = Vector(4,4,4)
+	local tr = util.TraceHull( trace )
+
 	if self:Ammo1() <= 0 then return end
 	self:SetNextPrimaryFire(CurTime() + 10)
 	self:TakePrimaryAmmo( 1 )
 	self:DoShootEffect()
-	for _,killer in ipairs(ents.FindInSphere(self.Owner:GetPos(), 100)) do
-	if killer:IsPlayer() and killer != self.Owner and killer:Team() == TEAM_KILLER then
-	killer:ScreenFade(SCREENFADE.IN, color_white, 2, 4)
-		break
+
+	if SERVER then
+	for k,v in ipairs(ents.FindInSphere(tr.HitPos,700)) do
+		if v ~= self.Owner then
+			if v:IsPlayer() and v:Team() == TEAM_KILLER then
+				if self.Owner:IsLineOfSightClear(v) then
+					local vec1 = (v:GetPos() - (self.Owner:GetShootPos() + aim*-64))
+					vec1:Normalize()
+					local dot = vec1:DotProduct(aim)
+					if dot > 0.8 and v ~= self.Owner then
+						v:ScreenFade(SCREENFADE.IN, color_white, 2, 4)
+					end
+				end
+			end
+		end
 	end
-	end
+end
+
 	-- If we're multiplayer this can be done totally clientside
 	if ( !game.SinglePlayer() && SERVER ) then return end
 	if ( CLIENT && !IsFirstTimePredicted() ) then return end
@@ -107,7 +139,7 @@ function SWEP:DoShootEffect()
 
 		local effectdata = EffectData()
 		effectdata:SetOrigin( tr.HitPos )
-		util.Effect( "camera_flash", effectdata, true )
+		util.Effect( "ghostcam_flash", effectdata, true )
 
 	end
 
