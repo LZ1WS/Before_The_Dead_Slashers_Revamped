@@ -1,7 +1,7 @@
 "btd_slashers"
 {
 	"base"		"base"
-	"title"		"Before the Dead"
+	"title"		"Slashers"
 	"maps"		"^slash_"
 	"menusystem"	"1"
 	"category"		"pvp"
