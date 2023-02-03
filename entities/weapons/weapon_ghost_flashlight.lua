@@ -192,7 +192,7 @@ function SWEP:Reload()
 	self:DoHit()
 	self.HitCd = true
 
-	timer.Simple(0.06, function() self.HitCd = false end)
+	timer.Simple(1, function() self.HitCd = false end)
 	end
 end
 

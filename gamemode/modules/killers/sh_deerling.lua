@@ -18,7 +18,7 @@ if CLIENT then
 	GM.KILLERS[KILLER_DEERLING].Icon = Material("icons/deerling.png")
 end
 
-local deerling_ability_active = true
+local deerling_ability_active = false
 local deerling_ability_used = false
 
 GM.KILLERS[KILLER_DEERLING].UseAbility = function(ply)

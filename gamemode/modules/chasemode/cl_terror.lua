@@ -31,7 +31,7 @@ if LocalPlayer().TerrorSoundPlaying && LocalPlayer().ChaseSoundPlaying then
 	LocalPlayer().TerrorSoundPlaying = false
 end
 
-		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1500 && !LocalPlayer().TerrorSoundPlaying && !LocalPlayer().ChaseSoundPlaying then
+		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1500 && !LocalPlayer().TerrorSoundPlaying && !LocalPlayer():GetNWBool("sls_ChaseSoundPlaying", false) then
 --print("test")
 		--timer.Simple(1, function()
 		LocalPlayer().TerrorSoundPlaying = true
@@ -39,7 +39,7 @@ end
 				TerrorSound:Play()
 		--end)
 end
-		elseif LocalPlayer().TerrorSoundPlaying && (LocalPlayer():GetPos():Distance(v:GetPos()) > 1500 || !LocalPlayer().ChaseSoundPlaying) then
+		elseif LocalPlayer().TerrorSoundPlaying && (LocalPlayer():GetPos():Distance(v:GetPos()) > 1500 || LocalPlayer():GetNWBool("sls_ChaseSoundPlaying", false)) then
 		TerrorSound:FadeOut(1.2)
 		LocalPlayer().TerrorSoundPlaying = false
 
