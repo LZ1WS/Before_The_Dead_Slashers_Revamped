@@ -111,6 +111,8 @@ LANG["votemap_random"] = "Случайно"
 -- HUB
 LANG["hub_survivorshow"] = "Выжившие"
 LANG["hub_killerchoose"] = "Убийцы"
+LANG["hub_settings"] = "Настройки"
+LANG["hub_settings_main"] = "Основные Настройки"
 LANG["hub_description"] = "Описание"
 LANG["hub_model"] = "Модель"
 LANG["hub_killer_checkbox"] = "Разрешить выбирать вас убийцей"

@@ -22,7 +22,7 @@ GM.CONFIG["killer_weapons"] = {
 }
 -- Armes pour les survivants
 GM.CONFIG["survivors_weapons"] = {
-	"weapon_flashlight"
+	"slshandsswep"
 }
 -- Points ajoutés de choosekiller ajoutés à chaque manche terminée
 GM.CONFIG["round_choosekiller_add"] = 10

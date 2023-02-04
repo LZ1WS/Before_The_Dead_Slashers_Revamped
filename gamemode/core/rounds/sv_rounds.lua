@@ -344,6 +344,7 @@ local function Think()
 	end
 		if count >= GetConVar("slashers_round_min_player"):GetInt() then
 			if timer.Exists("round_starting_in") then
+				timer.UnPause("round_starting_in")
 					for _, v in ipairs(player.GetAll()) do
 			v:PrintMessage(HUD_PRINTCENTER, "Начало через|Starting in: " .. math.Round(timer.TimeLeft("round_starting_in")))
 			end
@@ -363,10 +364,11 @@ local function Think()
 					net.WriteBool(false)
 				net.Broadcast()
 				GM.ROUND:Start()
-				hook.Remove("ShowHelp", "sls_readyup_f1")
 			end)
 		end)
 	end
+	else
+		if timer.Exists("round_starting_in") then timer.Pause("round_starting_in") end
 		end
 	end
 
@@ -376,11 +378,6 @@ local function Think()
 	end
 end
 hook.Add("Think", "sls_round_Think", Think)
-hook.Add( "ShowHelp", "sls_readyup_f1", function( ply )
-	if ply.initialKill then
-		ply.IsReady = !ply.IsReady
-	end
-end)
 
 local function InitPostEntity()
 	-- Create zones

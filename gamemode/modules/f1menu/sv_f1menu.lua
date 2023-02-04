@@ -14,5 +14,9 @@ local function F1Menu(ply)
 		net.Start("sls_f1_menu")
 		net.Send(ply)
 	end
+	if !GAMEMODE.ROUND.Active then
+		if ply.IsReady == nil then ply.IsReady = true return end
+	ply.IsReady = !ply.IsReady
+	end
 end
 hook.Add( "ShowHelp", "sls_F1MenuShow", F1Menu )
