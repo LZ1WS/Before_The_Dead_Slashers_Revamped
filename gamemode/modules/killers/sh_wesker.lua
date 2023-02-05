@@ -37,8 +37,8 @@ end
 
 if SERVER then
 hook.Add( "PlayerShouldTakeDamage", "Wesker_infection", function( ply, attacker )
-	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_WESKER].Name then return end
+	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and attacker:Team() == TEAM_KILLER and ply:GetNWBool("sls_wesker_infected", false) == false then
 ply:SetNWBool("sls_wesker_infected", true)
 if !ply:IsBot() then

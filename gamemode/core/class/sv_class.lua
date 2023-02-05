@@ -29,7 +29,11 @@ function playermeta:SetSurvClass(class)
 	for _, v in ipairs(GM.CLASS.Survivors[class].weapons) do
 		self:Give(v)
 	end
+	if game.GetMap() == "ai_lockdown" then
+		self:SetJumpPower(260)
+	else
 	self:SetJumpPower(200)
+	end
 	self:SetWalkSpeed(GM.CLASS.Survivors[class].walkspeed)
 	self:SetRunSpeed(GM.CLASS.Survivors[class].runspeed)
 	self:SetMaxHealth(GM.CLASS.Survivors[class].life)
@@ -58,7 +62,11 @@ function playermeta:SetupKiller()
 		end
 	end
 if !self:IsBot() then
+	if game.GetMap() == "ai_lockdown" then
+		self:SetJumpPower(260)
+	else
 	self:SetJumpPower(90)
+	end
 end
 	self:SetWalkSpeed(GM.MAP.Killer.WalkSpeed)
 	self:SetRunSpeed(GM.MAP.Killer.RunSpeed)
@@ -70,6 +78,22 @@ end
 	self:GodEnable()
 	end
 	self.ClassID = CLASS_KILLER
+end
+
+function playermeta:TakeBot(bot, ply)
+	if !IsValid(bot) or !bot:IsBot() or !bot:Alive() or bot:Team() == TEAM_KILLER or !IsValid(ply) or !ply:IsPlayer() or ply:Alive() or ply:Team() == TEAM_KILLER then return end
+	local class = bot.ClassID
+
+
+	ply:UnSpectate()
+	ply:SetObserverMode(OBS_MODE_NONE)
+	ply:SetParent(nil)
+
+	ply:Spawn()
+	ply:SetPos(bot:GetPos())
+	ply:SetSurvClass(class)
+	bot:KillSilent()
+
 end
 
 function GM.CLASS:SetupSurvivors()

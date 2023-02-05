@@ -55,6 +55,7 @@ if CLIENT then
 
 		local ply = LocalPlayer()
 		if !GAMEMODE.ROUND.Active || !IsValid(GAMEMODE.ROUND.Killer) || !GAMEMODE.ROUND.Survivors  then return end
+		if !(ply.Stamina) then return end
 		if table.HasValue(GAMEMODE.ROUND.Survivors, ply )  then
 
 			if 	ply.Stamina >= 10 then
@@ -217,6 +218,7 @@ if CLIENT then
 		local bwide
 		if ply:Team() != TEAM_SURVIVORS || !ply:Alive() then return end
 		if !ply.ClassID || !GAMEMODE.ROUND.Active || !GAMEMODE.CLASS.Survivors[ply.ClassID].stamina then return end
+		if !(ply.Stamina) then return end
 		bwide = 256 * ply.Stamina / GAMEMODE.CLASS.Survivors[ply.ClassID].stamina
 		if ply.Stamina == GAMEMODE.CLASS.Survivors[ply.ClassID].stamina && alpha_stamina > 0 then
 			alpha_stamina = math.max(0, alpha_stamina - 4)

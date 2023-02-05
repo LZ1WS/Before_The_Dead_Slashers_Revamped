@@ -33,7 +33,7 @@ function FindNearestEntity( Name, pos, range )
 end
 
 local function ExitAppear()
-	if !IsValid(GM.ROUND.EscapeButton) then return end
+	if !IsValid(GM.ROUND.EscapeButton) or !IsValid(GM.ROUND.CustomEscape) then return end
 
 	local ButtonPos
 	local EscapePos
@@ -45,16 +45,19 @@ local function ExitAppear()
 	-- prop_car_*
 
 	local Escape = FindNearestEntity("door_exit*",ButtonPos,9000)
+
 	if (Escape == nil ) then
 		Escape = FindNearestEntity("prop_car_*",ButtonPos,9000)
 		EscapePos = Escape:GetPos()
-
 	else
 		EscapePos = Escape:GetPos()
-
 	end
 
+	if GM.ROUND.CustomEscape then
+		AddExit(GM.ROUND.CustomEscape["pos2"])
+	else
 	AddExit(Vector(EscapePos))
+	end
 
 end
 hook.Add("sls_round_StartEscape", "sls_round_exitIcon", ExitAppear)

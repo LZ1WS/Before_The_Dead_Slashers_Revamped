@@ -21,6 +21,7 @@ util.AddNetworkString("sls_round_SetupCamera")
 util.AddNetworkString("sls_round_Camera")
 util.AddNetworkString("sls_round_UpdateEndTime")
 util.AddNetworkString("sls_plykiller")
+util.AddNetworkString("sls_lobby_music_play")
 util.AddNetworkString("rnd_killer")
 util.AddNetworkString("RNDKiller")
 --[[	if SERVER then
@@ -51,12 +52,37 @@ function GM.ROUND:ViewInitCam(enable)
 end
 
 function GM.ROUND:Start(forceKiller)
+	GM.ROUND.SpecialType = nil
+	local chance = math.random()
+	local spec_chance = GetConVar("slashers_specialround_chance"):GetInt() / 100
+
+	if chance <= spec_chance and !table.IsEmpty(GM.ROUND.Special) then
+		if spec_chance == 0 then return end
+		GM.ROUND.SpecialType = table.Random(GM.ROUND.Special)
+
+		if GM.ROUND.SpecialType.Types then
+			local areas = table.Count( navmesh.GetAllNavAreas() )
+			if areas == 0 then
+				GM.ROUND.SpecialType = nil
+			end
+		end
+
+		if GM.ROUND.SpecialType then
+		GM.ROUND.SpecialType.Start()
+		
+		return
+		end
+	end
+
 	GM.ROUND.Survivors = {}
 	GM.ROUND.Killer = nil
 	GM.ROUND.EndTime = nil
 	GM.ROUND.WaitingPolice = false
 	GM.ROUND.Escape = false
 	GM.ROUND.NextStart = nil
+
+	local surv_spawns
+	local killer_spawns
 
 	local playersCount = 0
 	for _, v in ipairs(player.GetAll()) do
@@ -79,6 +105,13 @@ function GM.ROUND:Start(forceKiller)
 	hook.Run("sls_round_PreStart")
 	net.Start("sls_round_PreStart")
 	net.Broadcast()
+
+	if istable(GM.MAP.Config) then
+
+		surv_spawns = GM.MAP.Config["Surv_Spawns"]
+		killer_spawns = GM.MAP.Config["Kill_Spawns"]
+
+	end
 
 	-- Setup players
 	if IsValid(forceKiller) then
@@ -120,7 +153,11 @@ function GM.ROUND:Start(forceKiller)
 	local spawnpoints = ents.FindByClass("info_player_counterterrorist")
 	for _, v in ipairs(GM.ROUND.Survivors) do
 		v:Spawn()
+		if istable(GM.MAP.Config) then
+		v:SetPos(table.Random(surv_spawns))
+		else
 		v:SetPos(table.Random(spawnpoints):GetPos())
+		end
 		v:Freeze(true)
 		v:ScreenFade(SCREENFADE.IN, Color(0, 0, 0), 2, GM.CONFIG["round_freeze_start"] - 2)
 		v:SetNWBool("Escaped", false)
@@ -130,7 +167,11 @@ function GM.ROUND:Start(forceKiller)
 	if IsValid(GM.ROUND.Killer) then
 		GM.ROUND.Killer:Spawn()
 		GM.ROUND.Killer:SetupKiller()
+		if istable(GM.MAP.Config) then
+		GM.ROUND.Killer:SetPos(table.Random(killer_spawns))
+		else
 		GM.ROUND.Killer:SetPos(table.Random(ents.FindByClass("info_player_terrorist")):GetPos())
+		end
 		GM.ROUND.Killer:Freeze(true)
 		GM.ROUND.Killer:ScreenFade(SCREENFADE.IN, Color(0, 0, 0), 2, GM.CONFIG["round_freeze_start"] - 2)
 		GM.ROUND.Killer:SetNWBool("Escaped", false)
@@ -168,6 +209,10 @@ function GM.ROUND:Start(forceKiller)
 end
 
 function GM.ROUND:StartWaitingPolice()
+	if (GM.ROUND.SpecialType) and (GM.ROUND.SpecialType.StartWaitingPolice) then
+		GM.ROUND.SpecialType.StartWaitingPolice()
+		return
+	end
 	GM.ROUND.WaitingPolice = true
 	GM.ROUND.EndTime = CurTime() + GM.CONFIG["round_freeze_start"] + GetConVar("slashers_duration_waitingpolice_base"):GetFloat() +
 		(#GM.ROUND:GetSurvivorsAlive() * GetConVar("slashers_duration_waitingpolice_addsurv"):GetFloat())
@@ -179,6 +224,10 @@ function GM.ROUND:StartWaitingPolice()
 end
 
 function GM.ROUND:StartEscape()
+	if (GM.ROUND.SpecialType) and (GM.ROUND.SpecialType.StartEscape) then
+		GM.ROUND.SpecialType.StartEscape()
+		return
+	end
 	objectifComplete()
 	GM.ROUND.WaitingPolice = false
 	GM.ROUND.Escape = true
@@ -188,6 +237,47 @@ function GM.ROUND:StartEscape()
 	GM.ROUND.EscapeButton = table.Random(ents.FindByName("button_escape"))
 if (GM.ROUND.EscapeButton) then
 	GM.ROUND.EscapeButton:Fire("Press")
+else
+	GM.ROUND.CustomEscape = table.Random(GM.MAP.Config["Escapes"])
+
+	if GM.ROUND.CustomEscape then
+
+		for _, v in ipairs(ents.FindInSphere(GM.ROUND.CustomEscape["pos2"], 200)) do 
+		if v:GetClass() == GM.MAP.Config["Exit_Doors_Type"] then v:Remove() break end
+		end
+
+			local zone
+			local vec1, vec2
+	
+			vec1 = GM.ROUND.CustomEscape["pos1"]
+			vec2 = GM.ROUND.CustomEscape["pos2"]
+			zone = CreateZone(vec1, vec2)
+	
+			function zone:OnPlayerEnter(ply)
+				if !GM.ROUND.Escape then return end
+				if ply:Team() != TEAM_SURVIVORS then return end
+				ply:SetNWBool("Escaped", true)
+				ply:KillSilent()
+					-- Start Spectate
+		timer.Simple(4, function()
+			if !GM.ROUND.Active then return end
+			if !IsValid(ply) then return end
+			if ply:Team() != TEAM_SURVIVORS then return end
+	
+			for _,surv in pairs(GM.ROUND.Survivors) do
+				if surv:Alive() then
+		ply:Spectate(OBS_MODE_CHASE)
+		ply:SpectateEntity(surv)
+		ply:SetParent(surv)
+		ply:SetPos(surv:GetPos())
+					break
+				end
+			end
+		end)
+	end
+		
+	end
+	
 end
 
 	hook.Run("sls_round_StartEscape")
@@ -197,6 +287,10 @@ end
 end
 
 function GM.ROUND:End(nowin)
+	if (GM.ROUND.SpecialType) and (GM.ROUND.SpecialType.End) then
+		GM.ROUND.SpecialType.End()
+		return
+	end
 	local winTeam
 
 	GM.ROUND.Active = false
@@ -226,6 +320,7 @@ function GM.ROUND:End(nowin)
 	GM.ROUND.Survivors = {}
 	GM.ROUND.Killer = nil
 	GM.ROUND.EndTime = nil
+	GM.ROUND.SpecialType = nil
 	GM.ROUND.NextStart = CurTime() + (nowin and 8 or GM.CONFIG["round_duration_end"])
 
 	if #player.GetAll() < GetConVar("slashers_round_min_player"):GetInt() then
@@ -251,7 +346,6 @@ end
 
 function GM:PlayerSpawn(ply)
 	if !ply.initialKill then
-		local camera = ents.FindByName("camera_view")[1]
 
 		ply:KillSilent()
 		ply.initialKill = true
@@ -302,8 +396,11 @@ local function PlayerDisconnected(ply)
 
 	PlayerDK(ply)
 end
+
 hook.Add("PlayerDisconnected", "sls_round_PlayerDisconnected", PlayerDisconnected)
+
 local debounce_timer = false
+
 local function Think()
 	local curtime = CurTime()
 
@@ -341,12 +438,17 @@ local function Think()
 			--if v.IsReady == true then continue end
 			v:PrintMessage(HUD_PRINTCENTER, "Готово (F1): " .. count .. "/" .. #player.GetAll() .. "|Ready (F1): " .. count .. "/" .. #player.GetAll())
 		end
+
 	end
 		if count >= GetConVar("slashers_round_min_player"):GetInt() then
 			if timer.Exists("round_starting_in") then
 				timer.UnPause("round_starting_in")
 					for _, v in ipairs(player.GetAll()) do
 			v:PrintMessage(HUD_PRINTCENTER, "Начало через|Starting in: " .. math.Round(timer.TimeLeft("round_starting_in")))
+			LobbyMusic:FadeOut(timer.TimeLeft("round_starting_in") / 2)
+			timer.Simple(timer.TimeLeft("round_starting_in") / 2, function()
+				LobbyMusic:Stop()
+			end)
 			end
 			end
 		if !(debounce_timer) then
@@ -369,6 +471,11 @@ local function Think()
 	end
 	else
 		if timer.Exists("round_starting_in") then timer.Pause("round_starting_in") end
+		if !LobbyMusic:IsPlaying() then
+			LobbyMusic:Play()
+		elseif LobbyMusic:GetVolume() == 0 then
+			LobbyMusic:ChangeVolume(1)
+		end
 		end
 	end
 
@@ -416,8 +523,13 @@ local function InitPostEntity()
 timer.Simple(1, function()
 	-- Get Cam pos
 	local camera = ents.FindByName("camera_view")[1]
+	if (camera) then
 	GM.ROUND.CameraPos = camera:GetPos()
 	GM.ROUND.CameraAng = camera:GetAngles()
+	else
+		GM.ROUND.CameraPos = GM.MAP.Config["Camera_Pos"]
+		GM.ROUND.CameraAng = GM.MAP.Config["Camera_Angle"]	
+	end
 end)
 end
 hook.Add("InitPostEntity", "sls_round_InitPostEntity", InitPostEntity)

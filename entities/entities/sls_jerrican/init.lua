@@ -55,14 +55,22 @@ function ENT:Use(ply)
 
 			net.Start( "modifyObjectiveSlasher" )
 						net.WriteTable({"round_mission_jerrycan", NbJerricanToFound})
-						net.SendOmit(GM.ROUND.Killer)
+						if IsValid(GM.ROUND.Killer) then
+							net.SendOmit(GM.ROUND.Killer)
+						else
+							net.Send(GM.ROUND.Survivors)
+						end
 
 		end
 		if (NbJerricanToFound == 0) then
 			net.Start( "objectiveSlasher" )
 							 net.WriteTable({"round_mission_generator"})
 							 net.WriteString("caution")
+							 if IsValid(GM.ROUND.Killer) then
 							 net.SendOmit(GM.ROUND.Killer)
+							 else
+								net.Send(GM.ROUND.Survivors)
+							 end
 
 			hook.Call("sls_NextObjective")
 

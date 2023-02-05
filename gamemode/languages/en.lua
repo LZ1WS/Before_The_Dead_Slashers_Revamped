@@ -54,6 +54,7 @@ LANG["class_desc_deerling"] = "They just came from the grey swamp. When we final
 LANG["class_desc_bacteria"] = "Entity that escaped from Backrooms.\nBacteria can travel through the world beyond ours through its portals. By holding the RMB, it can pounce on the survivor, also you see auras of survivors near your portals while holding RMB. Hold CTRL to place a portal underneath you when prompt appears. Hold CTRL and aim to another portal while standing on another one to travel through other world to selected portal."
 LANG["class_desc_mute"] = "A killer using stealth tactics and an indirect approach to eliminating his victims. You can compensate for your low physical characteristics with complete silence for a certain time (Q ability) and the lethality of attacks from the back."
 LANG["class_desc_nightmare"] = "A serial killer who came from nightmares. A legend that originated on Elm Street.\n Pursues the victims, exhausting and driving them into a state of sleep, after which it sets its own rhythm to the chase, from which it is extremely difficult to escape. Use RMB to imprison the survivors in your world and use the factors affecting the sleeping targets in it in order to gain an advantage in hunting."
+LANG["class_desc_xeno"] = "You're an hostile alien lifeform, which uses it's echolocation in order to locate and stalk victims. As soon as you see one, you can activate chase mode to catch up with targets quickly. (Q to change Hunt/Stalk mode)"
 LANG["class_desc_wip"] = "Work in progress."
 
 LANG["scp049_infect"] = " HP, can infect (RMB)."

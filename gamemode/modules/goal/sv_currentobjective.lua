@@ -20,7 +20,11 @@ if GM.MAP.Killer.SpecialRound == "GM.MAP.Pages" then
 		net.Start( "objectiveSlasher" )
 		net.WriteTable({"round_mission_pages", NbPagesToFind})
 		net.WriteString("caution")
+		if IsValid(GAMEMODE.ROUND.Killer) then
 		net.SendOmit(GAMEMODE.ROUND.Killer)
+		else
+		net.Send(GAMEMODE.ROUND.Survivors)
+		end
 else
 		CurrentObjective = "find_jerrican"
 		NbJerricanToFind = math.ceil(#player.GetAll() / 3)
@@ -29,7 +33,11 @@ else
 		net.Start( "objectiveSlasher" )
 		net.WriteTable({"round_mission_jerrycan", NbJerricanToFind})
 		net.WriteString("caution")
+		if IsValid(GAMEMODE.ROUND.Killer) then
 		net.SendOmit(GAMEMODE.ROUND.Killer)
+		else
+		net.Send(GAMEMODE.ROUND.Survivors)
+		end
 	end
 end
 )

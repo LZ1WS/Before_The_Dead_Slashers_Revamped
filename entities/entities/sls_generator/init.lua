@@ -97,7 +97,11 @@ function ENT:Use(activator, caller)
 			net.Start( "objectiveSlasher" )
 			net.WriteTable({"round_mission_radio"})
 			net.WriteString("caution")
-			net.SendOmit(GM.ROUND.Killer)
+			if IsValid(GM.ROUND.Killer) then
+				net.SendOmit(GM.ROUND.Killer)
+			else
+				net.Send(GM.ROUND.Survivors)
+			end
 			self.Active = true
 			hook.Call("sls_NextObjective")
 		end

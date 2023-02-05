@@ -5,7 +5,15 @@
 -- @Last Modified by:   Garrus2142
 -- @Last Modified time: 2017-08-09T15:57:36+02:00
 
+util.AddNetworkString("sls_ply_take_bot")
+
 local GM = GM or GAMEMODE
+
+net.Receive("sls_ply_take_bot", function(len, ply)
+
+	ply:TakeBot(net.ReadEntity(), ply)
+
+end)
 
 local function SpectatePlayer(ply, target)
 	if !IsValid(target) then return end

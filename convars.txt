@@ -45,3 +45,11 @@
  "slashers_unserious_killers" = "1"
   game replicated server_can_execute lua_server
   - Toggle on (1) or off (0) unserious killers (Example: Mason, Imposter)
+
+ "slashers_specialround_npcs" = "npc_isolation_xeno"
+  game replicated server_can_execute lua_server
+  - The NPCs which spawn on NPC-Killer Special Round.
+
+ "slashers_specialround_chance" = "1" min. 0.000000 max. 100.000000
+  game replicated server_can_execute lua_server
+  - The chance of special round occuring instead of a normal one (set to 0 to disable completely).

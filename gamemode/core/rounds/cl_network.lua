@@ -15,6 +15,10 @@ local function PreStart()
 end
 net.Receive("sls_round_PreStart", PreStart)
 
+net.Receive("sls_specialround_share", function()
+	GM.ROUND.SpecialType = net.ReadTable() or nil
+end)
+
 --[[net.Receive("RNDKiller", function()
 SetGlobalInt("sls_killerrnd", net.ReadInt(5))
 print(GetGlobalInt("sls_killerrnd", 1))
@@ -65,6 +69,7 @@ local function End()
 	GM.ROUND.Survivors = {}
 	GM.ROUND.Killer = nil
 	GM.ROUND.EndTime = nil
+	GM.ROUND.SpecialType = nil
 	winTeam = net.ReadInt(4)
 	hook.Run("sls_round_End", winTeam)
 end

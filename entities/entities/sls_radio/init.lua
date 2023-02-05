@@ -62,7 +62,11 @@ function ENT:Use(ply)
 		net.Start( "objectiveSlasher" )
 						 net.WriteTable({"round_notif_police"})
 						 net.WriteString("caution")
-						 net.SendOmit(GM.ROUND.Killer)
+						 if IsValid(GM.ROUND.Killer) then
+							net.SendOmit(GM.ROUND.Killer)
+						else
+							net.Send(GM.ROUND.Survivors)
+						end
 
 		hook.Call("sls_NextObjective")
 		self.Active = true

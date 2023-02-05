@@ -15,3 +15,5 @@ CreateConVar("slashers_duration_waitingpolice_base", 32.5, {FCVAR_SERVER_CAN_EXE
 CreateConVar("slashers_duration_waitingpolice_addsurv", 22.5, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Added duration per each survivors before police arrived. (in seconds)")
 CreateConVar("slashers_round_max", 5, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Max round before change map.")
 CreateConVar("slashers_unserious_killers", 1, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Toggle on (1) or off (0) unserious killers (Example: Mason, Imposter).", 0, 1)
+CreateConVar("slashers_specialround_chance", 30, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "The chance of special round occuring instead of a normal one (set to 0 to disable completely).", 0, 100)
+CreateConVar("slashers_specialround_npcs", "npc_isolation_xeno", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "The NPCs which spawn on NPC-Killer Special Round.")

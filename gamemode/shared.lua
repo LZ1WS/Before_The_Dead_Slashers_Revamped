@@ -61,6 +61,7 @@ KILLER_DEERLING = 23
 KILLER_BACTERIA = 24
 KILLER_MUTE = 25
 KILLER_NIGHTMARE = 26
+KILLER_XENO = 27
 
 team.SetUp(TEAM_KILLER, "Murderer", Color(255, 0, 0), false);
 team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255), false);

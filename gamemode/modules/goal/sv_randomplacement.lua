@@ -122,8 +122,11 @@ local function Spawn_SlashPages()
 					if w.ang then newEnt:SetAngles(w.ang) end --set angle
 					if w.pos then newEnt:SetPos(w.pos) end --set position
 					newEnt:Spawn()
+					local physobj = newEnt:GetPhysicsObject()
+					physobj:EnableMotion(false)
 
 					newEnt:Activate()
+					newEnt:EmitSound("SlenderRising.SignWhispers")
 
 					w.spw = true
 				end

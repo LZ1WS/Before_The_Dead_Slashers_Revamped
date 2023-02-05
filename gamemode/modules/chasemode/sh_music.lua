@@ -1,4 +1,5 @@
 local GM = GM or GAMEMODE
+
 function sls_music_InitValue()
     local filter
 	if SERVER then
@@ -19,3 +20,18 @@ function sls_music_InitValue()
 end
 end
 hook.Add("sls_round_PostStart", "sls_music_PostStart", sls_music_InitValue)
+
+hook.Add("InitPostEntity","sls_lobbymusic_init", function()
+    local filter
+	if SERVER then
+		filter = RecipientFilter()
+		filter:AddAllPlayers()
+	end
+
+	if GM.MAP.LobbyMusic then
+	LobbyMusic = CreateSound( game.GetWorld(), GM.MAP.LobbyMusic, filter)
+	else
+		LobbyMusic = CreateSound( game.GetWorld(), "lobby/normal" .. math.random(1, 10) .. ".wav", filter)
+	end
+	LobbyMusic:SetSoundLevel( 0 )
+end)
