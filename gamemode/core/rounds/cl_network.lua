@@ -16,7 +16,7 @@ end
 net.Receive("sls_round_PreStart", PreStart)
 
 net.Receive("sls_specialround_share", function()
-	GM.ROUND.SpecialType = net.ReadTable() or nil
+	GM.MAP.StartMusic = net.ReadTable().StartMusic or GM.KILLERS[rndnumber].StartMusic
 end)
 
 --[[net.Receive("RNDKiller", function()

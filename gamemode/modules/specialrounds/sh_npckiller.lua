@@ -42,7 +42,7 @@ GM.ROUND.Special.NPC.Start = function()
 		GM.ROUND:End(true)
 	end
 
-	local new_table = GM.ROUND.SpecialType
+	local new_table = table.Copy(GM.ROUND.SpecialType)
 
 	for _, value in pairs(new_table) do
 		if isfunction(value) then
@@ -52,10 +52,6 @@ GM.ROUND.Special.NPC.Start = function()
 
 	hook.Run("sls_round_PreStart")
 	net.Start("sls_round_PreStart")
-	net.Broadcast()
-
-	net.Start("sls_specialround_share")
-	net.WriteTable(new_table)
 	net.Broadcast()
 
 	if istable(GM.MAP.Config) then
@@ -69,6 +65,10 @@ GM.ROUND.Special.NPC.Start = function()
 	GM.MAP.SetupKillers()
 	net.Start("sls_plykiller")
 	net.WriteInt(KILLER_XENO, 8)
+	net.Broadcast()
+
+	net.Start("sls_specialround_share")
+	net.WriteTable(new_table)
 	net.Broadcast()
 
 	local i = 0

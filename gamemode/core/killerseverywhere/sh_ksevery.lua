@@ -2,12 +2,7 @@ local GM = GM or GAMEMODE
 
 GM.MAP.SetupKillers = function()
 local rndnumber = GetGlobalInt("RNDKiller",1)
-
-if (GM.ROUND.SpecialType) and (GM.ROUND.SpecialType.StartMusic) then
-GM.MAP.StartMusic = GM.ROUND.SpecialType.StartMusic
-else
 GM.MAP.StartMusic = GM.KILLERS[rndnumber].StartMusic
-end
 GM.MAP.ChaseMusic = GM.KILLERS[rndnumber].ChaseMusic
 GM.MAP.TerrorMusic = GM.KILLERS[rndnumber].TerrorMusic
 
