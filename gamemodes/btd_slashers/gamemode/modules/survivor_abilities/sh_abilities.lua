@@ -97,6 +97,7 @@ if CLIENT then
     end
 
 function HolyWeakenPlayer(ply)
+    if !IsValid(ply) then return end
     local old_speed, old_walk = ply:GetRunSpeed(), ply:GetWalkSpeed()
     if ply:Team() == TEAM_KILLER then
         old_speed, old_walk = GM.MAP.Killer.RunSpeed, GM.MAP.Killer.WalkSpeed

@@ -54,7 +54,7 @@ if CLIENT then
 		local Change = FrameTime() * 5
 
 		local ply = LocalPlayer()
-		if !GAMEMODE.ROUND.Active || !IsValid(GAMEMODE.ROUND.Killer) || !GAMEMODE.ROUND.Survivors  then return end
+		if !GAMEMODE.ROUND.Active || !GAMEMODE.ROUND.Survivors  then return end
 		if !(ply.Stamina) then return end
 		if table.HasValue(GAMEMODE.ROUND.Survivors, ply )  then
 

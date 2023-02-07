@@ -97,7 +97,7 @@ end
 
 if SERVER then
 	local function EntityTakeDamage(target, dmg)
-		if !target:IsPlayer() || !dmg:GetAttacker() || !dmg:GetAttacker().GetActiveWeapon || !dmg:GetAttacker():GetActiveWeapon() ||
+		if !IsValid(GAMEMODE.ROUND.Killer) || !target:IsPlayer() || !dmg:GetAttacker() || !dmg:GetAttacker().GetActiveWeapon || !dmg:GetAttacker():GetActiveWeapon() ||
 			dmg:GetAttacker():GetActiveWeapon():GetClass() != "stun_gun" then return end
 		if target:Team() == TEAM_SURVIVORS then return true end
 		if target:Team() == TEAM_KILLER && !target.stun then

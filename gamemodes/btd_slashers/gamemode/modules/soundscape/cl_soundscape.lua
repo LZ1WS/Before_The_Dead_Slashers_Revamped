@@ -129,6 +129,10 @@ local function StartRound()
 	-- Suppression du timer sambient
 	if timer.Exists("sls_sambient") then timer.Remove("sls_sambient") end
 
+	if !LocalPlayer():GetNWBool("sls_intro_disabled", true) then
+		GAMEMODE.MAP.StartMusic = "sound/slashers/effects/notif_2.wav"
+	end
+
 	-- Start round sound
 	sound.PlayFile(GAMEMODE.MAP.StartMusic, "noplay", function(station)
 		if IsValid(station) then

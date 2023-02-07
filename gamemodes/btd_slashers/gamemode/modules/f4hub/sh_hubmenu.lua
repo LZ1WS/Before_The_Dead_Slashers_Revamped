@@ -146,9 +146,35 @@ Workshop.DoClick = function()
 	gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2804558040")
 end
 
+local sls_intro_disable = main_settings:Add( "DCheckBoxLabel" ) -- Create the checkbox
+	--sls_killer_Checkbox:Dock(TOP)
+	sls_intro_disable:SetPos(settings_w / 0.298, settings_h * 39.50)
+	sls_intro_disable:SetText(GM.LANG:GetString("hub_intro_checkbox"))					-- Set the text next to the box
+	sls_intro_disable:SetFont("ChatFont")
+	sls_intro_disable:SetValue( LocalPlayer():GetNWBool("sls_intro_disabled", true) )						-- Initial value
+	if LocalPlayer():GetNWBool("sls_intro_disabled", false) then
+		sls_intro_disable:SetAlpha(50)
+	end
+function sls_intro_disable:OnChange( val )
+		LocalPlayer():SetNWBool("sls_intro_disabled", val)
+		surface.PlaySound("ui/buttonrollover.wav")
+		if !val then
+			sls_intro_disable:AlphaTo(50, 0.2)
+		else
+			sls_intro_disable:AlphaTo(255, 0.2)
+		end
+end
+local Checkbox_w, Checkbox_h = sls_intro_disable:GetChild(1):GetSize()
+sls_intro_disable.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, ScrW() * Checkbox_w * 1.10 / ScrW(), h, Color( 236, 240, 241, 80 ) ) end
+sls_intro_disable:SetIndent( 4 )
+sls_intro_disable:SetTextColor(Color(18, 191, 243))
+sls_intro_disable:SizeToContents()						-- Make its size the same as the contents
+local Checkbox_w2, Checkbox_h2 = sls_intro_disable:GetSize()
+sls_intro_disable:SetSize(Checkbox_w2 + 12, Checkbox_h2)
+
 local sls_killer_Checkbox = main_settings:Add( "DCheckBoxLabel" ) -- Create the checkbox
 	--sls_killer_Checkbox:Dock(TOP)
-	sls_killer_Checkbox:SetPos(settings_w / 0.27, settings_h * 40.50)
+	sls_killer_Checkbox:SetPos(settings_w / 0.255, settings_h * 40.50)
 	sls_killer_Checkbox:SetText(GM.LANG:GetString("hub_killer_checkbox"))					-- Set the text next to the box
 	sls_killer_Checkbox:SetFont("ChatFont")
 	sls_killer_Checkbox:SetValue( LocalPlayer():GetNWBool("sls_killer_choose", true) )						-- Initial value
@@ -168,7 +194,7 @@ function sls_killer_Checkbox:OnChange( val )
 		end
 end
 local Checkbox_w, Checkbox_h = sls_killer_Checkbox:GetChild(1):GetSize()
-sls_killer_Checkbox.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, ScrW() * Checkbox_w * 1.16 / ScrW(), h, Color( 236, 240, 241, 80 ) ) end
+sls_killer_Checkbox.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, ScrW() * Checkbox_w * 1.14 / ScrW(), h, Color( 236, 240, 241, 80 ) ) end
 sls_killer_Checkbox:SetIndent( 4 )
 sls_killer_Checkbox:SetTextColor(Color(243, 156, 18, 255))
 sls_killer_Checkbox:SizeToContents()						-- Make its size the same as the contents

@@ -89,7 +89,11 @@ local function openVotemap()
       oneMap:SetDrawBackground(false)
       oneMapImage = vgui.Create("DImageButton",oneMap,v.."_button")
       local indexToSplit = string.find( v, "_")
-      oneMapImage:SetImage("votemap/votemap"..string.StripExtension( string.sub( v, indexToSplit ) )..".png","vgui/avatar_default")
+      if file.Exists("maps/thumb/"..string.StripExtension( v )..".png", "GAME") then
+      oneMapImage:SetImage("votemap/votemap"..string.StripExtension( string.sub( v, indexToSplit ) )..".png", "maps/thumb/"..string.StripExtension( v )..".png") --"vgui/avatar_default"
+      else
+        oneMapImage:SetImage("votemap/votemap"..string.StripExtension( string.sub( v, indexToSplit ) )..".png", "vgui/avatar_default") --"vgui/avatar_default"
+      end
       oneMapImage:SetSize(192,512)
       index = horizonBar:ChildCount() -1
 

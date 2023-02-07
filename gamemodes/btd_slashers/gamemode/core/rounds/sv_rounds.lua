@@ -36,6 +36,23 @@ end)
 end]]--
 local sls_killerseverywhere
 
+local function CheckNavMesh()
+
+	if GM.ROUND.SpecialType.Types then
+		local areas = table.Count( navmesh.GetAllNavAreas() )
+		if areas == 0 then
+			GM.ROUND.SpecialType = nil
+			MsgN("[SPECIAL ROUND] NAV MESH FAILURE! NO NAV MESHES FOUND ON A MAP!")
+			return
+		end
+		if table.IsEmpty(GM.ROUND.SpecialType.Types) then
+			GM.ROUND.SpecialType = nil
+			return
+		end
+	end
+
+end
+
 function GM.ROUND:ViewInitCam(enable)
 	GM.ROUND.CameraEnable = enable
 	net.Start("sls_round_Camera")
@@ -60,15 +77,15 @@ function GM.ROUND:Start(forceKiller)
 		if spec_chance == 0 then return end
 		GM.ROUND.SpecialType = table.Random(GM.ROUND.Special)
 
-		if GM.ROUND.SpecialType.Types then
-			local areas = table.Count( navmesh.GetAllNavAreas() )
-			if areas == 0 then
-				GM.ROUND.SpecialType = nil
-			end
-		end
+		CheckNavMesh()
 
 		if GM.ROUND.SpecialType then
 		GM.ROUND.SpecialType.Start()
+
+		net.Start( "notificationSlasher" )
+        net.WriteTable({"special_round", GM.ROUND.SpecialType.Name})
+        net.WriteString("caution")
+        net.Send(player.GetAll())
 		
 		return
 		end

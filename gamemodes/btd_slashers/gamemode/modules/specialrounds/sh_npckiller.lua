@@ -4,9 +4,39 @@ GM.ROUND.Special = GM.ROUND.Special or {}
 
 GM.ROUND.Special.NPC = {}
 
-GM.ROUND.Special.NPC.Types = {"npc_isolation_xeno"}
+GM.ROUND.Special.NPC.Name = "AI Killer"
+
+GM.ROUND.Special.NPC.Types = {
+	[1] = "npc_isolation_xeno",
+}
 
 GM.ROUND.Special.NPC.StartMusic = "sound/xenomorph/voice/intro.ogg"
+
+cvars.AddChangeCallback("slashers_specialround_npcs", function(convar_name, value_old, value_new)
+	local new_string = string.Trim(value_new)
+	local npc_table = string.Split(new_string, ",")
+
+	for k,v in ipairs(npc_table) do
+		npc_table[k] = string.Trim(v)
+	end
+
+	--PrintTable(npc_table)
+	GM.ROUND.Special.NPC.Types = npc_table
+end)
+
+hook.Add("InitPostEntity", "sls_modify_npctypes", function()
+	local npc_types = GetConVar("slashers_specialround_npcs"):GetString()
+	local new_string = string.Trim(npc_types)
+	local npc_table = string.Split(new_string, ",")
+
+	for k,v in ipairs(npc_table) do
+		npc_table[k] = string.Trim(v)
+	end
+
+	--PrintTable(npc_table)
+	GM.ROUND.Special.NPC.Types = npc_table
+
+end)
 
 if SERVER then
 
@@ -98,19 +128,6 @@ GM.ROUND.Special.NPC.Start = function()
 
 
 	game.CleanUpMap()
-        local killer = ents.Create(table.Random(GM.ROUND.Special.NPC.Types))
-		if !game.GetMap() == "ai_lockdown" then
-		if istable(GM.MAP.Config) then
-            killer:SetPos(table.Random(killer_spawns))
-		else
-            killer:SetPos(table.Random(ents.FindByClass("info_player_terrorist")):GetPos())
-		end
-	else
-		killer:SetPos(Vector(-1139.123047, 846.606506, -767.968750))
-	end
-		killer:Spawn()
-
-    RunConsoleCommand("ai_disabled", 1)
 
 	GM.ROUND.Active = true
 	GM.ROUND.Count = GM.ROUND.Count + 1
@@ -131,7 +148,28 @@ GM.ROUND.Special.NPC.Start = function()
 				for _, v in ipairs(GM.ROUND.Survivors) do
 					v:Freeze(false)
 				end
-                RunConsoleCommand("ai_disabled", 0)
+                --RunConsoleCommand("ai_disabled", 0)
+
+				if CPTBase then
+					RunConsoleCommand("cpt_aiusenavmesh", 1)
+					RunConsoleCommand("cpt_bot_seeenemies", 1)
+				end
+
+				local killer = ents.Create(table.Random(GM.ROUND.Special.NPC.Types))
+
+				if istable(GM.MAP.Config) then
+					killer:SetPos(table.Random(killer_spawns))
+				else
+					killer:SetPos(table.Random(ents.FindByClass("info_player_terrorist")):GetPos())
+				end
+		
+				if game.GetMap() == "ai_lockdown" and killer:GetClass() == "npc_isolation_xeno" then
+				killer:SetPos(Vector(-1139.123047, 846.606506, -767.968750))
+				end
+		
+				killer:SetHealth(9999999999)
+				killer:Spawn()
+
 			end
 		end
 	)

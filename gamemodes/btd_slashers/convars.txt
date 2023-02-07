@@ -48,7 +48,7 @@
 
  "slashers_specialround_npcs" = "npc_isolation_xeno"
   game replicated server_can_execute lua_server
-  - The NPCs which spawn on NPC-Killer Special Round.
+  - The NPCs which spawn on NPC-Killer Special Round, separated by comma.
 
  "slashers_specialround_chance" = "1" min. 0.000000 max. 100.000000
   game replicated server_can_execute lua_server

@@ -15,18 +15,22 @@ local GM = GAMEMODE or GM
 local currentVote = {}
 local countVote = {}
 local allMaps = table.Copy(GM.MAPS)
+local rndMaps = {}
 
 local function getRandomMaps(numbers,blacklist)
-  res = {}
+  --res = {}
   for i=1,numbers do
-    table.Random(allMaps)
+    local rnd_map = table.Random(allMaps)
+    table.RemoveByValue(allMaps,rnd_map)
+    rndMaps[i] = rnd_map
   end
 end
 
 local function sendCurrentVoteStat(ply)
   table.RemoveByValue(allMaps,game.GetMap())
+  getRandomMaps(6)
   net.Start("slash_sendmaplist")
-    net.WriteTable(allMaps)
+    net.WriteTable(rndMaps)
   net.Send(ply)
 end
 hook.Add("PlayerInitialSpawn", "slash_sendmaplist", sendCurrentVoteStat)
