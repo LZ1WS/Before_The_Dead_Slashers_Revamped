@@ -14,7 +14,7 @@ GM.KILLERS[KILLER_KAMEN].TerrorMusic = "defaultkiller/terror/terror.wav"
 GM.KILLERS[KILLER_KAMEN].Joke = true
 
 if CLIENT then
-	GM.KILLERS[KILLER_KAMEN].Desc = "class_desc_kamen"
+	GM.KILLERS[KILLER_KAMEN].Desc = GM.LANG:GetString("class_desc_kamen")
 	GM.KILLERS[KILLER_KAMEN].Icon = Material("icons/xleb.png")
 end
 -- Ability

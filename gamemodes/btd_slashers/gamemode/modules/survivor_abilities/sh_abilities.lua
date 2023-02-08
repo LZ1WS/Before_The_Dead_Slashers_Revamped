@@ -112,6 +112,28 @@ function HolyWeakenPlayer(ply)
         ply:SetWalkSpeed(old_walk)
 
         ply:SetNWBool("sls_holy_weaken_effect", false)
+        ply:SetDSP(0)
+
+	end)
+
+
+end
+
+function SlowDebuffPlayer(ply, num, time)
+    if !IsValid(ply) then return end
+    if !IsValid(num) then return end
+    local old_speed, old_walk = ply:GetRunSpeed(), ply:GetWalkSpeed()
+    if ply:Team() == TEAM_KILLER then
+        old_speed, old_walk = GM.MAP.Killer.RunSpeed, GM.MAP.Killer.WalkSpeed
+    end
+
+    ply:SetRunSpeed(old_speed - num)
+    ply:SetWalkSpeed(old_walk - num)
+
+    timer.Simple(time or 10, function()
+
+        ply:SetRunSpeed(old_speed)
+        ply:SetWalkSpeed(old_walk)
 
 	end)
 

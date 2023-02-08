@@ -61,7 +61,7 @@ surface.CreateFont("FNAFGMSTSATXT", {
 
 local lastcam_entity
 
-function fnafgmSTSA:SecurityTablet() 
+function fnafgmSTSA:SecurityTablet2() 
 	
 	if !IsValid(Monitor) then
 		
@@ -74,7 +74,7 @@ function fnafgmSTSA:SecurityTablet()
 				LocalPlayer():ConCommand("play "..Sound("fnafgmstsa/camdown.ogg"))
 		end
 		
-		fnafgmSTSA:SetView(lastcam)
+		fnafgmSTSA:SetViewCamMan(lastcam)
 		
 		--LocalPlayer():ConCommand( 'pp_mat_overlay "fnafgmstsa/camstatic"' )
 		
@@ -93,7 +93,7 @@ function fnafgmSTSA:SecurityTablet()
 			draw.NoTexture()
 		end
 		Monitor.OnClose = function()
-			fnafgmSTSA:SetView(0)
+			fnafgmSTSA:SetViewCamMan(0)
 			--LocalPlayer():ConCommand( 'pp_mat_overlay ""' )
 		end
 		Monitor.Think = function()
@@ -118,7 +118,7 @@ function fnafgmSTSA:SecurityTablet()
 		CAM:SetValue(lastcam)
 		CAM.OnValueChanged = function( val )
 			LocalPlayer():ConCommand("play "..Sound("fnafgmstsa/camselect.ogg"))
-			fnafgmSTSA:SetView( math.Round( val:GetValue() ) )
+			fnafgmSTSA:SetViewCamMan( math.Round( val:GetValue() ) )
 			lastcam = val:GetValue()
 			CamsNames:SetText( "CAM"..val:GetValue() )
 		end
@@ -134,6 +134,7 @@ function fnafgmSTSA:SecurityTablet()
 			if IsValid(FNaFView) then waitt = CurTime()+1 end
 			Monitor:Close()
 			LocalPlayer():ConCommand("play "..Sound("fnafgmstsa/camdown.ogg"))
+			hook.Remove( "CalcView", "Camera_View")
 			if IsValid(OpenT) then OpenT:Show() end
 		end
 		CloseT.OnCursorEntered = function()
@@ -171,26 +172,43 @@ function fnafgmSTSA:SecurityTablet()
 	
 end
 
-function fnafgmSTSA:SetView(id)
-	net.Start( "fnafgmSTSASetView" )
-		net.WriteFloat(id)
+function fnafgmSTSA:SetViewCamMan(id)
+
+	net.Start( "fnafgmSTSASetView2" )
+	net.WriteFloat(id)
 	net.SendToServer()
+
+	hook.Add( "CalcView", "Camera_View", function( ply, pos, angles, fov )
+		if ply:Team() ~= TEAM_KILLER then return end
+
+		if IsValid(lastcam_entity) then
+
+		local view = {
+			origin = (lastcam_entity:GetPos() + Vector(0, 0, 55)) + (lastcam_entity:GetAngles():Forward() * 30),
+			angles = lastcam_entity:GetAngles(),
+			fov = fov,
+			drawviewer = true
+		}
+	
+		return view
+	end
+	end )
+
 end
 
-net.Receive( "fnafgmSecurityTabletSA", function( len )
-	fnafgmSTSA.SecurityTablet()
+net.Receive( "sls_cams_entity2", function( len )
+	lastcam_entity = net.ReadEntity()
 end)
 
-
-net.Receive( "sls_cams_entity", function( len )
-	lastcam_entity = net.ReadEntity()
+net.Receive( "fnafgmSecurityTabletSA2", function( len )
+	fnafgmSTSA.SecurityTablet2()
 end)
 
 local camera_holo = nil;
 
 function SWEP:Deploy()
-	if not IsFirstTimePredicted() then return true end
-	camera_holo = ClientsideModel("models/customhq/hidcams/minicam.mdl", 9)
+	--if not IsFirstTimePredicted() then return true end
+	camera_holo = ClientsideModel("models/rin/mgs5/props/camera.mdl", 9)
 	camera_holo:SetRenderMode(4)
 	return true	
 end
@@ -247,12 +265,13 @@ function SWEP:DrawHUD()
 		cam_window:SetDraggable(false)
 		
 		function cam_window:Paint( w, h )
+			if !IsValid(lastcam_entity) then return end
 		
 			local x, y = self:GetPos()
 		
 			local old = DisableClipping( true ) -- Avoid issues introduced by the natural clipping of Panel rendering
 			render.RenderView( {
-				origin = lastcam_entity:GetPos(),
+				origin = (lastcam_entity:GetPos() + Vector(0, 0, 55)) + (lastcam_entity:GetAngles():Forward() * 30),
 				angles = lastcam_entity:GetAngles(),
 				x = x, y = y,
 				w = w, h = h,

@@ -18,7 +18,18 @@ GM.CONFIG["killer_weapons"] = {
 	"tfa_nmrih_kknife",
 	"tfa_nmrih_fireaxe",
 	"tfa_nmrih_pickaxe",
-	"tfa_nmrih_machete"
+	"tfa_nmrih_machete",
+	"tfa_nmrih_cleaver",
+	"tfa_nmrih_bat",
+	"tfa_nmrih_asaw",
+	"tfa_nmrih_bcd",
+	"tfa_nmrih_etool",
+	"tfa_nmrih_fubar",
+	"tfa_nmrih_hatchet",
+	"tfa_nmrih_lpipe",
+	"tfa_nmrih_sledge",
+	"tfa_nmrih_spade",
+	"tfa_nmrih_wrench"
 }
 -- Armes pour les survivants
 GM.CONFIG["survivors_weapons"] = {

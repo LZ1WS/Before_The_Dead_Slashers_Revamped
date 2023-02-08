@@ -8,6 +8,8 @@ function sls_music_InitValue()
 	end
 	ChaseSound = CreateSound( game.GetWorld(), GM.MAP.ChaseMusic, filter)
 	ChaseSound:SetSoundLevel( 0 )
+	EscapeSound = CreateSound( game.GetWorld(), GM.MAP.EscapeMusic, filter)
+	EscapeSound:SetSoundLevel( 0 )
     for _,ply in ipairs(player.GetAll()) do
 	if !IsValid(ply) then return end
 	ply.ChaseSoundPlaying = false
@@ -17,6 +19,17 @@ function sls_music_InitValue()
 end
 end
 hook.Add("sls_round_PostStart", "sls_music_PostStart", sls_music_InitValue)
+
+hook.Add("sls_round_StartEscape", "sls_music_startescape", function()
+if CLIENT then
+	if GM.ROUND.Escape && !EscapeSound:IsPlaying() && !LocalPlayer():GetNWBool("sls_ChaseSoundPlaying", false) then
+		EscapeSound:Play()
+	else
+		EscapeSound:FadeOut(3)
+	end
+end
+
+end)
 
 hook.Add("InitPostEntity","sls_lobbymusic_init", function()
     local filter

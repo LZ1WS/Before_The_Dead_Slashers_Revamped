@@ -104,6 +104,7 @@ end
 
 local function WBK_SpawnFlashlight()
     if WBK_FlashlightIsActive && WBK_FlashlightObject then
+        if !LocalPlayer():Alive() && WBK_FlashlightObject then WBK_FlashlightObject:Remove() return end
         local mdl = VManip:GetVMGesture()
         if LocalPlayer():ShouldDrawLocalPlayer() or !IsValid(mdl) or WBK_IsFlashlightOnShoulder == true then
             WBK_FlashlightObject:SetPos(LocalPlayer():EyePos())

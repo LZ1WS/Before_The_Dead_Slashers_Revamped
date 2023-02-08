@@ -13,7 +13,7 @@ GM.KILLERS[KILLER_SLENDER].ChaseMusic = "slender/chase/slenderchase.wav"
 GM.KILLERS[KILLER_SLENDER].TerrorMusic = "slender/terror/terrorslender.wav"
 
 if CLIENT then
-	GM.KILLERS[KILLER_SLENDER].Desc = "class_desc_slender"
+	GM.KILLERS[KILLER_SLENDER].Desc = GM.LANG:GetString("class_desc_slender")
 	GM.KILLERS[KILLER_SLENDER].Icon = Material("icons/slenderman.png")
 end
 

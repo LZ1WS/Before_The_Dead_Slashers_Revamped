@@ -72,6 +72,7 @@ GM.ROUND.Special.NPC.Start = function()
 		GM.ROUND:End(true)
 	end
 
+	if !GM.ROUND.SpecialType then return end
 	local new_table = table.Copy(GM.ROUND.SpecialType)
 
 	for _, value in pairs(new_table) do

@@ -4,7 +4,12 @@ GM.MAP.SetupKillers = function()
 local rndnumber = GetGlobalInt("RNDKiller",1)
 GM.MAP.StartMusic = GM.KILLERS[rndnumber].StartMusic
 GM.MAP.ChaseMusic = GM.KILLERS[rndnumber].ChaseMusic
-GM.MAP.TerrorMusic = GM.KILLERS[rndnumber].TerrorMusic
+--GM.MAP.TerrorMusic = GM.KILLERS[rndnumber].TerrorMusic
+if GM.KILLERS[rndnumber].EscapeMusic then
+GM.MAP.EscapeMusic = GM.KILLERS[rndnumber].EscapeMusic
+else
+GM.MAP.EscapeMusic = "default_escape/escape" .. math.random(1, 2) .. ".wav"
+end
 
 GM.MAP.Killer.SpecialRound = GM.KILLERS[rndnumber].SpecialRound or "NONE"
 

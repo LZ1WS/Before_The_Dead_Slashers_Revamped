@@ -49,24 +49,37 @@ function SWEP:PrimaryAttack()
     if self.DreamUsed then return end
 	self.DreamUsed = true
     local cur_speed = owner:GetRunSpeed()
-    local color_green = Color( 255, 0, 0 )
-
+    owner:AddFlags(FL_ATCONTROLS)
     if SERVER then
         net.Start( "notificationSlasher" )
         net.WriteTable({"class_ability_used"})
         net.WriteString("safe")
         net.Send(owner)
-        net.Start("noticonSlashers")
-        net.WriteVector(GM.ROUND.Killer:GetPos())
-        net.WriteString("info")
-        net.WriteInt(4, 32)
-        net.Send(owner)
+
+        hook.Add( "SetupPlayerVisibility", "Dreamers_Visibility", function( ply, viewEntity )
+            -- Adds any view entity
+            if ply == owner and IsValid(GAMEMODE.ROUND.Killer) then
+                AddOriginToPVS( GAMEMODE.ROUND.Killer:EyePos() )
+            end
+            end )
     end
     if CLIENT then
-            hook.Add("PreDrawHalos", "AddHalos_Simon", function()
-                if LocalPlayer() ~= owner then return end
-                    halo.Add({GM.ROUND.Killer},color_green, 2, 2, 2, true, true )
-            end)
+        hook.Add( "CalcView", "Dreamer_View", function( ply, pos, angles, fov )
+            if ply:Team() == TEAM_KILLER then return end
+            if LocalPlayer() ~= owner then return end
+
+            if IsValid(GAMEMODE.ROUND.Killer) then
+    
+            local view = {
+                origin = GAMEMODE.ROUND.Killer:EyePos() + (GAMEMODE.ROUND.Killer:EyeAngles():Forward() * 15),
+                angles = GAMEMODE.ROUND.Killer:EyeAngles(),
+                fov = fov,
+                drawviewer = true
+            }
+        
+            return view
+        end
+        end )
         surface.PlaySound( "weapons/mm_knife/stalking_1.ogg" )
         owner:ConCommand("pp_mat_overlay effects/tp_eyefx/tpeye2")
     end
@@ -74,17 +87,17 @@ function SWEP:PrimaryAttack()
     timer.Create("dreamers_dream_off", 5, 1, function()
         if !owner:Alive() then return end
         if SERVER then
-            owner:SetRunSpeed(cur_speed - 50)
+            hook.Remove("SetupPlayerVisibility", "Dreamers_Visibility")
         end
 
         if CLIENT then
         owner:ConCommand('pp_mat_overlay ""')
-        hook.Remove("PreDrawHalos", "AddHalos_Simon")
+        hook.Remove("CalcView", "Dreamer_View")
         end
 
-        timer.Create("dreamers_dream_runspeed", 10, 1, function()
+        timer.Create("dreamers_dream_runspeed", 5, 1, function()
             if !owner:Alive() then return end
-            owner:SetRunSpeed(cur_speed)
+            owner:RemoveFlags(FL_ATCONTROLS)
         end)
     end)
 

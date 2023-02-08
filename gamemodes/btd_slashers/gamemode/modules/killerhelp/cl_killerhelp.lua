@@ -48,7 +48,7 @@ hook.Add("HUDPaintBackground", "sls_killerhelp_HUDPaintBackground", HUDPaintBack
 local function Think()
 	if !GM.ROUND.Active || !GM.ROUND.Survivors || LocalPlayer():Team() != TEAM_KILLER then return end
 	for _, v in ipairs(GM.ROUND.Survivors) do
-		if v:GetNWBool("killerhelp_camp") && !v.kh_play then
+		if v:GetNWBool("killerhelp_camp") && !v.kh_play && !GM.ROUND.Killer:GetNWBool("sls_heartbeat_disabled", false) then
 			v:EmitSound("killerhelp.heartbeat")
 			v.kh_play = true
 		elseif !v:GetNWBool("killerhelp_camp") && v.kh_play then

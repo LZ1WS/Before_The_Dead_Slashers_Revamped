@@ -7,7 +7,7 @@ ENT.Author = "Xperidia"
 if SERVER then
 function ENT:Initialize()
 
-	self:SetModel("models/customhq/hidcams/minicam.mdl")
+	--self:SetModel("models/customhq/hidcams/minicam.mdl")
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )

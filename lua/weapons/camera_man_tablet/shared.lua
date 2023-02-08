@@ -1,6 +1,6 @@
 SWEP.PrintName = "FNaF Monitor"
 SWEP.Author = "Xperidia"
-SWEP.Instructions = "LMB to create camera/RMB to open monitor/R delete camera that you're looking at"
+SWEP.Instructions = "LMB to create camera/RMB to open monitor/R delete camera that you're looking at/Q Possess and teleport to the cam you're viewing"
 SWEP.Purpose = "Monitor the restaurant."
 SWEP.Category = "Xperidia"
 
@@ -77,18 +77,32 @@ if CLIENT then return end
 
 	if ( !IsValid( ent ) ) then return end
 	local camera_pos = ply:GetEyeTrace().HitPos
-	local camera_angle = ply:GetEyeTrace().HitNormal:Angle()
+	local camera_angle = ply:EyeAngles()
 
 	ent:SetPos(camera_pos)
 	
-	camera_angle.pitch = camera_angle.pitch + 360
+	camera_angle.pitch = 0
 	ent:SetAngles(camera_angle)
 
 	ent:SetName("fnafgm_Cam"..num)
-	ent:SetModel("models/customhq/hidcams/minicam.mdl")
+	ent:SetModel("models/sal/camera/camera_full.mdl")
 	ent:Spawn()
 
 	return ent
+
+end
+
+local function UpdateCamera(removed)
+	if CLIENT then return end
+	--table.sort(ents.FindByClass( "fnafgm_camera" ))
+	for k, v in ipairs(ents.FindByClass( "fnafgm_camera" )) do
+		if k == 1 then continue end
+		local num = k - removed
+		v:SetName("fnafgm_Cam" .. num)
+		if CLIENT then
+		fnafgmSTSA:SetViewCamMan(v)
+		end
+	end
 
 end
 
@@ -102,20 +116,6 @@ function slashers_camera_place(ply, ent)
 	ent:SetAngles(camera_angle)
 
 	return camera_pos, camera_angle
-end
-
-local function UpdateCamera(removed)
-	if CLIENT then return end
-	--table.sort(ents.FindByClass( "fnafgm_camera" ))
-	for k, v in ipairs(ents.FindByClass( "fnafgm_camera" )) do
-		if k == 1 then continue end
-		local num = k - removed
-		v:SetName("fnafgm_Cam" .. num)
-		if CLIENT then
-		fnafgmSTSA:SetView(v)
-		end
-	end
-
 end
 
 function SWEP:Reload()
@@ -134,7 +134,7 @@ if CLIENT then return end
 	if self.Owner:GetPos():Distance(self.Owner:GetEyeTrace().HitPos) > self.MaxDistance or !self.Owner:GetEyeTrace().HitWorld then
 		return
 	end
-if table.Count(ents.FindByClass( "fnafgm_camera" )) >= 3 then return end
+if table.Count(ents.FindByClass( "fnafgm_camera" )) >= 10 then return end
 	MakeCamera( ply )
 end
 
@@ -144,7 +144,7 @@ function SWEP:SecondaryAttack()
 	
 	if SERVER then
 		
-		net.Start( "fnafgmSecurityTabletSA" )
+		net.Start( "fnafgmSecurityTabletSA2" )
 		net.Send(self.Owner)
 	
 	end
