@@ -25,7 +25,7 @@ local function HaveASurvivorInSight()
 	local SurvivorsPly = player.GetAll()
 	for k,v in pairs(SurvivorsPly) do
 
-		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1000 && LocalPlayer():IsLineOfSightClear( v )  && v:IsValid() && v != LocalPlayer() && v:Team() != TEAM_KILLER && !v:GetNWBool( 'IsInsideLocker', false )  then
+		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1000 && LocalPlayer():IsLineOfSightClear( v ) && !LocalPlayer():GetNWBool("sls_chase_disabled", false) && v:IsValid() && v != LocalPlayer() && v:Team() != TEAM_KILLER && !v:GetNWBool( 'IsInsideLocker', false )  then
 			local TargetPosMax = v:GetPos() + v:OBBMaxs() - Vector(10,0,0)
 			local TargetPosMin = v:GetPos() + v:OBBMins() + Vector(10,0,0)
 
@@ -52,6 +52,7 @@ local function chasekillerMusic()
 	local curtime = CurTime()
 	if LocalPlayer():Team() != TEAM_KILLER then return end
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
+	if LocalPlayer():GetNWBool("sls_chase_disabled", false) && (LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) return end
 	if LocalPlayer():GetNWBool("sls_chase_disabled", false) then return end
 	if (!LocalPlayer():Alive()) then return end
 		if (LocalPlayer().LastViewKillerTime > curtime - 3 && !LocalPlayer().ChaseSoundPlaying) then
@@ -64,6 +65,8 @@ timer.Simple(1, function()
 	elseif LocalPlayer().ChaseSoundPlaying && LocalPlayer().LastViewKillerTime < curtime - 5  then
 		ChaseSound:FadeOut(1.2)
 		LocalPlayer().ChaseSoundPlaying = false
+		net.Start( "sls_killerunseesurvivor" )
+		net.SendToServer()
 	end
 	end
 
@@ -86,7 +89,6 @@ local function chaseMusic()
 	if LocalPlayer():Team() == TEAM_KILLER then return end
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if (!LocalPlayer():Alive()) then return end
-	if LocalPlayer():GetNWBool("sls_chase_disabled", false) then return end
 	if !LocalPlayer().LastViewByKillerTime then return end
 --print(LocalPlayer().LastViewByKillerTime)
 

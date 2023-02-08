@@ -136,7 +136,7 @@ net.Receive( "sls_f1_menu", function ()
 	elseif LocalPlayer():Team() == 1 then
 		TeamName = GM.LANG:GetString("round_team_name_killer")
 		TeamText = GM.LANG:GetString("round_team_desc_killer")
-		if GetGlobalInt("RNDKiller",1) == 1 then
+		if file.Exists("materials/characteres/"..string.lower(GAMEMODE.MAP.Killer.Name)..".png", "GAME") then
 		ImageCharac = "characteres/"..string.lower(GAMEMODE.MAP.Killer.Name)..".png"
 		else
 		ImageCharac = GM.MAP.Killer.Icon

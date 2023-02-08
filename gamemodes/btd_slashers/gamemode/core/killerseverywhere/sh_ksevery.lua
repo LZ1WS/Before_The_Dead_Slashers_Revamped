@@ -14,9 +14,10 @@ GM.MAP.Killer.WalkSpeed = GM.KILLERS[rndnumber].WalkSpeed
 GM.MAP.Killer.RunSpeed = GM.KILLERS[rndnumber].RunSpeed
 GM.MAP.Killer.UniqueWeapon = GM.KILLERS[rndnumber].UniqueWeapon
 GM.MAP.Killer.ExtraWeapons = GM.KILLERS[rndnumber].ExtraWeapons
+GM.MAP.Killer.VoiceCallouts = GM.KILLERS[rndnumber].VoiceCallouts
 
 if CLIENT then
-	GM.MAP.Killer.Desc = GM.LANG:GetString(GM.KILLERS[rndnumber].Desc)
+	GM.MAP.Killer.Desc = GM.KILLERS[rndnumber].Desc
 	GM.MAP.Killer.Icon = GM.KILLERS[rndnumber].Icon
 end
 

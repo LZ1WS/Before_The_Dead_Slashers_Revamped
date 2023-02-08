@@ -13,7 +13,7 @@ GM.KILLERS[KILLER_JASON].ChaseMusic = "jason/chase/chase.wav"
 GM.KILLERS[KILLER_JASON].TerrorMusic = "jason/terror/terror.wav"
 
 if CLIENT then
-	GM.KILLERS[KILLER_JASON].Desc = "class_desc_jason"
+	GM.KILLERS[KILLER_JASON].Desc = GM.LANG:GetString("class_desc_jason")
 	GM.KILLERS[KILLER_JASON].Icon = Material("icons/icon_jason.png")
 end
 

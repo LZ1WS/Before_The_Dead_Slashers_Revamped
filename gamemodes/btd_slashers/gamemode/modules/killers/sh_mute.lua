@@ -31,7 +31,7 @@ GM.KILLERS[KILLER_MUTE].UseAbility = function(ply)
 	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_MUTE].Name then return end
 			if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 			if !mute_ability_used then
-				ply:SetNWBool("sls_terror_disabled", true)
+				ply:SetNWBool("sls_chase_disabled", true)
 				mute_ability_used = true
 				if SERVER then
 					net.Start( "notificationSlasher" )
@@ -40,7 +40,7 @@ GM.KILLERS[KILLER_MUTE].UseAbility = function(ply)
 					net.Send(ply)
 				end
 				timer.Create("sls_mute_ability_disable", 15, 1, function()
-					ply:SetNWBool("sls_terror_disabled", false)
+					ply:SetNWBool("sls_chase_disabled", false)
 				timer.Create("sls_mute_ability_cooldown", 15, 1, function()
 					mute_ability_used = false
 					if SERVER then

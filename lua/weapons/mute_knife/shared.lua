@@ -152,7 +152,7 @@ function SWEP:PrimaryAttack()
 		if trace.Entity:IsPlayer() or trace.Entity:IsNPC() then
 			self.Weapon:SetNextPrimaryFire(CurTime() + 0.5)
 			self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
-			self.Idle = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+			self.Idle = CurTime() + 1
 			bullet = {}
 			bullet.Num    = 1
 			bullet.Src    = self.Owner:GetShootPos()
@@ -176,13 +176,13 @@ function SWEP:PrimaryAttack()
 			self.Owner:FireBullets(bullet)
 			self.Weapon:SetNextPrimaryFire(CurTime() + 0.5)
 			self.Weapon:SendWeaponAnim(ACT_VM_HITCENTER)
-			self.Idle = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+			self.Idle = CurTime() + 1
 			self.Weapon:EmitSound( "Weapon_Knife.HitWall" )
 		end
 	else
 		self.Weapon:EmitSound("Weapon_Knife.Slash")
 		self.Weapon:SendWeaponAnim(ACT_VM_MISSCENTER)
-		self.Idle = CurTime() + self.Owner:GetViewModel():SequenceDuration()
+		self.Idle = CurTime() + 1
 	end
 end
 

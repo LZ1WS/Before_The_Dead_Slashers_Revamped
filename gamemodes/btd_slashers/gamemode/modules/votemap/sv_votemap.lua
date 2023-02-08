@@ -19,9 +19,10 @@ local rndMaps = {}
 
 local function getRandomMaps(numbers,blacklist)
   --res = {}
+  local rndMaps2 = table.Copy(GM.MAPS)
   for i=1,numbers do
-    local rnd_map = table.Random(allMaps)
-    table.RemoveByValue(allMaps,rnd_map)
+    local rnd_map = table.Random(rndMaps2)
+    table.RemoveByValue(rndMaps2,rnd_map)
     rndMaps[i] = rnd_map
   end
 end

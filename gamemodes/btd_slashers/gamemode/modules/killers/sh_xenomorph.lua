@@ -108,6 +108,17 @@ end
 end
 end)
 
+hook.Add("CalcMainActivity", "sls_xeno_animation", function(ply)
+    if !IsValid(GM.ROUND.Killer) then return end
+    if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_XENO].Name then return end
+    if ply:IsOnGround() and !ply:GetNWBool("sls_xeno_ability_active", false) then
+
+            ply.CalcIdeal = ACT_HL2MP_WALK 
+            ply.CalcSeqOverride = ply:LookupSequence("crouch_duel")
+    return ply.CalcIdeal, ply.CalcSeqOverride
+    end
+end)
+
 hook.Add("sls_round_End", "sls_xenoability_End", function()
 	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_XENO].Name then return end
     xeno_abil_cd = false

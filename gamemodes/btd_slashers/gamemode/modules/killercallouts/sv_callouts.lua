@@ -13,6 +13,7 @@ local CalloutUsed = false
 
 net.Receive( "sls_killerseesurvivor_callout", function(len, killer)
 	if !IsValid(GM.ROUND.Killer) then return end
+	killer:SetNWBool("sls_ChaseSoundPlaying", true)
 
 	if killer:Team() == TEAM_KILLER and GM.MAP.Killer.VoiceCallouts and !CalloutUsed then
 		local rnd_callout = tostring(table.Random(GM.MAP.Killer.VoiceCallouts))

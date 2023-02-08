@@ -13,9 +13,9 @@ local ourMat2 = Material( "phantoms/phantom_foxy_jumpscare" )
 
 net.Receive("sls_springtrap_trap_activated", function()
 local rnd_number = math.random(1, 2)
-	hook.Add("RenderScreenspaceEffects", "Springtrap_jumpscare", function()
+	hook.Add("HUDPaint", "Springtrap_jumpscare", function()
 		if LocalPlayer():Team() != TEAM_KILLER then
-			surface.SetDrawColor( 255, 255, 255, 255 )
+			surface.SetDrawColor( 255, 255, 255, 60 )
 			if rnd_number == 1 then
 			surface.SetMaterial( ourMat )
 			else
@@ -25,7 +25,7 @@ local rnd_number = math.random(1, 2)
 		end
 		end)
 		timer.Simple(1.5, function()
-		hook.Remove("RenderScreenspaceEffects", "Springtrap_jumpscare")
+		hook.Remove("HUDPaint", "Springtrap_jumpscare")
 		end)
 
 end)

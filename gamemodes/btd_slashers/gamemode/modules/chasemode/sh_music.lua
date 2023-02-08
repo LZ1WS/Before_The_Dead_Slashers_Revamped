@@ -7,13 +7,10 @@ function sls_music_InitValue()
 		filter:AddAllPlayers()
 	end
 	ChaseSound = CreateSound( game.GetWorld(), GM.MAP.ChaseMusic, filter)
-    TerrorSound = CreateSound( game.GetWorld(), GM.MAP.TerrorMusic, filter)
 	ChaseSound:SetSoundLevel( 0 )
-	TerrorSound:SetSoundLevel( 0 )
     for _,ply in ipairs(player.GetAll()) do
 	if !IsValid(ply) then return end
 	ply.ChaseSoundPlaying = false
-	ply.TerrorSoundPlaying = false
     ply.LastViewKillerTime = 0
     ply.LastViewByKillerTime = 0
 

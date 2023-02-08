@@ -7,7 +7,7 @@
 
 GM.Name = "Slashers";
 GM.Author = "Garrus2142 & L.Z|W.S";
-GM.Version = "3.1.0"
+GM.Version = "3.1.1"
 GM.Github = "https://github.com/LZ1WS/Before_The_Dead_Slashers_Revamped"
 GM.Workshop = "https://steamcommunity.com/sharedfiles/filedetails/?id=2804558040"
 
