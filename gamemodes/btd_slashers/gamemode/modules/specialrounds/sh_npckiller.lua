@@ -8,11 +8,46 @@ GM.ROUND.Special.NPC.Name = "AI Killer"
 
 GM.ROUND.Special.NPC.Types = {
 	[1] = "npc_isolation_xeno",
+	[2] = "npc_drg_dbdartist",
+	[3] = "npc_drg_dbdblight",
+	[4] = "npc_drg_dbdcannibal",
+	[5] = "npc_drg_dbdcenobite",
+	[6] = "npc_drg_dbdclown",
+	[7] = "npc_drg_dbddeathslinger",
+	[8] = "npc_drg_dbddemogorgon",
+	[9] = "npc_drg_dbddoctor",
+	[10] = "npc_drg_dbddredge",
+	[11] = "npc_drg_dbdexecutioner",
+	[12] = "npc_drg_dbdghostface",
+	[13] = "npc_drg_dbdhag",
+	[14] = "npc_drg_dbdhillbilly",
+	[15] = "npc_drg_dbdhuntress",
+	[16] = "npc_drg_dbdlegionfemale",
+	[17] = "npc_drg_dbdlegionmale",
+	[18] = "npc_drg_dbdmastermind",
+	[19] = "npc_drg_dbdnemesis",
+	[20] = "npc_drg_dbdnightmare",
+	[21] = "npc_drg_dbdnurse",
+	[22] = "npc_drg_dbdoni",
+	[23] = "npc_drg_dbdonryo",
+	[24] = "npc_drg_dbdpig",
+	[25] = "npc_drg_dbdplague",
+	[26] = "npc_drg_dbdshape",
+	[27] = "npc_drg_dbdspirit",
+	[28] = "npc_drg_dbdtrapper",
+	[29] = "npc_drg_dbdtrickster",
+	[30] = "npc_drg_dbdtwins",
+	[31] = "npc_drg_dbdwraith",
+	[32] = "npc_drg_blightcaller",
+	[33] = "npc_monstrum_fiend",
+	[34] = "npc_sr_grossman",
+	[35] = "npc_drg_dbdknight",
 }
 
 GM.ROUND.Special.NPC.StartMusic = "sound/xenomorph/voice/intro.ogg"
 
 cvars.AddChangeCallback("slashers_specialround_npcs", function(convar_name, value_old, value_new)
+	if value_new == "default" then return end
 	local new_string = string.Trim(value_new)
 	local npc_table = string.Split(new_string, ",")
 
@@ -26,6 +61,7 @@ end)
 
 hook.Add("InitPostEntity", "sls_modify_npctypes", function()
 	local npc_types = GetConVar("slashers_specialround_npcs"):GetString()
+	if npc_types == "default" then return end
 	local new_string = string.Trim(npc_types)
 	local npc_table = string.Split(new_string, ",")
 
@@ -43,6 +79,7 @@ if SERVER then
 	util.AddNetworkString("sls_specialround_share")
 
 GM.ROUND.Special.NPC.Start = function()
+	local rnd_npc = table.Random(GM.ROUND.Special.NPC.Types)
 
     GM.ROUND.Survivors = {}
 	GM.ROUND.Killer = nil
@@ -92,10 +129,18 @@ GM.ROUND.Special.NPC.Start = function()
 
 	end
 
+	if rnd_npc == "npc_sr_grossman" then
+	SetGlobalInt("RNDKiller", KILLER_SLENDER)
+	else
     SetGlobalInt("RNDKiller", KILLER_XENO)
+	end
 	GM.MAP.SetupKillers()
 	net.Start("sls_plykiller")
+	if rnd_npc == "npc_sr_grossman" then
+		net.WriteInt(KILLER_SLENDER, 8)
+	else
 	net.WriteInt(KILLER_XENO, 8)
+	end
 	net.Broadcast()
 
 	net.Start("sls_specialround_share")
@@ -156,7 +201,7 @@ GM.ROUND.Special.NPC.Start = function()
 					RunConsoleCommand("cpt_bot_seeenemies", 1)
 				end
 
-				local killer = ents.Create(table.Random(GM.ROUND.Special.NPC.Types))
+				local killer = ents.Create(rnd_npc)
 
 				if istable(GM.MAP.Config) then
 					killer:SetPos(table.Random(killer_spawns))
@@ -169,6 +214,8 @@ GM.ROUND.Special.NPC.Start = function()
 				end
 		
 				killer:SetHealth(9999999999)
+				killer.WalkSpeed = 200
+				killer.RunSpeed = 200
 				killer:Spawn()
 
 			end

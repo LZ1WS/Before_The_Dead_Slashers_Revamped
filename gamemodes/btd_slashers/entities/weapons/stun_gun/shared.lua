@@ -111,8 +111,8 @@ if SERVER then
 			end)
 			
 			target.stun = true
-			target.stungun_runspeed = target:GetRunSpeed()
-			target.stungun_walkspeed = target:GetWalkSpeed()
+			target.stungun_runspeed = GAMEMODE.MAP.Killer.RunSpeed
+			target.stungun_walkspeed = GAMEMODE.MAP.Killer.WalkSpeed
 			target:SetRunSpeed(50)
 			target:SetWalkSpeed(50)
 		end

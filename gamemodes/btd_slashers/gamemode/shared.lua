@@ -7,7 +7,7 @@
 
 GM.Name = "Slashers";
 GM.Author = "Garrus2142 & L.Z|W.S";
-GM.Version = "3.2.0"
+GM.Version = "4.0.0"
 GM.Github = "https://github.com/LZ1WS/Before_The_Dead_Slashers_Revamped"
 GM.Workshop = "https://steamcommunity.com/sharedfiles/filedetails/?id=2804558040"
 
@@ -64,6 +64,7 @@ KILLER_NIGHTMARE = 26
 KILLER_XENO = 27
 KILLER_AIDEN = 28
 KILLER_DEMOGORGON = 29
+KILLER_BRUTE = 30
 
 team.SetUp(TEAM_KILLER, "Murderer", Color(255, 0, 0), false);
 team.SetUp(TEAM_SURVIVORS, "Survivors", Color(0, 0, 255), false);

@@ -12,7 +12,7 @@ ENT.IsSomeOneInside	= false
 function ENT:Initialize()
 	if CLIENT then return end
 	
-	self:SetModel( 'models/props_dbdmap/structures/dbd_closet.mdl' )
+	self:SetModel( 'models/dbd/dbdnb_entities/dbd_locker.mdl' )
 	self:SetMoveType( MOVETYPE_NONE )
 	self:SetSolid( SOLID_VPHYSICS )
 	
@@ -27,11 +27,13 @@ function ENT:Initialize()
 	
 	self:DrawShadow( false )
 
+	timer.Simple(1, function()
 	for _,blockedent in ipairs(ents.FindInBox(self:LocalToWorld(self:OBBMins()), self:LocalToWorld(self:OBBMaxs()))) do
 		if blockedent == self then continue end
-		if blockedent:GetClass() == "sls_radio" or blockedent:GetClass() == "sls_generator" or blockedent:GetClass() == "sls_jerrican" or blockedent:GetClass() == "sls_vaccine" then self:Remove() return end
+		if blockedent:GetClass() == "sls_radio" or blockedent:GetClass() == "sls_generator" or blockedent:GetClass() == "sls_jerrican" or blockedent:GetClass() == "sls_vaccine" then self:Remove() break end
 	blockedent:Remove()
 	end
+end)
 
 end
 
@@ -76,7 +78,7 @@ function ENT:Think()
 	end
 	
 	if self.IsSomeOneInside and IsValid( self.ActorInside ) and SERVER then
-		if !self.ActorInside:Alive() then
+		if !self.ActorInside:Alive() or self.ActorInside:GetNWBool( 'CaughtByXenomorph' ) then
 			self.ActorInside:SetNWBool( 'IsInsideLocker', false )
 			self.ActorInside.InHideSpot = false
 			self.ActorInside.HideSpot = nil
@@ -125,10 +127,12 @@ end
    Desc:
 -----------------------------------------------------------]]
 function ENT:Use( user )
-	if self.IsSomeOneInside and self.ActorInside != user and user:Team() == TEAM_KILLER then
+	if self.ActorInside and self.ActorInside != user and user:Team() == TEAM_KILLER then
 		local user_inside = self.ActorInside
-		self:EmitSound( 'doors/door_latch1.wav' )
-		self:ResetSequence( self:LookupSequence( 'getout' ) )
+		self:EmitSound( 'dbd/lockerent/openfast.mp3' )
+		self:EmitSound( 'dbd/lockerent/open1.mp3' )
+		self:EmitSound( 'dbd/lockerent/stinger.mp3' )
+		self:ResetSequence( self:LookupSequence( 'Closet01_DoorSlasherPickCamper' ) )
 		self:RemoveModelInside()
 		
 		self.ActorInside.InHideSpot = false
@@ -145,9 +149,12 @@ function ENT:Use( user )
 		local ang = self:GetAngles()
 		ang.r = 0
 		self.ActorInside:SetEyeAngles( ang )
+		user:RemoveFlags(FL_NOTARGET)
 		user:Freeze(true)
 		self.ActorInside:Freeze(true)
 		timer.Simple(3, function()
+			self:EmitSound( 'dbd/lockerent/closefast.mp3' )
+			self:EmitSound( 'dbd/lockerent/squeak1.mp3' )
 			user:Freeze(false)
 			user_inside:Freeze(false)
 		self.ActorInside = nil
@@ -155,21 +162,27 @@ function ENT:Use( user )
 		return
 	end
 	if GAMEMODE.MAP.Killer.Name == "the Huntress" and !self.IsSomeOneInside and user:Team() == TEAM_KILLER then
+		self:EmitSound( 'dbd/lockerent/openfast.mp3' )
+		self:EmitSound( 'dbd/lockerent/open2.mp3' )
 		user:SetAmmo(3, "SniperRound")
 		user:Freeze(true)
 		timer.Simple(3, function()
 		user:Freeze(false)
+		self:EmitSound( 'dbd/lockerent/closefast.mp3' )
+		self:EmitSound( 'dbd/lockerent/squeak1.mp3' )
 		end)
-		self:EmitSound( 'doors/door_latch1.wav' )
-		self:ResetSequence( self:LookupSequence( 'getin' ) )
+		self:ResetSequence( self:LookupSequence( 'enter1' ) )
 
 		return
 	elseif !self.IsSomeOneInside and user:Team() == TEAM_KILLER then
-		self:EmitSound( 'doors/door_latch1.wav' )
-		self:ResetSequence( self:LookupSequence( 'getin' ) )
+		self:EmitSound( 'dbd/lockerent/openfast.mp3' )
+		self:EmitSound( 'dbd/lockerent/open2.mp3' )
+		self:ResetSequence( self:LookupSequence( 'Closet01_DoorOpenEmpty' ) )
 		user:Freeze(true)
 		timer.Simple(3, function()
 		user:Freeze(false)
+		self:EmitSound( 'dbd/lockerent/closefast.mp3' )
+		self:EmitSound( 'dbd/lockerent/squeak1.mp3' )
 		end)
 		return
 	end
@@ -178,8 +191,12 @@ function ENT:Use( user )
 	self.IsSomeOneInside = !self.IsSomeOneInside
 	
 	if self.IsSomeOneInside then
-		self:EmitSound( 'doors/door_latch1.wav' )
-		self:ResetSequence( self:LookupSequence( 'getin' ) )
+		if user:KeyDown(IN_DUCK) then
+		self:EmitSound( 'dbd/lockerent/openslow.mp3' )
+		self:ResetSequence( self:LookupSequence( 'enter1' ) )
+			timer.Simple(1, function()
+				if !user:Alive() then return end
+				user:AddFlags(FL_NOTARGET)
 		--self:PlaceModelInside( user )
 		self.ActorInside = user
 		self.ActorInside.InHideSpot = true
@@ -196,9 +213,42 @@ function ENT:Use( user )
 		if IsValid( self.ActorInside:GetActiveWeapon() ) then
 			self.ActorInside:GetActiveWeapon():SetNoDraw( true )
 		end
+	end)
+	else
+		self:EmitSound( 'dbd/lockerent/openfast.mp3' )
+		self:EmitSound( 'dbd/lockerent/open1.mp3' )
+		self:ResetSequence( self:LookupSequence( 'Closet_K28_Locker_Enter' ) )
+		--self:PlaceModelInside( user )
+		user:AddFlags(FL_NOTARGET)
+		self.ActorInside = user
+		self.ActorInside.InHideSpot = true
+		self.ActorInside.HideSpot = self
+		
+		local ang = self:GetAngles()
+		ang.r = 0
+		self.ActorInside:SetEyeAngles( ang )
+		
+		self.ActorInside:SetNWBool( 'IsInsideLocker', true )
+		
+		user:SetPos( self:GetPos() )
+		user:SetNoDraw( true )
+		if IsValid( self.ActorInside:GetActiveWeapon() ) then
+			self.ActorInside:GetActiveWeapon():SetNoDraw( true )
+		end
+		timer.Simple(1.5, function()
+			self:EmitSound( 'dbd/lockerent/closefast.mp3' )
+			self:EmitSound( 'dbd/lockerent/squeak1.mp3' )	
+		end)
+	end
 	elseif !self.IsSomeOneInside and self.ActorInside then
-		self:EmitSound( 'doors/door_latch1.wav' )
-		self:ResetSequence( self:LookupSequence( 'getout' ) )
+		if user:KeyDown(IN_DUCK) then
+		self:EmitSound( 'dbd/lockerent/openslow.mp3' )
+		self:ResetSequence( self:LookupSequence( 'exit3' ) )
+		timer.Simple(1, function()
+		if !user:Alive() then return end
+		user:RemoveFlags(FL_NOTARGET)
+		self:EmitSound( 'dbd/lockerent/closeslow.mp3' )
+		self:EmitSound( 'dbd/lockerent/squeak2.mp3' )
 		--self:RemoveModelInside()
 		
 		self.ActorInside.InHideSpot = false
@@ -215,5 +265,32 @@ function ENT:Use( user )
 		ang.r = 0
 		self.ActorInside:SetEyeAngles( ang )
 		self.ActorInside = nil
+	end)
+	else
+		self:EmitSound( 'dbd/lockerent/openfast.mp3' )
+		self:EmitSound( 'dbd/lockerent/open1.mp3' )
+		self:ResetSequence( self:LookupSequence( 'Closet_K28_Locker_Out' ) )
+		--self:RemoveModelInside()
+		user:RemoveFlags(FL_NOTARGET)
+		
+		self.ActorInside.InHideSpot = false
+		self.ActorInside.HideSpot = nil
+		self.ActorInside:SetNoDraw( false )
+		if IsValid( self.ActorInside:GetActiveWeapon() ) then
+			self.ActorInside:GetActiveWeapon():SetNoDraw( false )
+		end
+		
+		self.ActorInside:SetNWBool( 'IsInsideLocker', false )
+		
+		self.ActorInside:SetPos( self:GetPos() + self:GetAngles():Forward() * 46 )
+		local ang = self:GetAngles()
+		ang.r = 0
+		self.ActorInside:SetEyeAngles( ang )
+		self.ActorInside = nil
+		timer.Simple(1.25, function()
+			self:EmitSound( 'dbd/lockerent/closefast.mp3' )
+			self:EmitSound( 'dbd/lockerent/squeak1.mp3' )	
+		end)
+	end
 	end
 end

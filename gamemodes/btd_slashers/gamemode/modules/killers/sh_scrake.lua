@@ -28,7 +28,7 @@ GM.KILLERS[KILLER_SCRAKE].UseAbility = function(ply)
 	scrake_rage_used = true
 	scrake_enraged = true
 
-	ply:EmitSound("scrake/voice/ability.mp3", 0)
+	ply:EmitSound("scrake/ability/ability.mp3", 0)
 	ply:EmitSound("scrake/voice/laughs.wav")
 
 	if SERVER then
@@ -62,7 +62,7 @@ end)
 
 end
 
-hook.Add( "EntityTakeDamage", "EntityDamageExample", function( target, dmginfo )
+hook.Add( "EntityTakeDamage", "sls_scrake_damage_rage", function( target, dmginfo )
 	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_SCRAKE].Name then return end
 	local attacker = dmginfo:GetAttacker()
 	if ( target:IsPlayer() and attacker:IsPlayer() and target:Team() == TEAM_SURVIVORS and attacker:Team() == TEAM_KILLER and scrake_enraged ) then

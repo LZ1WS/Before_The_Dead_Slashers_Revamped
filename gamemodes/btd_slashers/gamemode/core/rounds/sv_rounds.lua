@@ -384,6 +384,7 @@ function GM:PlayerSpawn(ply)
 				net.WriteBool(GM.ROUND.WaitingPolice)
 				net.WriteBool(GM.ROUND.Escape)
 				net.WriteTable(GM.CLASS:GetClassIDTable())
+				net.WriteTable(GM.MAP)
 			net.Send(ply)
 		end
 	end

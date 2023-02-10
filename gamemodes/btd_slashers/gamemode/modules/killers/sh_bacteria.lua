@@ -38,10 +38,11 @@ GM.KILLERS[KILLER_BACTERIA].UseAbility = function(ply)
 
 	for _,v in ipairs(ents.FindInSphere(ply:GetPos(), 750)) do
 
-		if v:IsPlayer() and v:Team() == TEAM_SURVIVOR then
+		if v:IsPlayer() and v:Team() == TEAM_SURVIVORS then
 
 			v:SetDSP(32)
 			HolyWeakenPlayer(v)
+		else continue
 		end
 
 	end

@@ -98,6 +98,7 @@ local function PlayerConnect()
 	for _, v in ipairs(net.ReadTable()) do
 		v.ply.ClassID = v.ClassID
 	end
+	GM.MAP = net.ReadTable()
 end
 net.Receive("sls_round_PlayerConnect", PlayerConnect)
 

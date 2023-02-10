@@ -51,7 +51,7 @@ local function Think()
 		if v:GetNWBool("killerhelp_camp") && !v.kh_play && !GM.ROUND.Killer:GetNWBool("sls_heartbeat_disabled", false) then
 			v:EmitSound("killerhelp.heartbeat")
 			v.kh_play = true
-		elseif !v:GetNWBool("killerhelp_camp") && v.kh_play then
+		elseif (!v:GetNWBool("killerhelp_camp") || GM.ROUND.Killer:GetNWBool("sls_heartbeat_disabled", false)) && v.kh_play then
 			v:StopSound("killerhelp.heartbeat")
 			v.kh_play = false
 		end

@@ -5,8 +5,8 @@ GM.KILLERS[KILLER_MUTE] = {}
     -- Killer
 GM.KILLERS[KILLER_MUTE].Name = "Mute"
 GM.KILLERS[KILLER_MUTE].Model = "models/player/ghost/ghosts.mdl"
-GM.KILLERS[KILLER_MUTE].WalkSpeed = 150
-GM.KILLERS[KILLER_MUTE].RunSpeed = 180
+GM.KILLERS[KILLER_MUTE].WalkSpeed = 165
+GM.KILLERS[KILLER_MUTE].RunSpeed = 198
 GM.KILLERS[KILLER_MUTE].UniqueWeapon = true
 GM.KILLERS[KILLER_MUTE].ExtraWeapons = {"mute_knife"}
 GM.KILLERS[KILLER_MUTE].StartMusic = "sound/slender/voice/intro.mp3"
@@ -19,6 +19,7 @@ if CLIENT then
 end
 
 local mute_ability_used = false
+
 hook.Add("PlayerFootstep", "sls_mute_second_ability", function(ply, pos, foot, sound, volume)
 	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_MUTE].Name then return end
 	if mute_ability_used then
@@ -56,6 +57,11 @@ GM.KILLERS[KILLER_MUTE].UseAbility = function(ply)
 
 	hook.Add("sls_round_End", "sls_muteabil_End", function()
 		if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_MUTE].Name then return end
+
+		for _, v in ipairs(player.GetAll()) do
+		v:SetNWBool("sls_chase_disabled", false)
+		end
+
 		mute_ability_used = false
 		timer.Remove("sls_mute_ability_cooldown")
 	end)

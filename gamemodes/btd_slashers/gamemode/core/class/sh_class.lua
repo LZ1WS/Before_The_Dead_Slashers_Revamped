@@ -283,6 +283,13 @@ if CLIENT then
 	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].icon = Material("icons/addicted.png")
 end
 
+hook.Add( "SetupMove", "sls_maxspeed", function( ply, mv, cmd )
+    if ply:GetNWBool("sls_hit_boost", false) then mv:SetMaxClientSpeed( ply:GetRunSpeed() * 1.75 ) return end
+	if ply:Team() == TEAM_SURVIVORS then
+    mv:SetMaxClientSpeed( 240 * 1.75 ) 
+	end
+end ) 
+
 local function StartRound()
 	for _, v in ipairs(player.GetAll()) do
 		v.ClassID = nil

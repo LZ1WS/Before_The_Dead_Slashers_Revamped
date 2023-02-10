@@ -15,16 +15,18 @@ net.Receive("sls_springtrap_trap_activated", function()
 local rnd_number = math.random(1, 2)
 	hook.Add("HUDPaint", "Springtrap_jumpscare", function()
 		if LocalPlayer():Team() != TEAM_KILLER then
-			surface.SetDrawColor( 255, 255, 255, 60 )
+			--surface.SetDrawColor( 255, 255, 255, 60 )
 			if rnd_number == 1 then
-			surface.SetMaterial( ourMat )
+				render.SetMaterial( ourMat )
 			else
-				surface.SetMaterial( ourMat2 )
+				render.SetMaterial( ourMat2 )
 			end
-			surface.DrawTexturedRect(0, 0, ScrW(), ScrH())
+			render.SetLightingMode(2)
+			render.DrawScreenQuad( true )
 		end
 		end)
 		timer.Simple(1.5, function()
+			render.SetLightingMode(0)
 		hook.Remove("HUDPaint", "Springtrap_jumpscare")
 		end)
 

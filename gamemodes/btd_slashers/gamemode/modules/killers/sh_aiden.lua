@@ -43,6 +43,8 @@ GM.KILLERS[KILLER_AIDEN].UseAbility = function(ply)
 	ply:SetWalkSpeed(ply:GetWalkSpeed() + 50)
 	ply:SetRunSpeed(ply:GetRunSpeed() + 50)
 	if SERVER then
+	cam:Remove()
+
 	for k, v in ipairs(ents.FindByClass( "fnafgm_camera" )) do
 		if k == 1 then continue end
 		local num = k - string.Right(cam:GetName(), 1)
@@ -52,7 +54,6 @@ GM.KILLERS[KILLER_AIDEN].UseAbility = function(ply)
 		end
 		end
 	end
-	cam:Remove()
 
 		timer.Create("sls_aiden_phase_to_cam_cd", 10, 1, function()
 		phase_used = false

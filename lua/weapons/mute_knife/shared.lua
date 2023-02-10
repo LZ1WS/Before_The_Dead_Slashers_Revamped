@@ -186,10 +186,46 @@ function SWEP:PrimaryAttack()
 	end
 end
 
+local halo_table = {}
+
 /*---------------------------------------------------------
 Reload
 ---------------------------------------------------------*/
 function SWEP:SecondaryAttack()
+	if GAMEMODE.MAP.Killer.Name ~= GAMEMODE.KILLERS[KILLER_MUTE].Name then return end
+if CLIENT then
+
+	local SurvivorsPly = player.GetAll()
+	for k,v in pairs(SurvivorsPly) do
+
+		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1000 && LocalPlayer():IsLineOfSightClear( v ) && !LocalPlayer():GetNWBool("sls_chase_disabled", false) && v:IsValid() && v != LocalPlayer() && v:Team() != TEAM_KILLER && !v:GetNWBool( 'IsInsideLocker', false )  then
+			local TargetPosMax = v:GetPos() + v:OBBMaxs() - Vector(10,0,0)
+			local TargetPosMin = v:GetPos() + v:OBBMins() + Vector(10,0,0)
+
+			local ScreenPosMax = TargetPosMax:ToScreen()
+			local ScreenPosMin = TargetPosMin:ToScreen()
+
+
+			if (ScreenPosMax.x < ScrW() && ScreenPosMax.y < ScrH() && ScreenPosMin.x > 0 && ScreenPosMin.y > 0) then
+
+				halo_table = {v}
+
+			end
+
+		end
+	end
+
+	hook.Add("PreDrawHalos", "sls_mute_target", function()
+		if GAMEMODE.MAP.Killer.Name ~= GAMEMODE.KILLERS[KILLER_MUTE].Name then return end
+		if GM.ROUND.Killer ~= LocalPlayer() then hook.Remove("PreDrawHalos", "sls_mute_target") return end
+		if LocalPlayer():Team() == TEAM_KILLER then
+
+		halo.Add(halo_table, color_white, 2, 2, 1, true, true)
+		end
+	
+	end)
+
+end
 end
 
 /*---------------------------------------------------------

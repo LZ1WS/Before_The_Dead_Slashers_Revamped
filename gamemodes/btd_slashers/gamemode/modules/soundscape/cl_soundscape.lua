@@ -165,6 +165,7 @@ local function JumpScare()
 	if !LocalPlayer():Alive() then return end
 	if !IsValid(killer) then return end
 	if killer:GetColor().a == 0 then return end
+	if killer:GetNWBool("sls_chase_disabled", false) then return end
 
 	local shootPos = LocalPlayer():GetShootPos()
 	local hisPos = killer:GetShootPos()

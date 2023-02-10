@@ -90,7 +90,7 @@ end
 
 if CLIENT then
         hook.Add("RenderScreenspaceEffects", "sls_holy_weaken_effect", function()
-            if LocalPlayer():Team() == TEAM_KILLER and LocalPlayer():GetNWBool("sls_holy_weaken_effect", false) == true then
+            if LocalPlayer():GetNWBool("sls_holy_weaken_effect", false) == true then
                 DrawMotionBlur( 0.02, 1, 0.01 )
             end
             end)
