@@ -173,7 +173,7 @@ end)
 
 hook.Add("EntityTakeDamage", "stunlight_EntityTakeDamage", function(target, dmg)
 		if !target:IsPlayer() || !dmg:GetAttacker() || !dmg:GetAttacker():IsPlayer() || !dmg:GetAttacker().GetActiveWeapon || !dmg:GetAttacker():GetActiveWeapon() ||
-			dmg:GetAttacker():GetActiveWeapon():GetClass() != "weapon_flashlight" || dmg:GetAttacker():GetActiveWeapon():GetClass() != "ohandsswep" then return end
+			dmg:GetAttacker():GetActiveWeapon():GetClass() != "shaky_flashlight" || dmg:GetAttacker():GetActiveWeapon():GetClass() != "ohandsswep" then return end
 		if target:Team() == TEAM_SURVIVORS then return true end
 		if target:Team() == TEAM_KILLER && !target.stunlight && !target.stun && !target.stunbat then
 			timer.Create("stunlight_" .. target:UniqueID(), math.random(1, 3), 1, function()

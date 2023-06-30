@@ -32,6 +32,7 @@ GM.KILLERS[KILLER_MUTE].UseAbility = function(ply)
 	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_MUTE].Name then return end
 			if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 			if !mute_ability_used then
+				ply:EmitSound("mute/ability/ability.ogg")
 				ply:SetNWBool("sls_chase_disabled", true)
 				mute_ability_used = true
 				if SERVER then

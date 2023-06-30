@@ -32,6 +32,8 @@ function GM.MAP.Killer:UseAbility(ply)
 end
 end
 
+hook.Run("sls_killer_loaded")
+
 end
 
 

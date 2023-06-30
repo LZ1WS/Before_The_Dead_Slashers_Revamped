@@ -45,6 +45,10 @@ GM.KILLERS[KILLER_BRUTE].UseAbility = function(ply)
 	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 	if brute_abil_used then return end
     brute_abil_used = true
+    ply:SetNWBool("sls_ram_killer", true)
+    timer.Simple(ply:SequenceDuration(ply:LookupSequence( "wos_l4d_getup_from_pounced" )), function()
+        ply:SetNWBool("sls_ram_killer", false)
+    end)
 
     for i=1, 2500 do
     ply:SetVelocity( ply:GetAimVector() * i )
@@ -92,6 +96,14 @@ end
 
 hook.Add( "CalcMainActivity", "sls_brute_fallover", function( ply )
 	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_BRUTE].Name then return end
+
+    if ply:GetNWBool("sls_ram_killer", false) then
+        local seq = ply:LookupSequence( "ACT_HL2MP_RUN_CHARGING" )
+    
+        if seq < 0 then return end
+        return -1, seq
+    end 
+
     if ply:GetNWBool("sls_ram_victim", false) then
 	local seq = ply:LookupSequence( "wos_l4d_getup_from_pounced" )
 
