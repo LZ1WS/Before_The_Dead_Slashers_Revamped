@@ -23,22 +23,26 @@ function playermeta:SetSurvClass(class)
 		self:SetModel("models/player/eli.mdl")
 	end
 	self:SetupHands()
+
 	for _, v in ipairs(GM.CONFIG["survivors_weapons"]) do
 		self:Give(v)
 	end
+
 	for _, v in ipairs(GM.CLASS.Survivors[class].weapons) do
 		self:Give(v)
 	end
+
 	if game.GetMap() == "ai_lockdown" then
 		self:SetJumpPower(260)
 	else
-	self:SetJumpPower(200)
+		self:SetJumpPower(200)
 	end
+
+	self:SetNW2Float("sls_max_speed", GM.CLASS.Survivors[class].runspeed)
 	self:SetWalkSpeed(GM.CLASS.Survivors[class].walkspeed)
 	self:SetRunSpeed(GM.CLASS.Survivors[class].runspeed)
 	self:SetMaxHealth(GM.CLASS.Survivors[class].life)
 	self:SetHealth(GM.CLASS.Survivors[class].life)
-	self:SetNWInt("sls_addicted_shots", 3)
 	self:GodDisable()
 	--self:SetNWInt("ClassID", class)
 	self.ClassID = class
@@ -61,22 +65,27 @@ function playermeta:SetupKiller()
 			self:Give(v)
 		end
 	end
-if !self:IsBot() then
-	if game.GetMap() == "ai_lockdown" then
-		self:SetJumpPower(260)
-	else
-	self:SetJumpPower(90)
+
+	if !self:IsBot() then
+		if game.GetMap() == "ai_lockdown" then
+			self:SetJumpPower(260)
+		else
+		self:SetJumpPower(90)
+		end
 	end
-end
+
 	self:SetWalkSpeed(GM.MAP.Killer.WalkSpeed)
 	self:SetRunSpeed(GM.MAP.Killer.RunSpeed)
+	self:SetNW2Float("sls_max_speed", GM.MAP.Killer.RunSpeed)
+
 	if GM.MAP.Killer.Name == "Slenderman" then
-	self:SetMaxHealth(99999999999999999999)
-	self:SetHealth(99999999999999999999)
+		self:SetMaxHealth(99999999999999999999)
+		self:SetHealth(99999999999999999999)
 	else
-	self:SetMaxHealth(100)
-	self:GodEnable()
+		self:SetMaxHealth(100)
+		self:GodEnable()
 	end
+
 	self.ClassID = CLASS_KILLER
 end
 
@@ -100,6 +109,7 @@ function GM.CLASS:SetupSurvivors()
 	local classes = table.GetKeys(GM.CLASS.Survivors)
 
 	for _, v in ipairs(GM.ROUND.Survivors) do
+		if !v:IsPlayer() then continue end
 		local class, key = table.Random(classes)
 		v:SetSurvClass(class)
 		table.remove(classes, key)
@@ -129,46 +139,27 @@ end
 end
 hook.Add("PlayerShouldTakeDamage", "sls_class_PlayerShouldTakeDamage", PlayerShouldTakeDamage)
 
-local shotgun_picked = false
-
 hook.Add("PlayerCanPickupWeapon", "sls_sr2_sg_pickup", function(ply, wep)
-if wep:GetClass() == "sr2_sg" and ply:Team() == TEAM_SURVIVORS then
-net.Start( "objectiveSlasher" )
-net.WriteTable({"round_mission_killslender"})
-net.WriteString("caution")
-net.Broadcast()
-		if shotgun_picked == false then
-			hook.Call("sls_NextObjective")
-			shotgun_picked = true
-		end
-			return true
-		elseif wep:GetClass() == "sr2_sg" and ply:Team() == TEAM_KILLER then
-			return false
-end
+	if wep:GetClass() == "sr2_sg" and ply:Team() == TEAM_SURVIVORS then
+		return true
+	elseif wep:GetClass() == "sr2_sg" and ply:Team() == TEAM_KILLER then
+		return false
+	end
 end)
 
 hook.Add("EntityTakeDamage", "Resists_abil", function(ply, dmg)
-	local attacker = dmg:GetAttacker()
+	if ply:IsPlayer() and ply.SteveResist == true then
+		dmg:ScaleDamage(0.5)
+	end
+end)
 
-if ply:IsPlayer() and ply.SteveResist == true then
-dmg:ScaleDamage(0.5)
-end
-if ply:IsPlayer() and attacker:IsPlayer() and attacker:Team() == TEAM_KILLER and ply:Team() != TEAM_KILLER and !ply:GetNWBool("sls_hit_boost", false) then
-	local previous_speed = ply:GetRunSpeed()
-	ply:SetNWBool("sls_hit_boost", true)
-	ply:SetRunSpeed(previous_speed * 1.75)
-	if !ply:IsBot() then
-	timer.Create("sls_survivor_speedboost_" .. ply:SteamID64(), 3, 1, function()
-		ply:SetRunSpeed(previous_speed)
-		ply:SetNWBool("sls_hit_boost", false)
-	end)
-else
-	timer.Create("sls_survivor_speedboost_" .. ply:EntIndex(), 3, 1, function()
-		ply:SetRunSpeed(previous_speed)
-		ply:SetNWBool("sls_hit_boost", false)
-	end)
-end
-end
+hook.Add("PlayerHurt", "sls_survivor_dmg_boost", function(ply, attacker, health, damage)
+	if attacker:IsPlayer() and attacker:Team() == TEAM_KILLER and ply:Team() != TEAM_KILLER then
+		--local previous_speed = GM.CLASS.Survivors[ply.ClassID].runspeed
+		sls.util.ModifyMaxSpeed(ply, GM.CLASS.Survivors[ply.ClassID].runspeed * 1.75, 3)
+		--ply:SetRunSpeed(previous_speed * 1.75)
+		ply:SetStamina(ply:GetStamina() + 50)
+	end
 end)
 
 hook.Add("EntityTakeDamage", "stunlight_EntityTakeDamage", function(target, dmg)
@@ -178,18 +169,18 @@ hook.Add("EntityTakeDamage", "stunlight_EntityTakeDamage", function(target, dmg)
 		if target:Team() == TEAM_KILLER && !target.stunlight && !target.stun && !target.stunbat then
 			timer.Create("stunlight_" .. target:UniqueID(), math.random(1, 3), 1, function()
 				if !IsValid(target) then return end
-				if target:Alive() then 
+				--[[if target:Alive() then
 					target:SetRunSpeed(target.stunlight_runspeed)
 					target:SetWalkSpeed(target.stunlight_walkspeed)
-				end
+				end]]
 				target.stunlight = false
 			end)
-			
+
 			target.stunlight = true
-			target.stunlight_runspeed = target:GetRunSpeed()
-			target.stunlight_walkspeed = target:GetWalkSpeed()
-			target:SetRunSpeed(target:GetRunSpeed() - 50)
-			target:SetWalkSpeed(target:GetWalkSpeed() - 50)
+
+			local debuff = target:GetWalkSpeed() - (target:GetWalkSpeed() * 0.15)
+
+			sls.util.ModifyMaxSpeed(target, debuff, math.random(2, 4))
 		end
 	end)
 
@@ -214,9 +205,9 @@ end
 end)
 
 hook.Add("sls_round_PreStart", "sls_sability_PreStart", function()
-for _, ply in pairs(player.GetAll()) do
-if ply.ClassID == 10 and ply:Alive() and IsValid(ply) then
-ply:SetNWBool("steveabilused", false)
-end
-end
+	for _, ply in pairs(player.GetAll()) do
+		if ply.ClassID == 10 and ply:Alive() and IsValid(ply) then
+			ply:SetNWBool("steveabilused", false)
+		end
+	end
 end)

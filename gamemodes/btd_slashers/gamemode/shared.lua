@@ -4,12 +4,17 @@
 -- @Date:   2017-07-25 16:15:52
 -- @Last Modified by:   Garrus2142
 -- @Last Modified time: 2017-07-27 17:08:04
+local GM = GM or GAMEMODE
 
 GM.Name = "Slashers";
 GM.Author = "Garrus2142 & L.Z|W.S";
-GM.Version = "4.0.0"
+GM.Version = "6.3.2"
+GM.Version_Github = 0
+GM.Version_Type = ".GIT"
 GM.Github = "https://github.com/LZ1WS/Before_The_Dead_Slashers_Revamped"
 GM.Workshop = "https://steamcommunity.com/sharedfiles/filedetails/?id=2804558040"
+
+sls = sls or {}
 
 TEAM_KILLER = 1;
 TEAM_SURVIVORS = 2;
@@ -71,48 +76,47 @@ print("\n### This server run Before the Dead|Slashers Revamped Gamemode by Utopi
 print("Version: " .. GM.Version)
 print("Workshop: " .. GM.Workshop)
 print("Github: " .. GM.Github)
-print("\n###                 Thanks for playing                ###\n")
+print("\n###				 Thanks for playing				###\n")
 
---[[function sls.util.IncludeDir(directory, bFromLua, bFromModules)
+function GetVersion(major, minor, patch)
 
-    -- By default, we include relatively to core.
-    local baseDir = "/core/"
+	local maj = tonumber(string.sub(GM.Version, 1, 1))
+	local min = tonumber(string.sub(GM.Version, 3, 3))
+	local pat = tonumber(string.sub(GM.Version, 5, 5))
 
-    -- If we're in a modules, include relative to the modules.
-    if (bFromModules) then
-        baseDir = "/modules/"
-    end
-
-    -- Find all of the files within the directory.
-    for _, v in ipairs(file.Find((bFromLua and "" or baseDir)..directory.."/*.lua", "LUA")) do
-        -- Include the file from the prefix.
-        sls.util.Include(directory.."/"..v)
-    end
-
+	return major <= maj and minor <= min and patch <= pat
 end
 
-function sls.util.Include(fileName, realm)
-if (!fileName) then
-    error("[BTD] No file name specified for including.")
+function CheckUpdates()
+	http.Fetch("https://raw.githubusercontent.com/LZ1WS/Before_The_Dead_Slashers_Revamped/main/gamemodes/btd_slashers/gamemode/shared.lua", function(contents,size)
+		local Entry = string.match( contents, "GM.Version%s=%s%p%d%p%d%p%d%p+" )
+		local major = tonumber(string.sub(Entry, 15, 15))
+		local minor = tonumber(string.sub(Entry, 17, 17))
+		local patch = tonumber(string.sub(Entry, 19, 19))
+
+		if Entry then
+			GM.Version_Github = Entry or 0
+		end
+
+		if GM.Version_Github == 0 then
+			print("[BTD] latest version could not be detected, You have Version: "..GM.Version)
+		else
+			if  GetVersion(major, minor, patch) then
+				print("[BTD] is up to date, Version: "..GM.Version)
+			else
+				print("[BTD] a newer version is available! Version: "..GM.Version_Github..", You have Version: "..GM.Version)
+				print("[BTD] get the latest version at https://steamcommunity.com/sharedfiles/filedetails/?id=2804558040 or https://github.com/LZ1WS/Before_The_Dead_Slashers_Revamped")
+
+				if CLIENT then
+					timer.Simple(18, function()
+						chat.AddText( Color( 255, 0, 0 ), "[BTD] a newer version is available!" )
+					end)
+				end
+			end
+		end
+	end)
 end
 
--- Only include server-side if we're on the server.
-if ((realm == "server" or fileName:find("sv_")) and SERVER) then
-    return include(fileName)
--- Shared is included by both server and client.
-elseif (realm == "shared" or fileName:find("shared.lua") or fileName:find("sh_")) then
-    if (SERVER) then
-        -- Send the file to the client if shared so they can run it.
-        AddCSLuaFile(fileName)
-    end
-
-    return include(fileName)
--- File is sent to client, included on client.
-elseif (realm == "client" or fileName:find("cl_")) then
-    if (SERVER) then
-        AddCSLuaFile(fileName)
-    else
-        return include(fileName)
-    end
-end
-end]]--
+hook.Add( "InitPostEntity", "!!!btdcheckupdates", function()
+	timer.Simple(20, function() CheckUpdates() end)
+end )

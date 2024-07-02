@@ -8,62 +8,55 @@ GM.KILLERS[KILLER_AIDEN].Model = "models/MrFunreal/Human/CameraHeadSuit_PLAYER.m
 GM.KILLERS[KILLER_AIDEN].WalkSpeed = 190
 GM.KILLERS[KILLER_AIDEN].RunSpeed = 210
 GM.KILLERS[KILLER_AIDEN].UniqueWeapon = true
-GM.KILLERS[KILLER_AIDEN].ExtraWeapons = {"camera_man_tablet", "weapon_baton"}
+GM.KILLERS[KILLER_AIDEN].ExtraWeapons = {"camera_man_tablet", "nightstick"}
 GM.KILLERS[KILLER_AIDEN].StartMusic = "sound/aiden/voice/intro.ogg"
 GM.KILLERS[KILLER_AIDEN].ChaseMusic = "aiden/chase/chase.wav"
 GM.KILLERS[KILLER_AIDEN].VoiceCallouts = {"aiden/voice/security_scan.ogg"}
 --GM.KILLERS[KILLER_AIDEN].TerrorMusic = "metalworker/terror/terror.wav"
+GM.KILLERS[KILLER_AIDEN].AbilityCooldown = 15
 
-local phase_used = false
 
 GM.KILLERS[KILLER_AIDEN].UseAbility = function(ply)
 	if CLIENT then return end
-	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_AIDEN].Name then return end
 
 	local cam = ply:GetNWEntity("sls_current_cam", nil)
 	if !IsValid(cam) || cam:GetClass() ~= "fnafgm_camera" then return end
-	if phase_used then return end
-	local oldws,oldrs = ply:GetRunSpeed(), ply:GetWalkSpeed()
 
-	phase_used = true
+	local animation_start, animation_duration = CurTime(), 10
+
 	cam:EmitSound("amogus/ability/amogus_transform" .. math.random(1, 2) .. ".mp3")
-	ply:SetWalkSpeed(oldws - 50)
-	ply:SetRunSpeed(oldrs - 50)
+	local debuff = ply:GetRunSpeed() - (ply:GetRunSpeed() * 0.15)
 
-	net.Start( "notificationSlasher" )
-	net.WriteTable({"class_ability_used"})
-	net.WriteString("safe")
-	net.Send(ply)
+	sls.util.ModifyMaxSpeed(ply, debuff)
+
+	local cam_pos = cam:GetPos()
+	local cam_end_pos = Vector(cam_pos.x, cam_pos.y, cam_pos.z - 150)
+
+	timer.Create("cam_animation", 0, 0, function()
+		local animation_progress = ( CurTime() - animation_start ) / animation_duration
+		cam:SetPos(LerpVector( animation_progress, cam_pos,  cam_end_pos))
+	end)
 
 	timer.Create("sls_aiden_phase_to_cam", 5, 1, function()
-	ply:EmitSound("aiden/voice/intro.ogg", 0)
-	cam:EmitSound("amogus/ability/amogus_transform" .. math.random(1, 2) .. ".mp3")
-	ply:SetPos(cam:GetPos())
-	ply:SetWalkSpeed(ply:GetWalkSpeed() + 50)
-	ply:SetRunSpeed(ply:GetRunSpeed() + 50)
-	if SERVER then
-	cam:Remove()
+		ply:EmitSound("aiden/voice/intro.ogg", 0)
 
-	for k, v in ipairs(ents.FindByClass( "fnafgm_camera" )) do
-		if k == 1 then continue end
-		local num = k - string.Right(cam:GetName(), 1)
-		v:SetName("fnafgm_Cam" .. num)
-		if CLIENT then
-		fnafgmSTSA:SetViewCamMan(v)
+		cam:EmitSound("amogus/ability/amogus_transform" .. math.random(1, 2) .. ".mp3")
+
+		local buff = ply:GetRunSpeed() + (ply:GetRunSpeed() * 0.25)
+
+		sls.util.ModifyMaxSpeed(ply, buff)
+
+		ply:SetPos(cam_pos)
+
+		timer.Remove("cam_animation")
+		table.RemoveByValue(fnafCameras, cam)
+		cam:Remove()
+
+		if ( animation_start + animation_duration <= CurTime() ) then
+			-- In this example we're just resetting the start time when the animation completes.
+			animation_start = CurTime()
 		end
-		end
-	end
 
-		timer.Create("sls_aiden_phase_to_cam_cd", 10, 1, function()
-		phase_used = false
-
-		net.Start( "notificationSlasher" )
-		net.WriteTable({"class_ability_time"})
-		net.WriteString("safe")
-		net.Send(ply)
-		end)
-	
 	end)
 
 end
@@ -74,8 +67,7 @@ if CLIENT then
 end
 
 hook.Add("sls_round_End", "sls_aidenabil_End", function()
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_AIDEN].Name then return end
-timer.Remove("sls_aiden_phase_to_cam")
-timer.Remove("sls_aiden_phase_to_cam_cd")
-phase_used = false
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_AIDEN then return end
+	timer.Remove("cam_animation")
+	timer.Remove("sls_aiden_phase_to_cam")
 end)

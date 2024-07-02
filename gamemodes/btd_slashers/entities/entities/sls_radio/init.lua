@@ -11,7 +11,7 @@ local GM = GAMEMODE
 
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
-include('shared.lua')
+include("shared.lua")
 
 sound.Add( {
 	name = "slashers_radio",
@@ -28,7 +28,7 @@ function ENT:Initialize()
 	self:SetModel("models/props_lab/citizenradio.mdl")
 	self:PhysicsInit(SOLID_NONE)
 	self:SetMoveType(MOVETYPE_NONE)
-	self:SetNWBool('activated',false)
+	self:SetNWBool("activated", false)
 	self:SetSolid(SOLID_VPHYSICS)
 	self:SetUseType( SIMPLE_USE )
 
@@ -39,12 +39,12 @@ function ENT:Initialize()
 end
 
 function ENT:SpawnFunction( ply, tr )
-    if ( !tr.Hit ) then return end
-    local ent = ents.Create("sls_radio")
-    ent:SetPos( tr.HitPos + tr.HitNormal * 16 )
-    ent:Spawn()
+	if ( !tr.Hit ) then return end
+	local ent = ents.Create("sls_radio")
+	ent:SetPos( tr.HitPos + tr.HitNormal * 16 )
+	ent:Spawn()
 
-    return ent
+	return ent
 end
 ents.Create("prop_physics")
 
@@ -53,35 +53,43 @@ function ENT:OnTakeDamage(dmg)
 end
 
 function ENT:Use(ply)
-	if CurrentObjective == "activate_radio" && ply:Team() == TEAM_SURVIVORS then
-		net.Start( "notificationSlasher" )
-						net.WriteTable({"round_notif_police_call"})
-						net.WriteString("safe")
-						net.Send(ply)
+	local info = GM.MAP.Goals["Police"]
+
+	if !info then return end
+
+	if info.CurrentObjective == "activate_radio" && LambdaTeams:GetPlayerTeam(ply) == "Survivors" then
+		if ply:IsPlayer() then
+			net.Start( "notificationSlasher" )
+			net.WriteTable({"round_notif_police_call"})
+			net.WriteString("safe")
+			net.Send(ply)
+		end
 
 		net.Start( "objectiveSlasher" )
-						 net.WriteTable({"round_notif_police"})
-						 net.WriteString("caution")
-						 if IsValid(GM.ROUND.Killer) then
-							net.SendOmit(GM.ROUND.Killer)
-						else
-							net.Send(GM.ROUND.Survivors)
-						end
+		net.WriteTable({"round_notif_police"})
+		net.WriteString("caution")
 
-		hook.Call("sls_NextObjective")
+		if IsValid(GM.ROUND.Killer) then
+			net.SendOmit(GM.ROUND.Killer)
+		else
+			net.Send(GM.ROUND.Survivors)
+		end
+
+		hook.Run("sls_NextObjective", "Police")
+
 		self.Active = true
 		self:EmitSound("slashers_radio")
 	else
-		if (!self:GetNWBool( 'activated')) then
-				net.Start( "notificationSlasher" )
-								net.WriteTable({"round_notif_error_radio"})
-								net.WriteString("cross")
-								net.Send(ply)
+		if (!self:GetNWBool( "activated") && ply:IsPlayer()) then
+			net.Start( "notificationSlasher" )
+			net.WriteTable({"round_notif_error_radio"})
+			net.WriteString("cross")
+			net.Send(ply)
 		end
 
 	end
 end
 
 function ENT:OnRemove()
-    self:StopSound("slashers_radio")
+	self:StopSound("slashers_radio")
 end

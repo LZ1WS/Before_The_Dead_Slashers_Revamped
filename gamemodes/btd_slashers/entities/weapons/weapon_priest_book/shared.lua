@@ -6,7 +6,7 @@
 -- @Last Modified time: 2017-07-26 15:21:12
 
 SWEP.Author = "L.Z|W.S"
- 
+
 SWEP.Category = "Slashers"
 
 SWEP.Spawnable = true
@@ -70,7 +70,7 @@ function SWEP:Tick()
 				self:TakePrimaryAmmo( 1 )
 				self.Delay = CurTime() + 30
 				self.Used = false
-				HolyWeakenPlayer(GM.ROUND.Killer)
+				sls.debuff.HolyWeakenPlayer(GM.ROUND.Killer)
 				owner:RemoveFlags(FL_ATCONTROLS)
 				self:SetNWFloat( 'progressBar', 0)
 				if SERVER and self.PraySFX:IsPlaying() then

@@ -34,7 +34,6 @@ SetGlobalInt("sls_killerrnd", rndnumber)
 print(GetGlobalInt("sls_killerrnd", 1))
 end)
 end]]--
-local sls_killerseverywhere
 
 local function CheckNavMesh()
 
@@ -72,6 +71,7 @@ function GM.ROUND:Start(forceKiller)
 	GM.ROUND.SpecialType = nil
 	local chance = math.random()
 	local spec_chance = GetConVar("slashers_specialround_chance"):GetInt() / 100
+	local bots_num = GetConVar("slashers_lambdabots_num"):GetInt()
 
 	if chance <= spec_chance and !table.IsEmpty(GM.ROUND.Special) then
 		if spec_chance == 0 then return end
@@ -86,7 +86,7 @@ function GM.ROUND:Start(forceKiller)
         net.WriteTable({"special_round", GM.ROUND.SpecialType.Name})
         net.WriteString("caution")
         net.Send(player.GetAll())
-		
+
 		return
 		end
 	end
@@ -101,7 +101,7 @@ function GM.ROUND:Start(forceKiller)
 	local surv_spawns
 	local killer_spawns
 
-	local playersCount = 0
+	local playersCount = 0 + bots_num
 	for _, v in ipairs(player.GetAll()) do
 		if v.initialKill then
 			playersCount = playersCount + 1
@@ -111,7 +111,9 @@ function GM.ROUND:Start(forceKiller)
 		GM.ROUND.WaitingPlayers = true
 		net.Start("sls_round_WaitingPlayers")
 			net.WriteBool(true)
+			net.WriteTable(GM.ROUND.ReadyPlayers)
 		net.Broadcast()
+		RunConsoleCommand("ai_disabled", 1)
 		return false
 	end
 
@@ -122,6 +124,8 @@ function GM.ROUND:Start(forceKiller)
 	hook.Run("sls_round_PreStart")
 	net.Start("sls_round_PreStart")
 	net.Broadcast()
+
+	game.CleanUpMap()
 
 	if istable(GM.MAP.Config) then
 
@@ -144,7 +148,9 @@ function GM.ROUND:Start(forceKiller)
 			if killer.SpecialRound == "GM.MAP.Pages" and !(GM.MAP.Pages) then continue end
 			if killer.SpecialRound == "GM.MAP.Vaccine" and !(GM.MAP.Vaccine) then continue end
 		end
-		if (killer.Joke) and GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.Joke == true then continue end
+
+		if GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.Joke and !killer.Serious then continue end
+
 		rnd_killer_number = number
 	end
 	local killer = GM.ROUND.Killer:GetNWInt("choosen_killer", rnd_killer_number)
@@ -155,7 +161,6 @@ function GM.ROUND:Start(forceKiller)
 	net.WriteInt(killer, 8)
 	net.Broadcast()
 
-
 	local i = 0
 	for _, v in ipairs(player.GetAll()) do
 	if v:GetNWBool("sls_spectate_choose", false) == true then continue end
@@ -165,18 +170,43 @@ function GM.ROUND:Start(forceKiller)
 		end
 		i = i + 1
 	end
+
+	--[[	local i = 0
+	for _, v in ipairs(player.GetAll()) do
+		if i > 10 then break end
+		if GM.ROUND.Killer != v then
+			table.insert(GM.ROUND.Survivors, v)
+		end
+		i = i + 1
+	end]]--
+
+	for n = 1, bots_num do
+		if #GM.ROUND.Survivors > 10 then break end
+		local NewBot = ents.Create("npc_lambdaplayer")
+
+		table.insert(GM.ROUND.Survivors, NewBot)
+	end
+
 	GM.ROUND:ViewInitCam(false)
 
 	local spawnpoints = ents.FindByClass("info_player_counterterrorist")
 	for _, v in ipairs(GM.ROUND.Survivors) do
+		if v:IsPlayer() then
 		v:Spawn()
+		end
 		if istable(GM.MAP.Config) then
 		v:SetPos(table.Random(surv_spawns))
 		else
 		v:SetPos(table.Random(spawnpoints):GetPos())
 		end
+		if !v:IsPlayer() then
+			v.l_forcedTeam = TEAM_SURVIVORS
+			v:Spawn()
+		end
 		v:Freeze(true)
+		if v:IsPlayer() then
 		v:ScreenFade(SCREENFADE.IN, Color(0, 0, 0), 2, GM.CONFIG["round_freeze_start"] - 2)
+		end
 		v:SetNWBool("Escaped", false)
 	end
 	GM.CLASS:SetupSurvivors()
@@ -193,8 +223,6 @@ function GM.ROUND:Start(forceKiller)
 		GM.ROUND.Killer:ScreenFade(SCREENFADE.IN, Color(0, 0, 0), 2, GM.CONFIG["round_freeze_start"] - 2)
 		GM.ROUND.Killer:SetNWBool("Escaped", false)
 	end
-
-	game.CleanUpMap()
 
 	GM.ROUND.Active = true
 	GM.ROUND.Count = GM.ROUND.Count + 1
@@ -219,6 +247,7 @@ function GM.ROUND:Start(forceKiller)
 			if IsValid(GM.ROUND.Killer) then
 				GM.ROUND.Killer:Freeze(false)
 			end
+	RunConsoleCommand("ai_disabled", 0)
 		end
 	)
 	print("Start round " .. GM.ROUND.Count .. "/" .. GetConVar("slashers_round_max"):GetInt())
@@ -259,17 +288,17 @@ else
 
 	if GM.ROUND.CustomEscape then
 
-		for _, v in ipairs(ents.FindInSphere(GM.ROUND.CustomEscape["pos2"], 200)) do 
+		for _, v in ipairs(ents.FindInSphere(GM.ROUND.CustomEscape["pos2"], 200)) do
 		if v:GetClass() == GM.MAP.Config["Exit_Doors_Type"] then v:Remove() break end
 		end
 
 			local zone
 			local vec1, vec2
-	
+
 			vec1 = GM.ROUND.CustomEscape["pos1"]
 			vec2 = GM.ROUND.CustomEscape["pos2"]
 			zone = CreateZone(vec1, vec2)
-	
+
 			function zone:OnPlayerEnter(ply)
 				if !GM.ROUND.Escape then return end
 				if ply:Team() != TEAM_SURVIVORS then return end
@@ -280,7 +309,7 @@ else
 			if !GM.ROUND.Active then return end
 			if !IsValid(ply) then return end
 			if ply:Team() != TEAM_SURVIVORS then return end
-	
+
 			for _,surv in pairs(GM.ROUND.Survivors) do
 				if surv:Alive() then
 		ply:Spectate(OBS_MODE_CHASE)
@@ -292,9 +321,9 @@ else
 			end
 		end)
 	end
-		
+
 	end
-	
+
 end
 
 	hook.Run("sls_round_StartEscape")
@@ -304,6 +333,7 @@ end
 end
 
 function GM.ROUND:End(nowin)
+	local bots_num = GetConVar("slashers_lambdabots_num"):GetInt()
 	if (GM.ROUND.SpecialType) and (GM.ROUND.SpecialType.End) then
 		GM.ROUND.SpecialType.End()
 		return
@@ -316,7 +346,7 @@ function GM.ROUND:End(nowin)
 	if !nowin then
 		winTeam = TEAM_KILLER
 		for _, v in ipairs(GM.ROUND.Survivors) do
-			if v:GetNWBool("Escaped") then
+			if v:IsValid() and v:GetNWBool("Escaped") then
 				winTeam = TEAM_SURVIVORS
 				break
 			end
@@ -340,10 +370,11 @@ function GM.ROUND:End(nowin)
 	GM.ROUND.SpecialType = nil
 	GM.ROUND.NextStart = CurTime() + (nowin and 8 or GM.CONFIG["round_duration_end"])
 
-	if #player.GetAll() < GetConVar("slashers_round_min_player"):GetInt() then
+	if #player.GetAll() + bots_num < GetConVar("slashers_round_min_player"):GetInt() then
 		GM.ROUND.WaitingPlayers = true
 		net.Start("sls_round_WaitingPlayers")
 			net.WriteBool(true)
+			net.WriteTable(GM.ROUND.ReadyPlayers)
 		net.Broadcast()
 		hook.Run("sls_round_WaitingPlayers")
 	end
@@ -375,6 +406,9 @@ function GM:PlayerSpawn(ply)
 
 		-- Send data
 		if GM.ROUND.Active then
+			local map_info = table.Copy(GM.MAP.Killer)
+			map_info.UseAbility = nil
+
 			net.Start("sls_round_PlayerConnect")
 				net.WriteInt(GM.ROUND.Count, 16)
 				net.WriteInt(GM.ROUND.EndTime, 16)
@@ -384,7 +418,7 @@ function GM:PlayerSpawn(ply)
 				net.WriteBool(GM.ROUND.WaitingPolice)
 				net.WriteBool(GM.ROUND.Escape)
 				net.WriteTable(GM.CLASS:GetClassIDTable())
-				net.WriteTable(GM.MAP)
+				net.WriteTable(map_info)
 			net.Send(ply)
 		end
 	end
@@ -401,6 +435,7 @@ local function PlayerDK(ply)
 
 	print("left survivors: ", #GM.ROUND:GetSurvivorsAlive())
 end
+
 hook.Add("PostPlayerDeath", "sls_round_PostPlayerDeath", PlayerDK)
 
 local function PlayerDisconnected(ply)
@@ -415,6 +450,7 @@ local function PlayerDisconnected(ply)
 	PlayerDK(ply)
 end
 
+hook.Add("LambdaOnKilled", "sls_round_LambdaDeath", PlayerDisconnected)
 hook.Add("PlayerDisconnected", "sls_round_PlayerDisconnected", PlayerDisconnected)
 
 local debounce_timer = false
@@ -440,60 +476,81 @@ local function Think()
 
 	-- Waiting Players
 	if GM.ROUND.WaitingPlayers && (!GM.ROUND.NextStart || curtime >= GM.ROUND.NextStart) then
-		local count = 0
+		if #player.GetAll() <= 0 then return end
+		local bots_num = GetConVar("slashers_lambdabots_num"):GetInt()
+		local count = #GM.ROUND.ReadyPlayers + bots_num
 
 		for _, v in ipairs(player.GetBots()) do
-			v.IsReady = true
+			if table.HasValue(GM.ROUND.ReadyPlayers, v) then continue end
+
+			GM.ROUND.ReadyPlayers[#GM.ROUND.ReadyPlayers + 1] = v
+
+			net.Start("sls_round_WaitingPlayers")
+			net.WriteBool(true)
+			net.WriteTable(GAMEMODE.ROUND.ReadyPlayers)
+			net.Broadcast()
 		end
 
-		if #player.GetAll() >= GetConVar("slashers_round_min_player"):GetInt() then
+		--[[if #player.GetAll() + bots_num >= GetConVar("slashers_round_min_player"):GetInt() then
 		for _, v in ipairs(player.GetAll()) do
 			if v.IsReady then
 				count = count + 1
 			end
-		end
-		for _, v in ipairs(player.GetAll()) do
+		end]]
+		--[[for _, v in ipairs(player.GetAll()) do
 			--if v.IsReady == true then continue end
-			v:PrintMessage(HUD_PRINTCENTER, "Готово (F1): " .. count .. "/" .. #player.GetAll() .. "|Ready (F1): " .. count .. "/" .. #player.GetAll())
-		end
+			v:PrintMessage(HUD_PRINTCENTER, "Готово (F1): " .. count .. "/" .. #player.GetAll() + bots_num .. "|Ready (F1): " .. count .. "/" .. #player.GetAll() + bots_num)
+		end]]
 
-	end
+		--end
 		if count >= GetConVar("slashers_round_min_player"):GetInt() then
 			if timer.Exists("round_starting_in") then
 				timer.UnPause("round_starting_in")
-					for _, v in ipairs(player.GetAll()) do
-			v:PrintMessage(HUD_PRINTCENTER, "Начало через|Starting in: " .. math.Round(timer.TimeLeft("round_starting_in")))
-			LobbyMusic:FadeOut(timer.TimeLeft("round_starting_in") / 2)
-			timer.Simple(timer.TimeLeft("round_starting_in") / 2, function()
-				LobbyMusic:Stop()
-			end)
+
+				--[[for _, v in ipairs(player.GetAll()) do
+					--v:PrintMessage(HUD_PRINTCENTER, "Начало через|Starting in: " .. math.Round(timer.TimeLeft("round_starting_in")))
+					LobbyMusic:FadeOut(timer.TimeLeft("round_starting_in") / 2)
+
+					timer.Simple(timer.TimeLeft("round_starting_in") / 2, function()
+						LobbyMusic:Stop()
+					end)
+				end]]
 			end
-			end
-		if !(debounce_timer) then
+		if !debounce_timer then
 			debounce_timer = true
-		timer.Create("round_starting_in", 15, 1, function()
-			GM.ROUND.WaitingPlayers = false
-			timer.Simple(1, function()
-				if #player.GetAll() < GetConVar("slashers_round_min_player"):GetInt() then
-					GM.ROUND.WaitingPlayers = true
+			timer.Create("round_starting_in", 15, 1, function()
+				GM.ROUND.WaitingPlayers = false
+				timer.Simple(1, function()
+					if #player.GetAll() + bots_num < GetConVar("slashers_round_min_player"):GetInt() then
+						GM.ROUND.WaitingPlayers = true
+						debounce_timer = false
+						return
+					end
 					debounce_timer = false
-					return
-				end
-				debounce_timer = false
-				net.Start("sls_round_WaitingPlayers")
-					net.WriteBool(false)
-				net.Broadcast()
-				GM.ROUND:Start()
+					net.Start("sls_round_WaitingPlayers")
+						net.WriteBool(false)
+						net.WriteTable(GM.ROUND.ReadyPlayers)
+					net.Broadcast()
+					GM.ROUND:Start()
+
+					timer.Remove("round_start_timer")
+					SetGlobalInt("sls_round_starts_in", nil)
+				end)
 			end)
-		end)
+
+			timer.Create("round_start_timer", 1, 0, function()
+				if !timer.Exists("round_starting_in") then return end
+
+				SetGlobalInt("sls_round_starts_in", timer.TimeLeft("round_starting_in"))
+			end)
 	end
 	else
 		if timer.Exists("round_starting_in") then timer.Pause("round_starting_in") end
-		if !LobbyMusic:IsPlaying() then
+		--[[if !LobbyMusic:IsPlaying() then
 			LobbyMusic:Play()
 		elseif LobbyMusic:GetVolume() == 0 then
 			LobbyMusic:ChangeVolume(1)
-		end
+		end]]
 		end
 	end
 
@@ -516,14 +573,14 @@ local function InitPostEntity()
 
 		function zone:OnPlayerEnter(ply)
 			if !GM.ROUND.Escape then return end
-			if ply:Team() != TEAM_SURVIVORS then return end
+			if LambdaTeams:GetPlayerTeam(ply) != "Survivors" then return end
 			ply:SetNWBool("Escaped", true)
 			ply:KillSilent()
 				-- Start Spectate
 	timer.Simple(4, function()
 		if !GM.ROUND.Active then return end
 		if !IsValid(ply) then return end
-		if ply:Team() != TEAM_SURVIVORS then return end
+		if !ply:IsPlayer() or LambdaTeams:GetPlayerTeam(ply) != "Survivors" then return end
 
 		for _,surv in pairs(GM.ROUND.Survivors) do
 			if surv:Alive() then
@@ -546,7 +603,7 @@ timer.Simple(1, function()
 	GM.ROUND.CameraAng = camera:GetAngles()
 	else
 		GM.ROUND.CameraPos = GM.MAP.Config["Camera_Pos"]
-		GM.ROUND.CameraAng = GM.MAP.Config["Camera_Angle"]	
+		GM.ROUND.CameraAng = GM.MAP.Config["Camera_Angle"]
 	end
 end)
 end

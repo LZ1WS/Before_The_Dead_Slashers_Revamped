@@ -32,7 +32,18 @@ local function HUDPaint()
 
 	-- Waiting for player
 	if GM.ROUND.WaitingPlayers then
-		local text = GM.LANG:GetString("round_wait_players", #player.GetAll(), GetConVar("slashers_round_min_player"):GetInt())
+		if #GM.ROUND.ReadyPlayers + GetConVar("slashers_lambdabots_num"):GetInt() >= GetConVar("slashers_round_min_player"):GetInt() then
+			local text = GM.LANG:GetString("round_notif_startsin", math.Round(GetGlobalInt("sls_round_starts_in", 15)))
+			surface.SetFont("horror1")
+			local tw = surface.GetTextSize(text)
+			surface.SetTextColor(Color(255, 255, 255))
+			surface.SetTextPos(scrw / 2 - tw / 2, 200)
+			surface.DrawText(text)
+
+			return
+		end
+
+		local text = GM.LANG:GetString("round_wait_players", #GM.ROUND.ReadyPlayers + GetConVar("slashers_lambdabots_num"):GetInt(), GetConVar("slashers_round_min_player"):GetInt())
 		surface.SetFont("horror1")
 		local tw = surface.GetTextSize(text)
 		surface.SetTextColor(Color(255, 255, 255))

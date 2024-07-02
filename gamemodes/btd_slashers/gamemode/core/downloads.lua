@@ -12,3 +12,6 @@ resource.AddWorkshop("858049276") -- slash_subway
 resource.AddWorkshop("1091061063") -- slash_logde
 resource.AddWorkshop("788009163") -- Slashers content 1
 resource.AddWorkshop("857992903") -- Slashers content 2
+
+--resource.AddSingleFile( "materials/icons/alternate.png" ) -- Alternate
+--resource.AddSingleFile( "materials/gamemode/logo.png" ) -- Logo

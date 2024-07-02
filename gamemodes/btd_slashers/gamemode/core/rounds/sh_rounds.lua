@@ -13,6 +13,7 @@ GM.ROUND.WaitingPlayers = true
 GM.ROUND.CameraEnable = true
 GM.ROUND.WaitingPolice = false
 GM.ROUND.Escape = false
+GM.ROUND.ReadyPlayers = {}
 
 
 function GM.ROUND:GetSurvivorsAlive()

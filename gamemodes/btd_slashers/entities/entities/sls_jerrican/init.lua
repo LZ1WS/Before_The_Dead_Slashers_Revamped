@@ -11,7 +11,7 @@ local GM = GM or GAMEMODE
 
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
-include('shared.lua')
+include("shared.lua")
 
 function ENT:Initialize()
 
@@ -29,12 +29,12 @@ function ENT:Initialize()
 end
 
 function ENT:SpawnFunction( ply, tr )
-    if ( !tr.Hit ) then return end
-    local ent = ents.Create("sls_jerrican")
-    ent:SetPos( tr.HitPos + tr.HitNormal * 16 )
-    ent:Spawn()
+	if ( !tr.Hit ) then return end
+	local ent = ents.Create("sls_jerrican")
+	ent:SetPos( tr.HitPos + tr.HitNormal * 16 )
+	ent:Spawn()
 
-    return ent
+	return ent
 end
 ents.Create("prop_physics")
 
@@ -43,38 +43,47 @@ function ENT:OnTakeDamage(dmg)
 end
 
 function ENT:Use(ply)
-	if (CurrentObjective == "find_jerrican" && ply:Team() == TEAM_SURVIVORS) then
-		if (NbJerricanToFound != 0) then
+	local info = GM.MAP.Goals["Police"]
+
+	if !info then return end
+
+	if (info.CurrentObjective == "find_jerrican" && LambdaTeams:GetPlayerTeam(ply) == "Survivors") then
+		if (info.NbJerricanToFound != 0) then
 			self:Remove()
-			NbJerricanToFound = NbJerricanToFound - 1
-			net.Start( "notificationSlasher" )
-							net.WriteTable({"round_mission_jerrycan_found"})
-							net.WriteString("safe")
-							net.Send(ply)
+			info.NbJerricanToFound = info.NbJerricanToFound - 1
+			if ply:IsPlayer() then
+				net.Start( "notificationSlasher" )
+				net.WriteTable({"round_mission_jerrycan_found"})
+				net.WriteString("safe")
+				net.Send(ply)
+			end
 
 
 			net.Start( "modifyObjectiveSlasher" )
-						net.WriteTable({"round_mission_jerrycan", NbJerricanToFound})
-						if IsValid(GM.ROUND.Killer) then
-							net.SendOmit(GM.ROUND.Killer)
-						else
-							net.Send(GM.ROUND.Survivors)
-						end
+			net.WriteTable({"round_mission_jerrycan", info.NbJerricanToFound})
+			if IsValid(GM.ROUND.Killer) then
+				net.SendOmit(GM.ROUND.Killer)
+			else
+				net.Send(GM.ROUND.Survivors)
+			end
 
 		end
-		if (NbJerricanToFound == 0) then
+
+		if (info.NbJerricanToFound == 0) then
 			net.Start( "objectiveSlasher" )
-							 net.WriteTable({"round_mission_generator"})
-							 net.WriteString("caution")
-							 if IsValid(GM.ROUND.Killer) then
-							 net.SendOmit(GM.ROUND.Killer)
-							 else
-								net.Send(GM.ROUND.Survivors)
-							 end
+			net.WriteTable({"round_mission_generator"})
+			net.WriteString("caution")
 
-			hook.Call("sls_NextObjective")
+			if IsValid(GM.ROUND.Killer) then
+				net.SendOmit(GM.ROUND.Killer)
+			else
+				net.Send(GM.ROUND.Survivors)
+			end
+
+			hook.Run("sls_NextObjective", "Police")
 
 		end
+
 		self:EmitSound("player/shove_01.wav",100,100,1,CHAN_AUTO)
 		self:Remove()
 	end

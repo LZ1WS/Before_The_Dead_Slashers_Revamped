@@ -13,85 +13,80 @@ GM.KILLERS[KILLER_DEERLING].StartMusic = "sound/deerling/voice/intro.mp3"
 GM.KILLERS[KILLER_DEERLING].ChaseMusic = "deerling/chase/chase.wav"
 GM.KILLERS[KILLER_DEERLING].TerrorMusic = "deerling/terror/terror.wav"
 
+GM.KILLERS[KILLER_DEERLING].Abilities = {"deerling/voice/deerling_ability.ogg"}
+GM.KILLERS[KILLER_DEERLING].AbilityCooldown = 30
+
 if CLIENT then
 	GM.KILLERS[KILLER_DEERLING].Desc = GM.LANG:GetString("class_desc_deerling")
 	GM.KILLERS[KILLER_DEERLING].Icon = Material("icons/deerling.png")
 end
 
-local deerling_ability_active = false
-local deerling_ability_used = false
-
 GM.KILLERS[KILLER_DEERLING].UseAbility = function(ply)
 	if CLIENT then return end
-	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_DEERLING].Name then return end
-		if !deerling_ability_used then
-			deerling_ability_active = true
-			deerling_ability_used = true
-				net.Start( "notificationSlasher" )
-				net.WriteTable({"class_ability_used"})
-				net.WriteString("safe")
-				net.Send(ply)
-			ply:EmitSound("deerling/voice/deerling_ability.ogg", 511)
-			timer.Create("sls_deerling_ability_disable", 15, 1, function()
-				deerling_ability_active = false
-			timer.Create("sls_deerling_ability_cooldown", 15, 1, function()
-				deerling_ability_used = false
-				net.Start( "notificationSlasher" )
-				net.WriteTable({"class_ability_time"})
-				net.WriteString("safe")
-				net.Send(ply)
-			end)
-		end)
-		end
-	end
 
-hook.Add("EntityTakeDamage", "sls_deerling_ability", function(ply, dmg)
-	local attacker = dmg:GetAttacker()
-	if ply:IsPlayer() && attacker:IsPlayer() && ply:Team() == TEAM_SURVIVORS && attacker:Team() == TEAM_KILLER && deerling_ability_active && !timer.Exists("sls_deerling_ability_bleed" .. ply:SteamID64()) && !timer.Exists("sls_deerling_ability_bleed" .. ply:EntIndex())  then
-		local trace = ply:GetEyeTraceNoCursor()
-		if !ply:IsBot() then
+	if !ply:GetNWBool("sls_deerling_ability_active", false) then
+		ply:SetNWBool("sls_deerling_ability_active", true)
+
+		ply:EmitSound(GM.KILLERS[KILLER_DEERLING].Abilities[1], 511)
+
+		timer.Create("sls_deerling_ability_disable", 15, 1, function()
+			ply:SetNWBool("sls_deerling_ability_active", nil)
+		end)
+	end
+end
+
+hook.Add("PlayerHurt", "sls_deerling_ability", function(ply, killer, healthRemaining, damageTaken)
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_DEERLING then return end
+	if !killer:IsPlayer() or killer:Team() ~= TEAM_KILLER or ply:Team() ~= TEAM_SURVIVORS then return end
+	if !killer:GetNWBool("sls_deerling_ability_active", false) then return end
+	if timer.Exists("sls_deerling_ability_bleed" .. ply:SteamID64()) or timer.Exists("sls_deerling_ability_bleed" .. ply:EntIndex()) then return end
+
+	if !ply:IsBot() then
 		timer.Create("sls_deerling_ability_bleed" .. ply:SteamID64(), 2, 6, function()
 			local effectdata = EffectData()
 			effectdata:SetOrigin( ply:GetPos() )
 			effectdata:SetEntity( ply )
 			effectdata:SetColor(BLOOD_COLOR_RED)
+
 			util.Effect("blood_pool", effectdata, true, true)
-		ply:SetHealth( ply:Health() - math.random(5, 10) )
-	end)
-else
-	timer.Create("sls_deerling_ability_bleed" .. ply:EntIndex(), 2, 6, function()
-		local effectdata = EffectData()
-		effectdata:SetOrigin( ply:GetPos() )
-		effectdata:SetEntity( ply )
-		effectdata:SetColor(BLOOD_COLOR_RED)
-		util.Effect("blood_pool", effectdata, true, true)
-		ply:SetHealth( ply:Health() - math.random(5, 10) )
-	end)
-		end
+
+			ply:SetHealth( ply:Health() - math.random(15, 25) )
+		end)
+	else
+		timer.Create("sls_deerling_ability_bleed" .. ply:EntIndex(), 2, 6, function()
+			local effectdata = EffectData()
+			effectdata:SetOrigin( ply:GetPos() )
+			effectdata:SetEntity( ply )
+			effectdata:SetColor(BLOOD_COLOR_RED)
+			util.Effect("blood_pool", effectdata, true, true)
+
+			ply:SetHealth( ply:Health() - math.random(15, 25) )
+		end)
 	end
 end)
 
 hook.Add("PlayerFootstep", "sls_deerling_second_ability", function(ply, pos, foot, sound, volume)
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_DEERLING].Name then return end
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_DEERLING then return end
+	if ply:Team() ~= TEAM_KILLER then return end
 	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
-	if ply:Team() == TEAM_KILLER && !deerling_ability_active then
-		return false
-	elseif deerling_ability_active then
+
+	if ply:GetNWBool("sls_deerling_ability_active", false) then
 		ply:EmitSound( "NPC_Dog.Footstep" ) -- Play the footsteps hunter is using
 		return false -- Don't allow default footsteps, or other addon footsteps
 	end
+
+	return true
 end)
 
 hook.Add("sls_round_End", "sls_deerlingabil_End", function()
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_DEERLING].Name then return end
-	deerling_ability_active = false
-	timer.Remove("sls_deerling_ability_cooldown")
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_DEERLING then return end
+
 	for _,v in ipairs(player.GetAll()) do
 		if !v:IsBot() then
-	timer.Remove("sls_deerling_ability_bleed" .. v:SteamID64())
+			timer.Remove("sls_deerling_ability_bleed" .. v:SteamID64())
 		else
-	timer.Remove("sls_deerling_ability_bleed" .. v:EntIndex())
+			timer.Remove("sls_deerling_ability_bleed" .. v:EntIndex())
 		end
 	end
+
 end)

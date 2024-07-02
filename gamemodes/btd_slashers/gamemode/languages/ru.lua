@@ -62,14 +62,24 @@ LANG["class_desc_wip"] = "В разработке."
 
 LANG["scp049_infect"] = " ХП, можно заразить (ПКМ)."
 LANG["scp049_noinfect"] = " ХП, нельзя заразить."
+
 LANG["class_ability_used"] = "Использована способность."
-LANG["class_ability_kasper"] = "Вы перейдёте в стелс через 5 секунд, не двигайтесь."
-LANG["special_round"] = "[СПЕЦ. РАУНД] %s."
-LANG["disguise_ability_used"] = "Замаскирован под: %s"
+LANG["class_ability_error"] = "Невозможно использовать способность."
+LANG["class_ability_error_reason"] = "Способность недоступна, причина: %s."
+LANG["class_ability_error_time"] = "Способность будет доступна через %i секунд(-ы)."
 LANG["class_ability_time"] = "Способность можно использовать снова."
+
+LANG["class_ability_kasper"] = "Вы перейдёте в стелс через 5 секунд, не двигайтесь."
+LANG["disguise_ability_used"] = "Замаскирован под: %s"
+
 LANG["steve_resist_used"] = "На вас наложена сопротивляемость к урону (0.5)."
 LANG["steve_resist_off"] = "Сопротивляемость к урону спала."
 
+LANG["addicted_overdose"] = "Ты чувствуешь боль в сердце..."
+
+LANG["debuff_holy"] = "Вмешательство Высших Сил"
+
+LANG["special_round"] = "[СПЕЦ. РАУНД] %s."
 LANG["round_mission_police"] = "Полиция приедет в %s"
 LANG["round_mission_police_killer"] = "Убейте их всех за %s минут."
 LANG["round_mission_escape"] = "%s сбежал."
@@ -84,7 +94,7 @@ LANG["round_mission_shotgun"] = "Найти дробовик"
 LANG["round_mission_killslender"] = "Убить Слендера"
 LANG["round_mission_generator"] = "Найдите и активируйте генератор!"
 LANG["round_mission_radio"] = "Найдите и активируйте радио"
-LANG["round_wait_players"] = "Ожидание игроков, чтобы начать раунд %i/%i"
+LANG["round_wait_players"] = "Ожидание игроков, чтобы начать раунд, готовы (F1) %i/%i"
 LANG["round_team_name_survivor"] = "Выживший"
 LANG["round_team_name_killer"] = "Убийца"
 LANG["round_team_desc_survivor"] = "У каждого выжившего есть особая способность. Ваша цель состоит в том, чтобы найти канистры (число, варьирующееся с количеством игроков в игре), чтобы завести генератор, чтобы вы могли включить радио, а затем вызвать полицию с помощью его. Каждый элемент, который вы должны найти, имеет много возможных точек появления и появляется случайно на карте. Командная игра и умеренное использование фонарика являются ключом к выживанию."
@@ -97,9 +107,9 @@ LANG["round_notif_error_radio"] = "Вы не можете активироват
 LANG["round_notif_error_generator"] = "Вы не можете активировать генератор!"
 LANG["round_notif_enabled_generator"] = "Вы активировали генератор!"
 LANG["round_notif_player_die"] = "%s умер"
-LANG["round_end_escaped"] = "Убежавшие выжившие на данный момент..."
+LANG["round_end_escaped"] = "Сбежавшие выжившие на данный момент..."
 LANG["round_end_dead"] = "Все выжившие были убиты."
-LANG["round_notif_startsin"] = "Раунд начнётся через: "
+LANG["round_notif_startsin"] = "Раунд начнётся через: %i"
 
 -- Modules
 LANG["antiafk_will_kicked"] = "Вас выкинет из сервера за бездействие в %s"
@@ -115,14 +125,26 @@ LANG["votemap_extend"] = "Продлить"
 LANG["votemap_random"] = "Случайно"
 
 -- HUB
-LANG["hub_survivorshow"] = "Выжившие"
-LANG["hub_killerchoose"] = "Убийцы"
+LANG["hub_play"] = "Играть"
 LANG["hub_settings"] = "Настройки"
 LANG["hub_settings_main"] = "Основные Настройки"
+LANG["hub_defaultmenu"] = "Обычное Меню"
+LANG["hub_disconnect"] = "Отключиться"
+
+LANG["hub_survivorshow"] = "Выжившие"
+LANG["hub_killerchoose"] = "Убийцы"
 LANG["hub_description"] = "Описание"
 LANG["hub_model"] = "Модель"
 LANG["hub_killer_checkbox"] = "Разрешить выбирать вас убийцей"
-LANG["hub_intro_checkbox"] = "Проигрывать музыку убийц на старте раунда"
+LANG["hub_intro_checkbox"] = "Проигрывать интро убийц на старте раунда"
 LANG["hub_killer_random"] = "Случайный Убийца"
+
+LANG["hub_equip"] = "Экипировать"
+LANG["hub_inspect"] = "Осмотреть"
+
+LANG["hub_stats_health"] = "Здоровье = %i"
+LANG["hub_stats_stamina"] = "Стамина = %i"
+LANG["hub_stats_walkspeed"] = "Скорость Ходьбы = %i"
+LANG["hub_stats_runspeed"] = "Скорость Бега = %i"
 
 return LANG

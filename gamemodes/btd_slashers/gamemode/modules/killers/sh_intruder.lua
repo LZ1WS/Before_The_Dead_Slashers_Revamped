@@ -34,7 +34,7 @@ else
 			if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 			timerTrap = CurTime() + 1
 			local shygirl = getSurvivorByClass(CLASS_SURV_SHY)
-			if !shygirl then return end
+			if !shygirl or !shygirl:IsPlayer() then return end
 			local entsAround = ents.FindInSphere( shygirl:GetPos(), 700 )
 			local trapsAround = {}
 			for k,v in pairs(entsAround) do

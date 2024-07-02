@@ -9,6 +9,7 @@ local _, directories = file.Find(modulesPath .. "/*", "LUA")
 
 
 if SERVER then print("--- MODULES ---") end
+
 for _, mod in ipairs(directories) do
 	if GM.CONFIG["disabled_modules"][mod] then continue end
 	files = file.Find(modulesPath .. "/" .. mod .. "/*.lua", "LUA")

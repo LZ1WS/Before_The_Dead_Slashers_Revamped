@@ -30,11 +30,19 @@ local function HUDDrawScoreBoard()
 
 	table.Add(players, team.GetPlayers(TEAM_KILLER))
 	table.Add(players, team.GetPlayers(TEAM_SURVIVORS))
+	table.Add(players, GetLambdaPlayers())
 	for _, v in ipairs(player.GetAll()) do
 		if !table.HasValue(players, v) then
 			table.insert(players, v)
 		end
 	end
+
+	for _, v in ipairs(GetLambdaPlayers()) do
+		if !table.HasValue(players, v) then
+			table.insert(players, v)
+		end
+	end
+
 	playerscount = #players
 	yStartInit = scrH / 2 - ((playerscount * bgHeight) / 2)
 
@@ -48,10 +56,10 @@ local function HUDDrawScoreBoard()
 
 		-- ICON
 		local drawIcon = false
-		if v:Team() == TEAM_KILLER then
+		if LambdaTeams:GetPlayerTeam( v ) == "Murderer" then
 			surface.SetMaterial(GM.MAP.Killer.Icon)
 			drawIcon = true
-		elseif v:Team() == TEAM_SURVIVORS && v.ClassID != 0 && GM.CLASS.Survivors[v.ClassID] then
+		elseif LambdaTeams:GetPlayerTeam( v ) == "Survivors" && v.ClassID != 0 && GM.CLASS.Survivors[v.ClassID] then
 			surface.SetMaterial(GM.CLASS.Survivors[v.ClassID].icon)
 			drawIcon = true
 		end

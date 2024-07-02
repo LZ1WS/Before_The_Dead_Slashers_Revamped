@@ -69,7 +69,7 @@ hook.Add("sls_round_PostStart", "sls_choosekiller_PostStart", PostStart)
 
 local function OnTeamWin()
 	for _, v in ipairs(GM.ROUND.Survivors) do
-		if IsValid(v) then
+		if IsValid(v) and v:IsPlayer() then
 			v.choosekiller = math.Min(100, v.choosekiller + GM.CONFIG["round_choosekiller_add"])
 			PlayerSave(v)
 		end

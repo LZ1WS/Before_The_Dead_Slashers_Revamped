@@ -24,6 +24,7 @@ hook.Add("sls_round_End", "sls_huntresshum_End", function()
 end)
 
 hook.Add("sls_round_PostStart", "intro_fixhuntress", function()
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_HUNTRESS].Name then return end
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_HUNTRESS then return end
+
 	GM.ROUND.Killer:EmitSound("huntress/chase/sound_2.wav", 80)
 end)

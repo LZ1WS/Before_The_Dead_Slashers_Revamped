@@ -77,6 +77,7 @@ net.Receive("sls_round_End", End)
 
 local function WaitingPlayers()
 	GM.ROUND.WaitingPlayers = net.ReadBool()
+	GM.ROUND.ReadyPlayers = net.ReadTable()
 	hook.Run("sls_round_WaitingPlayers")
 end
 net.Receive("sls_round_WaitingPlayers", WaitingPlayers)
@@ -98,7 +99,7 @@ local function PlayerConnect()
 	for _, v in ipairs(net.ReadTable()) do
 		v.ply.ClassID = v.ClassID
 	end
-	GM.MAP = net.ReadTable()
+	GM.MAP.Killer = net.ReadTable()
 end
 net.Receive("sls_round_PlayerConnect", PlayerConnect)
 

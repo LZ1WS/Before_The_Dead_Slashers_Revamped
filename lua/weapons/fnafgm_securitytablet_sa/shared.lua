@@ -32,47 +32,18 @@ SWEP.WorldModel			= ""
 SWEP.MaxDistance = 150
 
 if !fnafgmSTSA then fnafgmSTSA = {} end
+if !fnafCameras then fnafCameras = {} end
 
 function SWEP:Initialize()
 	self:SetWeaponHoldType("normal")
-	self:InitCams()
+	fnafCameras = {}
 end
 
-function SWEP:InitCams()
-	
-	if !SERVER then return end
-	
-	if table.Count(ents.FindByClass( "fnafgm_camera" ))==0 then
-			
-			for k, v in pairs(ents.FindByClass("point_camera")) do
-				local CAM = ents.Create( "fnafgm_camera" )
-				CAM:SetPos( v:GetPos() )
-				CAM:SetAngles( v:GetAngles() )
-				CAM:SetName( "fnafgm_"..v:GetName() )
-				if v:GetKeyValues().parentname!="" then 
-					local parent = ents.FindByName( v:GetKeyValues().parentname )[1]
-					if IsValid(parent) then
-						CAM:SetParent(parent)
-					end
-				end
-				CAM:Spawn()
-			
-		end
-		
-	end
-	
-	--[[for k, v in pairs(ents.FindByClass( "fnafgm_camera" )) do
-		
-		print(k, v, v:GetName())
-		
-	end]]
-		
-	
-end
 local function MakeCamera( ply, Data )
-if CLIENT then return end
-	local num = table.Count(ents.FindByClass( "fnafgm_camera" ))+1
-	
+	if CLIENT then return end
+
+	--local num = table.Count(ents.FindByClass( "fnafgm_camera" ))+1
+
 	local ent = ents.Create( "fnafgm_camera" )
 
 	if ( !IsValid( ent ) ) then return end
@@ -80,13 +51,14 @@ if CLIENT then return end
 	local camera_angle = ply:GetEyeTrace().HitNormal:Angle()
 
 	ent:SetPos(camera_pos)
-	
+
 	camera_angle.pitch = camera_angle.pitch + 360
 	ent:SetAngles(camera_angle)
 
-	ent:SetName("fnafgm_Cam"..num)
 	ent:SetModel("models/customhq/hidcams/minicam.mdl")
 	ent:Spawn()
+
+	fnafCameras[#fnafCameras + 1] = ent
 
 	return ent
 
@@ -97,34 +69,21 @@ function slashers_camera_place(ply, ent)
 	local camera_angle = ply:GetEyeTrace().HitNormal:Angle()
 
 	ent:SetPos(camera_pos)
-	
+
 	camera_angle.pitch = camera_angle.pitch + 360
 	ent:SetAngles(camera_angle)
 
 	return camera_pos, camera_angle
 end
 
-local function UpdateCamera(removed)
-	if CLIENT then return end
-	--table.sort(ents.FindByClass( "fnafgm_camera" ))
-	for k, v in ipairs(ents.FindByClass( "fnafgm_camera" )) do
-		if k == 1 then continue end
-		local num = k - removed
-		v:SetName("fnafgm_Cam" .. num)
-		if CLIENT then
-		fnafgmSTSA:SetView(v)
-		end
-	end
-
-end
-
 function SWEP:Reload()
 	if CLIENT then return end
-local ent = self.Owner:GetEyeTrace().Entity
-if ent:GetClass() == "fnafgm_camera" then
-UpdateCamera(string.Right(ent:GetName(), 1))
-ent:Remove()
-end
+	local ent = self:GetOwner():GetEyeTrace().Entity
+
+	if ent:GetClass() == "fnafgm_camera" then
+		table.RemoveByValue(fnafCameras, ent)
+		ent:Remove()
+	end
 end
 
 function SWEP:PrimaryAttack()
@@ -134,21 +93,21 @@ if CLIENT then return end
 	if self.Owner:GetPos():Distance(self.Owner:GetEyeTrace().HitPos) > self.MaxDistance or !self.Owner:GetEyeTrace().HitWorld then
 		return
 	end
-if table.Count(ents.FindByClass( "fnafgm_camera" )) >= 3 then return end
+if #fnafCameras >= 3 then return end
 	MakeCamera( ply )
 end
 
 function SWEP:SecondaryAttack()
-	
-	if table.Count(ents.FindByClass( "fnafgm_camera" ))==0 then return end
-	
+
+	if #fnafCameras == 0 then return end
+
 	if SERVER then
-		
+
 		net.Start( "fnafgmSecurityTabletSA" )
 		net.Send(self.Owner)
-	
+
 	end
-	
+
 end
 
 function SWEP:ShouldDropOnDie()

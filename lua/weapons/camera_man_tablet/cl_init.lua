@@ -4,80 +4,81 @@ SWEP.BounceWeaponIcon = false
 SWEP.WepSelectIcon = surface.GetTextureID( "fnafgmstsa/securitytablet" )
 
 if !STSAfont then
-	
+
 	fontloaded = true
 	if file.Exists( "resource/fonts/graph-35-pix.ttf", "GAME" ) then STSAfont = "Graph 35+ pix" else STSAfont = "Courier" fontloaded = false end
-	
+
 end
 
 surface.CreateFont("FNAFGMSTSATIME", {
 	font = STSAfont,
-	size = 38, 
-	weight = 1000, 
-	blursize = 0, 
-	scanlines = 0, 
-	antialias = false, 
-	underline = false, 
-	italic = false, 
-	strikeout = false, 
-	symbol = false, 
-	rotary = false, 
-	shadow = true, 
-	additive = false, 
-	outline = false, 
+	size = 38,
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = false,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = true,
+	additive = false,
+	outline = false,
 })
 surface.CreateFont("FNAFGMSTSAID", {
-	font = STSAfont, 
-	size = 14, 
-	weight = 1000, 
-	blursize = 0, 
-	scanlines = 0, 
-	antialias = false, 
-	underline = false, 
-	italic = false, 
-	strikeout = false, 
-	symbol = false, 
-	rotary = false, 
-	shadow = true, 
-	additive = false, 
-	outline = false, 
+	font = STSAfont,
+	size = 14,
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = false,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = true,
+	additive = false,
+	outline = false,
 })
 surface.CreateFont("FNAFGMSTSATXT", {
-	font = STSAfont, 
-	size = 12, 
-	weight = 500, 
-	blursize = 0, 
-	scanlines = 0, 
-	antialias = false, 
-	underline = false, 
-	italic = false, 
-	strikeout = false, 
-	symbol = false, 
-	rotary = false, 
-	shadow = true, 
-	additive = false, 
-	outline = false, 
+	font = STSAfont,
+	size = 12,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = false,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = true,
+	additive = false,
+	outline = false,
 })
 
 local lastcam_entity
 
-function fnafgmSTSA:SecurityTablet2() 
-	
+function fnafgmSTSA:SecurityTablet2()
+
 	if !IsValid(Monitor) then
-		
+
 		local nopeinit = hook.Call("fnafgmSecurityTabletCustomInit") or false
-		
+
 		if !nopeinit then
-				if !lastcam_entity then
-					lastcam = 1
-				end
 				LocalPlayer():ConCommand("play "..Sound("fnafgmstsa/camdown.ogg"))
 		end
-		
+
+		if !IsValid(lastcam_entity) then
+			lastcam = 1
+		end
+
 		fnafgmSTSA:SetViewCamMan(lastcam)
-		
+
 		--LocalPlayer():ConCommand( 'pp_mat_overlay "fnafgmstsa/camstatic"' )
-		
+
 		Monitor = vgui.Create( "DFrame" )
 		Monitor:SetPos(0, 0)
 		Monitor:SetSize(ScrW(), ScrH())
@@ -109,7 +110,7 @@ function fnafgmSTSA:SecurityTablet2()
 		CamsNames:SetFont("FNAFGMSTSATIME")
 		CamsNames:SetPos( 70, 60 )
 		CamsNames:SetSize( 200, 64 )
-		
+
 		local CAM = vgui.Create( "DNumberWang" )
 		CAM:SetParent(Monitor)
 		CAM:SetPos( ScrW()/2-16, ScrH()-80-50-80 )
@@ -122,7 +123,7 @@ function fnafgmSTSA:SecurityTablet2()
 			lastcam = val:GetValue()
 			CamsNames:SetText( "CAM"..val:GetValue() )
 		end
-		
+
 		CloseT = vgui.Create( "DButton" )
 		CloseT:SetParent(Monitor)
 		CloseT:SetSize( 512, 80 )
@@ -149,27 +150,27 @@ function fnafgmSTSA:SecurityTablet2()
 			end
 		end
 		CloseT.Paint = function( self, w, h )
-			
+
 			draw.RoundedBox( 0, 1, 1, w-2, h-2, Color( 255, 255, 255, 32 ) )
-			
+
 			surface.SetDrawColor( 255, 255, 255, 128 )
-			
+
 			draw.NoTexture()
-			
+
 			surface.DrawLine( w/2-64, h/2-16, w/2, h/2 )
 			surface.DrawLine( w/2, h/2, w/2+64, h/2-16 )
-			
+
 			surface.DrawLine( w/2-64, h/2-16+16, w/2, h/2+16 )
 			surface.DrawLine( w/2, h/2+16, w/2+64, h/2-16+16 )
-			
+
 			surface.DrawOutlinedRect( 0, 0, w, h )
-			
+
 		end
-		
-		
+
+
 	end
-	
-	
+
+
 end
 
 function fnafgmSTSA:SetViewCamMan(id)
@@ -189,7 +190,7 @@ function fnafgmSTSA:SetViewCamMan(id)
 			fov = fov,
 			drawviewer = true
 		}
-	
+
 		return view
 	end
 	end )
@@ -210,7 +211,7 @@ function SWEP:Deploy()
 	--if not IsFirstTimePredicted() then return true end
 	camera_holo = ClientsideModel("models/rin/mgs5/props/camera.mdl", 9)
 	camera_holo:SetRenderMode(4)
-	return true	
+	return true
 end
 
 function SWEP:Holster()
@@ -244,6 +245,14 @@ function SWEP:Think()
 
 end
 
+--[[hook.Add( "ShouldDrawLocalPlayer", "Camera_View_Player", function( ply )
+	if ply:Team() ~= TEAM_KILLER then return end
+
+	if IsValid(lastcam_entity) and rendering_camera then
+		return true
+	end
+end )]]
+
 function SWEP:DrawHUD()
 	if IsValid(Monitor) then
 		if IsValid(cam_window) then
@@ -263,22 +272,25 @@ function SWEP:DrawHUD()
 		cam_window:SetTitle("")
 		cam_window:SetVisible(true)
 		cam_window:SetDraggable(false)
-		
+
 		function cam_window:Paint( w, h )
 			if !IsValid(lastcam_entity) then return end
-		
+
 			local x, y = self:GetPos()
-		
+
 			local old = DisableClipping( true ) -- Avoid issues introduced by the natural clipping of Panel rendering
 			render.RenderView( {
 				origin = (lastcam_entity:GetPos() + Vector(0, 0, 55)) + (lastcam_entity:GetAngles():Forward() * 30),
 				angles = lastcam_entity:GetAngles(),
 				x = x, y = y,
 				w = w, h = h,
-				zfar = 900
+				zfar = 900,
+				drawviewmodel = false
 			} )
 			DisableClipping( old )
-		
+
+			--rendering_camera = true
+
 		end
 	end
 end

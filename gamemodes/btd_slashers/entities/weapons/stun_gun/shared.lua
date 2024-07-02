@@ -103,18 +103,18 @@ if SERVER then
 		if target:Team() == TEAM_KILLER && !target.stun then
 			timer.Create("stungun_" .. target:UniqueID(), math.random(2, 4), 1, function()
 				if !IsValid(target) then return end
-				if target:Alive() then 
+				--[[if target:Alive() then
 					target:SetRunSpeed(target.stungun_runspeed)
 					target:SetWalkSpeed(target.stungun_walkspeed)
-				end
+				end]]
 				target.stun = false
 			end)
-			
+
 			target.stun = true
-			target.stungun_runspeed = GAMEMODE.MAP.Killer.RunSpeed
-			target.stungun_walkspeed = GAMEMODE.MAP.Killer.WalkSpeed
-			target:SetRunSpeed(50)
-			target:SetWalkSpeed(50)
+
+			local debuff = target:GetWalkSpeed() - (target:GetWalkSpeed() * 0.9)
+
+			sls.util.ModifyMaxSpeed(target, debuff, math.random(2, 4))
 		end
 	end
 	hook.Add("EntityTakeDamage", "stungun_EntityTakeDamage", EntityTakeDamage)

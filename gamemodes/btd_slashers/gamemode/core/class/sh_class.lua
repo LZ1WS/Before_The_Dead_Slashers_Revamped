@@ -64,7 +64,7 @@ GM.CLASS.Survivors[CLASS_SURV_FAT].life = 180
 GM.CLASS.Survivors[CLASS_SURV_FAT].stamina = 80
 GM.CLASS.Survivors[CLASS_SURV_FAT].model = "models/steinman/slashers/fat_pm.mdl"
 GM.CLASS.Survivors[CLASS_SURV_FAT].die_sound = "slashers/effects/scream_man_1.wav"
-GM.CLASS.Survivors[CLASS_SURV_FAT].weapons = {}
+GM.CLASS.Survivors[CLASS_SURV_FAT].weapons = {"item_hamburger"}
 if CLIENT then
 	GM.CLASS.Survivors[CLASS_SURV_FAT].dispname = "Franklin"
 	GM.CLASS.Survivors[CLASS_SURV_FAT].description = GM.LANG:GetString("class_desc_fat")
@@ -276,19 +276,12 @@ GM.CLASS.Survivors[CLASS_SURV_ADDICTED].life = 80
 GM.CLASS.Survivors[CLASS_SURV_ADDICTED].stamina = 140
 GM.CLASS.Survivors[CLASS_SURV_ADDICTED].model = "models/player/hostage/hostage_04.mdl"
 GM.CLASS.Survivors[CLASS_SURV_ADDICTED].die_sound = "slashers/effects/scream_man_1.wav"
-GM.CLASS.Survivors[CLASS_SURV_ADDICTED].weapons = {}
+GM.CLASS.Survivors[CLASS_SURV_ADDICTED].weapons = {"item_adrenaline"}
 if CLIENT then
 	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].dispname = "Lucas"
 	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].description = GM.LANG:GetString("class_desc_addicted")
 	GM.CLASS.Survivors[CLASS_SURV_ADDICTED].icon = Material("icons/addicted.png")
 end
-
-hook.Add( "SetupMove", "sls_maxspeed", function( ply, mv, cmd )
-    if ply:GetNWBool("sls_hit_boost", false) then mv:SetMaxClientSpeed( ply:GetRunSpeed() * 1.75 ) return end
-	if ply:Team() == TEAM_SURVIVORS then
-    mv:SetMaxClientSpeed( 240 * 1.75 ) 
-	end
-end ) 
 
 local function StartRound()
 	for _, v in ipairs(player.GetAll()) do

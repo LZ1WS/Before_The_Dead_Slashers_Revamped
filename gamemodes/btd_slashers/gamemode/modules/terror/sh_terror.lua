@@ -10,12 +10,12 @@ local function terror_stop()
     if (Sound_Far != NULL ) then
         Sound_Far:ChangeVolume(0,0)
         Sound_Far:Stop()
-        Sound_Far = NULL 
+        Sound_Far = NULL
     end
     if (Sound_Close != NULL ) then
         Sound_Close:ChangeVolume(0,0)
         Sound_Close:Stop()
-        Sound_Close = NULL 
+        Sound_Close = NULL
     end
     if (Sound_Near!= NULL ) then
         Sound_Near:Stop()
@@ -63,7 +63,7 @@ hook.Add("sls_killer_loaded", "sls_terror_init", function()
         Sound_Far = CreateSound(LocalPlayer(), "terror_radius/" .. folder .. "/s1.wav")
         Sound_Close = CreateSound(LocalPlayer(), "terror_radius/" .. folder .. "/s2.wav")
         Sound_Near = CreateSound(LocalPlayer(), "terror_radius/" .. folder .. "/s3.wav")
-                
+
         Sound_Far:Play()
         Sound_Close:Play()
         Sound_Near:Play()
@@ -80,13 +80,13 @@ if (CLIENT) then
         if !IsValid(GM.ROUND.Killer) then timer.Remove("sls_terror_tick") return end
         local distance = GM.ROUND.Killer:GetPos():Distance(LocalPlayer():GetPos())
 
-        if (distance < (1.904 * 32) * 50 * 0.9 and !GM.ROUND.Killer:GetNWBool("sls_chase_disabled") and LocalPlayer():Alive() and !LocalPlayer().ChaseSoundPlaying and LocalPlayer() != GM.ROUND.Killer ) then
+        if (distance < (1.904 * 32) * 50 * 0.9 and !GM.ROUND.Killer:GetNWBool("sls_chase_disabled") and LocalPlayer():Alive() and !LocalPlayer().ChaseSoundPlaying and LocalPlayer() != GM.ROUND.Killer and !GM.ROUND.Escape ) then
             if(distance < (1.904 * 16) * 50 * 0.9) then
                 if(distance < ( 1.904 * 8 ) * 50 * 0.9) then
                 terror_pass(3)
                 else
                 terror_pass(2)
-                end 
+                end
             else
                 terror_pass(1)
             end

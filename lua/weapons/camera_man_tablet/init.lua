@@ -10,13 +10,14 @@ net.Receive( "fnafgmSTSASetView2",function(bits,ply)
 	local id = net.ReadFloat()
 	if (!id) then return end
 	--fnafgmSTSA:SetView(ply,id)
-	local camera = ents.FindByName( "fnafgm_Cam"..id )[1]
+	local camera = fnafCameras[id]
 	if (camera) then
-	hook.Add( "SetupPlayerVisibility", "AddRTCamera", function( _, viewEntity )
-	-- Adds any view entity
-	if IsValid(camera) then
-		AddOriginToPVS( camera:GetPos() )
-	end
+	hook.Add( "SetupPlayerVisibility", "AddRTCamera", function( client, viewEntity )
+		if client:Team() != TEAM_KILLER then return end
+
+		if IsValid(camera) and !camera:TestPVS( client ) then
+			AddOriginToPVS( camera:GetPos() )
+		end
 	end )
 		ply:SetNWEntity("sls_current_cam", camera)
 		net.Start("sls_cams_entity2")

@@ -44,9 +44,11 @@ net.Receive( "sls_killerseesurvivor", function()
 	if !IsValid(GM.ROUND.Killer) then return end
 	if color != 0 then
 
+	if ply:IsPlayer() then
 	net.Start( "sls_chaseactivated" )
 		net.WriteFloat(time)
 	net.Send(ply)
+	end
 
 	ply:SetNWBool("sls_ChaseSoundPlaying", true)
 
@@ -56,8 +58,10 @@ end)
 net.Receive( "sls_killerunseesurvivor", function(len, ply)
 	if !IsValid(GM.ROUND.Killer) then return end
 
+	if ply:IsPlayer() then
 	ply:SetNWBool("sls_ChaseSoundPlaying", false)
 	net.Start( "sls_chasedeactivated" )
 	net.Send(ply)
+	end
 
 end)

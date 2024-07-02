@@ -18,14 +18,17 @@ end)]]--
 
 local function HaveASurvivorInSight()
 	if !IsValid(GM.ROUND.Killer) then return end
+	if GM.ROUND.Escape then return end
 	if LocalPlayer():Team() != TEAM_KILLER then return end
 	local curtime = CurTime()
 	if Timer1 > curtime then return end
 
-	local SurvivorsPly = player.GetAll()
+	local SurvivorsPly = {}
+	table.Add(SurvivorsPly, player.GetAll())
+	table.Add(SurvivorsPly, GetLambdaPlayers())
 	for k,v in pairs(SurvivorsPly) do
 
-		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1000 && LocalPlayer():IsLineOfSightClear( v ) && !LocalPlayer():GetNWBool("sls_chase_disabled", false) && v:IsValid() && v != LocalPlayer() && v:Team() != TEAM_KILLER && !v:GetNWBool( 'IsInsideLocker', false )  then
+		if LocalPlayer():GetPos():Distance(v:GetPos()) < 1000 && LocalPlayer():IsLineOfSightClear( v ) && !LocalPlayer():GetNWBool("sls_chase_disabled", false) && v:IsValid() && v != LocalPlayer() && LambdaTeams:GetPlayerTeam( v ) != "Murderer" && !v:GetNWBool( 'IsInsideLocker', false )  then
 			local TargetPosMax = v:GetPos() + v:OBBMaxs() - Vector(10,0,0)
 			local TargetPosMin = v:GetPos() + v:OBBMins() + Vector(10,0,0)
 
@@ -51,10 +54,12 @@ hook.Add("Think", "sls_SurvivorInView", HaveASurvivorInSight)
 local function chasekillerMusic()
 	local curtime = CurTime()
 	if LocalPlayer():Team() != TEAM_KILLER then return end
+	if (GM.ROUND.Escape && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if LocalPlayer():GetNWBool("sls_chase_disabled", false) && (LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) return end
 	if LocalPlayer():GetNWBool("sls_chase_disabled", false) then return end
 	if (!LocalPlayer():Alive()) then return end
+	if (!LocalPlayer().LastViewKillerTime) then return end
 		if (LocalPlayer().LastViewKillerTime > curtime - 3 && !LocalPlayer().ChaseSoundPlaying) then
 timer.Simple(1, function()
 		LocalPlayer().ChaseSoundPlaying = true
@@ -87,6 +92,7 @@ net.Receive( "sls_chaseactivated", LastViewByKiller)
 local function chaseMusic()
 	local curtime = CurTime()
 	if LocalPlayer():Team() == TEAM_KILLER then return end
+	if (GM.ROUND.Escape && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if (!LocalPlayer():Alive() && LocalPlayer().ChaseSoundPlaying) then ChaseSound:FadeOut(1.2) end
 	if (!LocalPlayer():Alive()) then return end
 	if !LocalPlayer().LastViewByKillerTime then return end

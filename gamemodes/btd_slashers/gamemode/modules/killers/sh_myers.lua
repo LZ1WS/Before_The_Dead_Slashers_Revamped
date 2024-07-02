@@ -13,10 +13,11 @@ GM.KILLERS[KILLER_MYERS].ChaseMusic = "shape/chase/happyhalloween.wav"
 GM.KILLERS[KILLER_MYERS].TerrorMusic = "defaultkiller/terror/terror.wav"
 
 hook.Add("sls_round_PostStart", "sls_myersability_PostStart", function()
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_MYERS].Name then return end
-for _,v in ipairs(player.GetAll()) do
-	v:SetNWInt( "EvilPoints", 700 )
-end
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_MYERS then return end
+
+	for _,v in ipairs(player.GetAll()) do
+		v:SetNWInt( "EvilPoints", 700 )
+	end
 end)
 
 if CLIENT then

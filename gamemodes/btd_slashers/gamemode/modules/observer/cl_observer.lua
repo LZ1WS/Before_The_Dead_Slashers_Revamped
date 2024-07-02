@@ -17,7 +17,7 @@ local function HUDPaint()
 		local tw, th = surface.GetTextSize(target:Name())
 		surface.SetTextPos(scrW / 2 - tw / 2, scrH - (th + 20))
 		surface.DrawText(target:Name())
-	elseif IsValid(target) and target:IsBot() then
+	elseif IsValid(target) and (target.IsBot and target:IsBot()) then
 			surface.SetFont("horrormid")
 			surface.SetTextColor(Color(255, 255, 255))
 			local tw2, th2 = surface.GetTextSize(target:Name())

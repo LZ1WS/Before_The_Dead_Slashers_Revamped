@@ -93,10 +93,10 @@ else
 
 	local function PlayerFootstep(ply, pos, foot, sound, volume, filter)
 		if ply:GetColor() == Color(255,255,255,0) then return true end
-		if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
+		if !GM.ROUND.Active or !IsValid(GM.ROUND.Killer) then return end
 		if ply:Team() != TEAM_SURVIVORS then return end
 		if ply.ClassID == CLASS_SURV_SHY then return end
-		if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_JASON].Name then return end
+		if GetGlobalInt("RNDKiller", 1) != KILLER_JASON then return end
 		if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 
 		net.Start("sls_kability_AddStep")

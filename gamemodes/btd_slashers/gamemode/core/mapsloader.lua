@@ -16,6 +16,7 @@ local maps = file.Find(mapsPath .. "/*.bsp", "GAME")
 GM.MAPS = {}
 GM.MAP = {}
 GM.MAP.Killer = {}
+GM.MAP.Goals = {}
 
 function GM.MAP.Killer:UseAbility( ply ) end
 
@@ -70,7 +71,29 @@ hook.Add("PostGamemodeLoaded","sls_mapsloadData",loadMapsData)
 if SERVER then
 
 	local function UseAbility(len, ply)
+		if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return end
+
+		local check, why = hook.Run("KillerPreUseAbility", ply)
+
+		if !check then
+
+			if why then
+				if istable(why) then
+					ply:Notify(why, "cross")
+					return
+				end
+
+				ply:Notify({"class_ability_error_reason", why or ""}, "cross")
+			else
+				ply:Notify({"class_ability_error"}, "cross")
+			end
+
+			return
+		end
+
+		hook.Run("KillerUseAbility", ply)
 		GM.MAP.Killer:UseAbility( ply )
+		hook.Run("KillerPostUseAbility", ply)
 	end
 	net.Receive("sls_mapsloader_UseAbility", UseAbility)
 
@@ -86,11 +109,34 @@ else
 
 	local function PlayerButtonDown(ply, button)
 		if !IsFirstTimePredicted() then return end
+		if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return false end
 
 		if GM.ROUND.Active && ply:Team() == TEAM_KILLER && button == getMenuKey() then
+			local check, why = hook.Run("KillerPreUseAbility", ply)
+
+			if !check then
+
+				if why then
+					if istable(why) then
+						ply:Notify(why, "cross")
+						return
+					end
+
+					ply:Notify({"class_ability_error_reason", why or ""}, "cross")
+				else
+					ply:Notify({"class_ability_error"}, "cross")
+				end
+
+				return
+			end
+
+			hook.Run("KillerUseAbility", ply)
+
 			net.Start("sls_mapsloader_useability")
 			net.SendToServer()
 			GM.MAP.Killer:UseAbility( ply )
+
+			hook.Run("KillerPostUseAbility", ply)
 		end
 	end
 	hook.Add("PlayerButtonDown", "sls_mapsloader_PlayerButtonDown", PlayerButtonDown)

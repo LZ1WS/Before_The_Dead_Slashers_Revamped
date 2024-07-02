@@ -11,7 +11,7 @@ local GM = GAMEMODE
 
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
-include('shared.lua')
+include("shared.lua")
 
 
 sound.Add( {
@@ -32,7 +32,7 @@ sound.Add( {
 	sound = "ambient/water/leak_1.wav"
 } )
 
-local engine_fuelingSound = Sound("ambient/water/leak_1.wav")
+--local engine_fuelingSound = Sound("ambient/water/leak_1.wav")
 
 function ENT:Initialize()
 
@@ -41,8 +41,8 @@ function ENT:Initialize()
 	self:PhysicsInit(SOLID_NONE)
 	self:SetMoveType(MOVETYPE_NONE)
 	self:SetSolid(SOLID_VPHYSICS)
-	self:SetNWFloat( 'progressBar', 0 )
-	self:SetNWBool( 'activated', false)
+	self:SetNWFloat( "progressBar", 0 )
+	self:SetNWBool( "activated", false)
 
 	local phys = self:GetPhysicsObject()
 	if phys:IsValid() then
@@ -61,38 +61,46 @@ end
 
 
 function ENT:OnTakeDamage(dmg)
-
 end
 
 function ENT:Use(activator, caller)
-	if CurrentObjective == "activate_generator" && caller:Team() == TEAM_SURVIVORS then
-		local tr = caller:GetEyeTrace()
+
+	local info = GM.MAP.Goals["Police"]
+
+	if !info then return end
+
+	if info.CurrentObjective == "activate_generator" && LambdaTeams:GetPlayerTeam(caller) == "Survivors" then
+		--local tr = caller:GetEyeTrace()
 		self:SetUseType( CONTINUOUS_USE )
-		curentProgress = self:GetNWFloat('progressBar')
+		curentProgress = self:GetNWFloat("progressBar")
 		generatorNowActivated = self:GetNWEntity( "activated")
 
 		if (curentProgress < 1 ) then
 
-			self:SetNWFloat( 'progressBar', curentProgress+ 0.003)
-			net.Start( "activateProgressionSlasher" )
-			net.WriteFloat(curentProgress)
-			net.Send(caller)
+			self:SetNWFloat( "progressBar", curentProgress + 0.0003)
+			if caller:IsPlayer() then
+				net.Start( "activateProgressionSlasher" )
+				net.WriteFloat(curentProgress)
+				net.Send(caller)
+			end
 		end
 
 		if (curentProgress >= 1 && !generatorNowActivated) then
 
-			self:SetNWBool( 'activated', true)
-			self:SetNWFloat( 'progressBar', 2)
+			self:SetNWBool( "activated", true)
+			self:SetNWFloat( "progressBar", 2)
 			self:EmitSound( "engine_sound", 75, 100, 1, CHAN_AUTO )
 
-			net.Start( "activateProgressionSlasher" )
-			net.WriteFloat(2)
-			net.Send(caller)
+			if caller:IsPlayer() then
+				net.Start( "activateProgressionSlasher" )
+				net.WriteFloat(2)
+				net.Send(caller)
 
-			net.Start( "notificationSlasher" )
-			net.WriteTable({"round_notif_enabled_generator"})
-			net.WriteString("safe")
-			net.Send(caller)
+				net.Start( "notificationSlasher" )
+				net.WriteTable({"round_notif_enabled_generator"})
+				net.WriteString("safe")
+				net.Send(caller)
+			end
 
 			net.Start( "objectiveSlasher" )
 			net.WriteTable({"round_mission_radio"})
@@ -103,11 +111,12 @@ function ENT:Use(activator, caller)
 				net.Send(GM.ROUND.Survivors)
 			end
 			self.Active = true
-			hook.Call("sls_NextObjective")
+
+			hook.Run("sls_NextObjective", "Police")
 		end
 	else
 		self:SetUseType( SIMPLE_USE )
-		if (!self:GetNWBool( 'activated')) then
+		if (!self:GetNWBool( "activated") && caller:IsPlayer()) then
 			net.Start( "notificationSlasher" )
 			net.WriteTable({"round_notif_error_generator"})
 			net.WriteString("cross")

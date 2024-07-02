@@ -62,13 +62,24 @@ LANG["class_desc_wip"] = "Work in progress."
 
 LANG["scp049_infect"] = " HP, can infect (RMB)."
 LANG["scp049_noinfect"] = " HP, no infect."
+
 LANG["class_ability_used"] = "Used ability."
+LANG["class_ability_error"] = "Can't use ability."
+LANG["class_ability_error_reason"] = "Can't use ability, reason: %s."
+LANG["class_ability_error_time"] = "Can use ability in %i seconds."
+LANG["class_ability_time"] = "Ability is off cooldown."
+
 LANG["class_ability_kasper"] = "You will enter stealth in 5 seconds, don't move."
+
 LANG["special_round"] = "[SPECIAL ROUND] %s."
 LANG["disguise_ability_used"] = "Disguised as: %s"
-LANG["class_ability_time"] = "Ability is off cooldown."
+
 LANG["steve_resist_used"] = "You've gained resistance to the damage (0.5)."
 LANG["steve_resist_off"] = "You've lost resistance to the damage."
+
+LANG["addicted_overdose"] = "You feel your heart aching..."
+
+LANG["debuff_holy"] = "Divine Intervention"
 
 LANG["round_mission_police"] = "Police arrives in %s"
 LANG["round_mission_police_killer"] = "Kill them all %s"
@@ -84,7 +95,7 @@ LANG["round_mission_shotgun"] = "Find Shotgun"
 LANG["round_mission_killslender"] = "Kill Slender"
 LANG["round_mission_generator"] = "Find and activate the Generator !"
 LANG["round_mission_radio"] = "Find and activate the radio!"
-LANG["round_wait_players"] = "Waiting for players %i/%i"
+LANG["round_wait_players"] = "Waiting for players, ready (F1) %i/%i"
 LANG["round_team_name_survivor"] = "a Survivor"
 LANG["round_team_name_killer"] = "the Killer"
 LANG["round_team_desc_survivor"] = "Each survivor has a special perk. Your goal is to find jerrycans (number varying with the amount of player) to fill the generator so you can turn on the radio then call the police for help. Each element you have to find has many possible spawn points and spawns randomly on the map. The teamplay and a moderate use of your flashlight are the key of surviving."
@@ -100,6 +111,7 @@ LANG["round_notif_player_die"] = "%s is dead"
 LANG["round_notif_startsin"] = "Round starts in: "
 LANG["round_end_escaped"] = "The survivors have escaped... for now"
 LANG["round_end_dead"] = "The survivors have been eradicated"
+LANG["round_notif_startsin"] = "Round will start in: %i"
 
 -- Modules
 LANG["antiafk_will_kicked"] = "You're about to be kicked out of the server for inactivity in %s"
@@ -115,14 +127,26 @@ LANG["votemap_extend"] = "Extend"
 LANG["votemap_random"] = "Random"
 
 -- HUB
-LANG["hub_survivorshow"] = "Survivors"
-LANG["hub_killerchoose"] = "Killers"
+LANG["hub_play"] = "Play"
 LANG["hub_settings"] = "Settings"
 LANG["hub_settings_main"] = "Main Settings"
+LANG["hub_defaultmenu"] = "Default Menu"
+LANG["hub_disconnect"] = "Disconnect"
+
+LANG["hub_survivorshow"] = "Survivors"
+LANG["hub_killerchoose"] = "Killers"
 LANG["hub_description"] = "Description"
 LANG["hub_model"] = "Model"
 LANG["hub_killer_checkbox"] = "Allow to choose you as killer"
-LANG["hub_intro_checkbox"] = "Enable playing killers round start music"
+LANG["hub_intro_checkbox"] = "Enable killers round intro"
 LANG["hub_killer_random"] = "Random Killer"
+
+LANG["hub_equip"] = "Equip"
+LANG["hub_inspect"] = "Inspect"
+
+LANG["hub_stats_health"] = "Health = %i"
+LANG["hub_stats_stamina"] = "Stamina = %i"
+LANG["hub_stats_walkspeed"] = "Walk Speed = %i"
+LANG["hub_stats_runspeed"] = "Run Speed = %i"
 
 return LANG

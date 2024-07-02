@@ -4,7 +4,7 @@ SLENDER MAN'S WEAKNESS
 AddCSLuaFile( "shared.lua" )
 
 SWEP.PrintName = "Shotgun"
-    
+
 SWEP.Author = "[BoZ]Niko663"
 SWEP.Contact = "SlenderMan@8pages.com"
 SWEP.Purpose = "SLENDER MAN'S WEAKNESS"
@@ -17,7 +17,7 @@ SWEP.AdminSpawnable= true
 SWEP.AdminOnly = true
 
 SWEP.ViewModelFOV = 40
-SWEP.ViewModel = "models/slender-rising/v_sawedoff.mdl" 
+SWEP.ViewModel = "models/slender-rising/v_sawedoff.mdl"
 SWEP.WorldModel = "models/slender-rising/w_sawedoff.mdl"
 SWEP.ViewModelFlip = false
 
@@ -26,7 +26,7 @@ SWEP.AutoSwitchFrom = false
 
 SWEP.Slot = 0
 SWEP.SlotPos = 0
- 
+
 SWEP.UseHands = false
 
 SWEP.FreakOuts = false
@@ -73,9 +73,6 @@ end
 
 SWEP.CSMuzzleFlashes = false
 
-function SWEP:Initialize()
-        self:SetHoldType( self.HoldType )
-
 sound.Add({
 	name =				"SlenderRising.Shotgun",
 	channel =			CHAN_STATIC,
@@ -107,7 +104,26 @@ sound.Add({
 	soundlevel =			80,
 	sound =				"slender-rising/shotgun_theme.wav"
 })
-end 
+
+function SWEP:Initialize()
+	self:SetHoldType( self.HoldType )
+end
+
+function SWEP:Equip(ent)
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_SLENDER then return end
+
+	local info = GAMEMODE.MAP.Killer.SpecialGoals
+
+	if !info then return end
+	if info.CurrentObjective ~= "find_shotgun" then return end
+
+	net.Start( "objectiveSlasher" )
+	net.WriteTable({"round_mission_killslender"})
+	net.WriteString("caution")
+	net.Broadcast()
+
+	hook.Run("sls_NextObjective")
+end
 
 function SWEP:Deploy()
 	self:SetHoldType( self.HoldType )
@@ -126,12 +142,17 @@ function SWEP:Deploy()
 end
 
 function SWEP:CreateFreakOut()
-if IsValid(self.Owner) and IsValid(self) then
-if NbPagesToFound == 0 then
-timer.Create( "FreakOut" .. self.Owner:EntIndex(), math.random(45,55), 1, function() if IsValid(self.Owner) and IsValid(self) and ( self:GetNetworkedBool( "FreakingOut" ) == false ) and IsFirstTimePredicted() then self:EmitSound("SlenderRising.ShotgunScare") self:EmitSound("SlenderRising.ShotgunTheme") self.NextScreenShake = CurTime() self:SetIronsights( bIronsights ) self:SetNetworkedBool( "FreakingOut", true ) self:SetHoldType( "knife" ) self.Owner:SetNetworkedBool( "ShotgunClicksLeft", math.random(10,17) ) self:CreateFreakOut() self:DeathTimer() end end )
-end
+	local info = GM.MAP.Killer.SpecialGoals
 
-end
+	if !info then return end
+
+	if IsValid(self.Owner) and IsValid(self) then
+
+	if info.NbPagesToFound == 0 then
+		timer.Create( "FreakOut" .. self.Owner:EntIndex(), math.random(45,55), 1, function() if IsValid(self.Owner) and IsValid(self) and ( self:GetNetworkedBool( "FreakingOut" ) == false ) and IsFirstTimePredicted() then self:EmitSound("SlenderRising.ShotgunScare") self:EmitSound("SlenderRising.ShotgunTheme") self.NextScreenShake = CurTime() self:SetIronsights( bIronsights ) self:SetNetworkedBool( "FreakingOut", true ) self:SetHoldType( "knife" ) self.Owner:SetNetworkedBool( "ShotgunClicksLeft", math.random(10,17) ) self:CreateFreakOut() self:DeathTimer() end end )
+	end
+
+	end
 
 end
 
@@ -139,7 +160,7 @@ function SWEP:DeathTimer()
 timer.Create( "FreakOutDie" .. self.Owner:EntIndex(), 3, 1, function() if IsValid(self.Owner) and IsValid(self) and IsFirstTimePredicted() then self:EmitSound("SlenderRising.Shotgun") self:PlayerFlash() self.Owner:Kill() end end )
 end
 function SWEP:PrimaryAttack()
- 
+
 if ( !self:CanPrimaryAttack() ) then return end
 
 if ( self:GetNetworkedBool( "FreakingOut" ) == true ) then return end
@@ -160,13 +181,13 @@ bullet.AmmoType = self.Primary.Ammo
 
 local rnda = self.Primary.Recoil * -1
 local rndb = self.Primary.Recoil * math.random(-1, 1)
- 
+
 self.Owner:ViewPunch( Angle( rnda,rndb,rnda ) )
- 
+
 self.Owner:FireBullets( bullet )
 self:EmitSound("SlenderRising.Shotgun")
-self:TakePrimaryAmmo(self.Primary.TakeAmmo) 
- 
+self:TakePrimaryAmmo(self.Primary.TakeAmmo)
+
 self:SetNextPrimaryFire( CurTime() + self.Primary.Delay )
 self:PlayerFlash()
 self:Reload()
@@ -201,7 +222,7 @@ end
 end
 
 function SWEP:Reload()
-if self.Owner:GetActiveWeapon():Clip1() == 0 then
+if self and self:Clip1() == 0 then
 	if (SERVER) then
 		local GM = GM or GAMEMODE
 if GM.ROUND.Survivors then
@@ -266,62 +287,62 @@ function SWEP:GetViewModelPosition( pos, ang )
 	if ( !self.IronSightsPos ) then return pos, ang end
 
 	local bIron = self.Weapon:GetNetworkedBool( "Ironsights" )
-	
+
 	if ( bIron != self.bLastIron ) then
-	
-		self.bLastIron = bIron 
+
+		self.bLastIron = bIron
 		self.fIronTime = CurTime()
-		
-		if ( bIron ) then 
+
+		if ( bIron ) then
 			self.SwayScale 	= 1.0
 			self.BobScale 	= 1.0
-		else 
+		else
 			self.SwayScale 	= 1.0
 			self.BobScale 	= 1.0
 		end
-	
+
 	end
-	
+
 	local fIronTime = self.fIronTime or 0
 
-	if ( !bIron && fIronTime < CurTime() - DEPLOY_TIME ) then 
-		return pos, ang 
+	if ( !bIron && fIronTime < CurTime() - DEPLOY_TIME ) then
+		return pos, ang
 	end
-	
+
 	local Mul = 1.0
-	
+
 	if ( fIronTime > CurTime() - IRONSIGHT_TIME ) then
-	
+
 		Mul = math.Clamp( (CurTime() - fIronTime) / IRONSIGHT_TIME, 0, 1 )
-		
+
 		if (!bIron) then Mul = 1 - Mul end
-	
+
 	end
 
 	local Offset	= self.IronSightsPos
-	
+
 	if ( self.IronSightsAng ) then
-	
+
 		ang = ang * 1
 		ang:RotateAroundAxis( ang:Right(), 		self.IronSightsAng.x * Mul )
 		ang:RotateAroundAxis( ang:Up(), 		self.IronSightsAng.y * Mul )
 		ang:RotateAroundAxis( ang:Forward(), 	self.IronSightsAng.z * Mul )
-	
-	
+
+
 	end
-	
+
 	local Right 	= ang:Right()
 	local Up 		= ang:Up()
 	local Forward 	= ang:Forward()
-	
-	
+
+
 
 	pos = pos + Offset.x * Right * Mul
 	pos = pos + Offset.y * Forward * Mul
 	pos = pos + Offset.z * Up * Mul
 
 	return pos, ang
-	
+
 end
 
 function SWEP:SetIronsights( b )

@@ -14,9 +14,28 @@ local function F1Menu(ply)
 		net.Start("sls_f1_menu")
 		net.Send(ply)
 	end
-	if !GAMEMODE.ROUND.Active then
-		if ply.IsReady == nil then ply.IsReady = true return end
-	ply.IsReady = !ply.IsReady
+	if GAMEMODE.ROUND.WaitingPlayers then
+		if ply.ReadyCD && ply.ReadyCD > CurTime() then return end
+
+		ply.ReadyCD = CurTime() + 1
+
+		if table.HasValue(GAMEMODE.ROUND.ReadyPlayers, ply) then
+			table.RemoveByValue(GAMEMODE.ROUND.ReadyPlayers, ply)
+
+			net.Start("sls_round_WaitingPlayers")
+			net.WriteBool(true)
+			net.WriteTable(GAMEMODE.ROUND.ReadyPlayers)
+			net.Broadcast()
+
+			return
+		end
+
+		GAMEMODE.ROUND.ReadyPlayers[#GAMEMODE.ROUND.ReadyPlayers + 1] = ply
+
+		net.Start("sls_round_WaitingPlayers")
+		net.WriteBool(true)
+		net.WriteTable(GAMEMODE.ROUND.ReadyPlayers)
+		net.Broadcast()
 	end
 end
 hook.Add( "ShowHelp", "sls_F1MenuShow", F1Menu )

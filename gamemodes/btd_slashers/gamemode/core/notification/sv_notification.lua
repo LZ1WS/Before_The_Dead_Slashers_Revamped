@@ -13,8 +13,19 @@ util.AddNetworkString( "activateProgressionSlasher" )
 util.AddNetworkString( "noticonSlashers" )
 
 hook.Add( "PlayerDeath", "WhenPlayerDie", function( ply, ent )
-	net.Start( "notificationSlasher" )
+	--ply:Notify({"round_notif_player_die", ply:Name()}, "cross")
+	sls.util.Notification({"round_notif_player_die", ply:Name()}, "cross")
+	--[[net.Start( "notificationSlasher" )
 		net.WriteTable({"round_notif_player_die", ply:Name()})
 		net.WriteString("cross")
-		net.Broadcast()
+		net.Broadcast()]]
+end )
+
+hook.Add( "LambdaOnKilled", "WhenLambdaDie", function( ply, ent )
+	--ply:Notify({"round_notif_player_die", ply:Name()}, "cross")
+	sls.util.Notification({"round_notif_player_die", ply:Name()}, "cross")
+	--[[net.Start( "notificationSlasher" )
+		net.WriteTable({"round_notif_player_die", ply:Name()})
+		net.WriteString("cross")
+		net.Broadcast()]]
 end )

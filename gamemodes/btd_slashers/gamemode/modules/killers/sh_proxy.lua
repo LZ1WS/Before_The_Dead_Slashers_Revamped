@@ -11,6 +11,7 @@ GM.KILLERS[KILLER_PROXY].ExtraWeapons = {}
 GM.KILLERS[KILLER_PROXY].StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
 GM.KILLERS[KILLER_PROXY].ChaseMusic = "slashers/ambient/chase_proxy.wav"
 GM.KILLERS[KILLER_PROXY].TerrorMusic = "slender/terror/terrorslender.wav"
+GM.KILLERS[KILLER_PROXY].AbilityCooldown = 10
 
 if CLIENT then
 	GM.KILLERS[KILLER_PROXY].Desc = GM.LANG:GetString("class_desc_proxy")
@@ -52,7 +53,7 @@ if CLIENT then
 		local v = team.GetPlayers(TEAM_KILLER)[1]
 		local curtime = CurTime()
 		local ply = LocalPlayer()
-if (v) then
+		if (v) then
 		if !ply:IsLineOfSightClear( v ) or !v:IsValid() or v == ply then return end
 
 
@@ -136,8 +137,6 @@ else
 	net.Receive("sls_kability_survivorseekiller", ResponsePlayerSeeKiller)
 
     GM.KILLERS[KILLER_PROXY].UseAbility = function(ply)
-		if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
-		if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_PROXY].Name then return end
 		local PlayerWeapon = ply:GetActiveWeapon()
 		if KillerInView then
 			net.Start( "notificationSlasher" )
@@ -154,8 +153,9 @@ else
 			timer.Simple( 0.6, function ()
 
 				ply:SetColor(KInvisible )
-				ply:SetWalkSpeed( 400 )
-				ply:SetRunSpeed(400)
+
+				sls.util.ModifyMaxSpeed(ply, 400)
+
 				ply:StripWeapon(PlayerWeapon:GetClass())
 
 				ply:SetRenderMode(RENDERMODE_NONE )
@@ -178,10 +178,9 @@ else
 			--	ply:AddKey( IN_ZOOM )
 				ply:Give(ply.InitialWeapon)
 				ply:SetColor( KNormal )
-				ply:SetRunSpeed( 400 )
+				--ply:SetRunSpeed( 400 )
 				ply:DrawShadow( true )
-				ply:SetWalkSpeed(GM.KILLERS[KILLER_PROXY].WalkSpeed)
-				ply:SetRunSpeed(GM.KILLERS[KILLER_PROXY].RunSpeed)
+				ply:SetNW2Float("sls_max_speed", nil)
 				ply:SetRenderMode(RENDERMODE_TRANSALPHA )
 
 				ply.InvisibleActive = false
@@ -190,7 +189,12 @@ else
 					net.WriteBool(false)
 				net.Send(ply)
 
+				local debuff = GM.MAP.Killer.RunSpeed - (GM.MAP.Killer.RunSpeed * 0.4)
+
+				sls.util.ModifyMaxSpeed(ply, debuff, 3)
+
 			end)
+
 		end
 	end
 
@@ -199,8 +203,7 @@ else
 	for k,v in pairs(player.GetAll()) do
 		v:DrawShadow( true )
 		if IsValid(GAMEMODE.CLASS.Killers) and GM.ROUND.Killer:Team() == TEAM_KILLER then
-			v:SetWalkSpeed(GAMEMODE.CLASS.Killers[CLASS_KILL_PROXY].walkspeed)
-			v:SetRunSpeed(GAMEMODE.CLASS.Killers[CLASS_KILL_PROXY].walkspeed)
+			v:SetNW2Float("sls_max_speed", nil)
 			GM.ROUND.Killer.InvisibleActive = false
 		end
 		v:SetRenderMode(RENDERMODE_TRANSALPHA )
@@ -216,11 +219,11 @@ hook.Add("sls_round_PostStart","sls_kability_ResetViewKillerAfterEnd",ResetVisib
 
 local timerSend = 0
 local function sendPosWhenInvisible()
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_PROXY].Name then return end
+	if GetGlobalInt("RNDKiller", 1) != KILLER_PROXY then return end
 	if IsValid(GM.ROUND.Killer) &&   GM.ROUND.Active && timerSend < CurTime()  then
 		timerSend = CurTime() + 0.5
 		local shygirl = getSurvivorByClass(CLASS_SURV_SHY)
-		if !shygirl then return end
+		if !shygirl or !shygirl:IsPlayer() then return end
 		if !shygirl:IsLineOfSightClear(GM.ROUND.Killer) or  !GM.ROUND.Killer.InvisibleActive then
 			net.Start("sls_proxy_sendpos")
 			net.WriteVector(Vector(0,0,0))
@@ -246,10 +249,10 @@ hook.Add("Think","sls_sendposkillerwheninvisible",sendPosWhenInvisible)
 end
 
 local function initCol()
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_PROXY].Name then return end
+	if GetGlobalInt("RNDKiller", 1) != KILLER_PROXY then return end
 	local allentities = ents.GetAll()
 	for k, v in pairs(allentities) do
-		if (v:IsPlayer()) or (v:GetClass() == "prop_door_rotating") then
+		if (v:IsPlayer()) or (string.find(v:GetClass(), "prop_door*") or string.find(v:GetClass(), "func_door*")) then
 			v:SetCustomCollisionCheck( true )
 		end
 	end
@@ -259,9 +262,9 @@ hook.Add("sls_round_PostStart","sls_kability_TestInit", initCol)
 
 
 local function ShouldCollide( ent1, ent2 )
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_PROXY].Name then return end
-	if ent1:IsPlayer() and ent1:GetColor().a == 0 and  ent2:GetClass() == "prop_door_rotating" or
-		ent2:IsPlayer() and ent2:GetColor().a == 0 and  ent1:GetClass() == "prop_door_rotating" then
+	if GetGlobalInt("RNDKiller", 1) != KILLER_PROXY then return end
+	if ent1:IsPlayer() and ent1:GetColor().a == 0 and  (string.find(ent2:GetClass(), "prop_door*") or string.find(ent2:GetClass(), "func_door*")) or
+		ent2:IsPlayer() and ent2:GetColor().a == 0 and  (string.find(ent1:GetClass(), "prop_door*") or string.find(ent1:GetClass(), "prop_door*")) then
 		return false
 	end
 	if ent1:IsPlayer() and ent1:GetColor().a == 0 or

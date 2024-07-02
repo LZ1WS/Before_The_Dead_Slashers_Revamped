@@ -86,14 +86,17 @@ end
 local function PlayerUse(ply, ent)
 	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
 	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_GHOSTFACE].Name then return end
+	if GetGlobalInt("RNDKiller", 1) != KILLER_GHOSTFACE then return end
+
 	if ply:Team() != TEAM_SURVIVORS then return end
 	if ply.ClassID == CLASS_SURV_SHY then return end
+
 	if !table.HasValue(GM.CONFIG["killerhelp_door_entities"], ent:GetClass()) then return end
 	if ply.kh_use && ply.kh_use[ent:EntIndex()] && CurTime() <= ply.kh_use[ent:EntIndex()] then return end
+
 	local CV_DoorDuration = GetConVar("slashers_ghostface_door_duration")
 
-	ply.kh_use = ply.kh_use or {}
+	ply.kh_use = ply.kh_use || {}
 	ply.kh_use[ent:EntIndex()] = CurTime() + CV_DoorDuration:GetFloat()
 	AddDoor(ent:GetPos(), CurTime() + CV_DoorDuration:GetFloat())
 end

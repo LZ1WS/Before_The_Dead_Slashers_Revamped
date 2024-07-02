@@ -18,9 +18,9 @@ if CLIENT then
 	GM.KILLERS[KILLER_SCP049].Desc = GM.LANG:GetString("class_desc_scp049")
 	GM.KILLERS[KILLER_SCP049].Icon = Material("icons/scp049.png")
 end
-	hook.Add("sls_round_PostStart", "introfix049", function()
-		if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_SCP049].Name then return end
-for _,v in ipairs(player.GetAll()) do
-v:ConCommand("play plaguescp/voice/intro" .. math.random(1, 3) .. ".mp3")
-end
+
+hook.Add("sls_round_PostStart", "sls_intro_049", function()
+	if GetGlobalInt("RNDKiller", 1) ~= KILLER_SCP049 then return end
+
+	sls.util.PlayGlobalSound("plaguescp/voice/intro" .. math.random(1, 3) .. ".mp3")
 end)

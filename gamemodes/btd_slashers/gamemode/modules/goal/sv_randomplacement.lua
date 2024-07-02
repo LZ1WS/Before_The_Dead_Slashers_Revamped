@@ -12,7 +12,7 @@ local function Spawn_SlashGen()
 		for k, v in pairs( GM.MAP.Goal ) do
 
 			if (v == GM.MAP.Goal.Jerrican) then
-				nbEntToSpawn = 3 *  math.ceil( (#player.GetAll() / 3) )
+				nbEntToSpawn = 3 *  math.ceil( ((#player.GetAll() + #GetLambdaPlayers()) / 3) )
 			elseif (v == GM.MAP.Goal.Locker) then
 				nbEntToSpawn = -1
 			else
@@ -71,7 +71,7 @@ local function Spawn_SlashVaccine()
 		for k, v in pairs( GM.MAP.Vaccine ) do
 
 			if (v == GM.MAP.Vaccine.Box) then
-				nbVacToSpawn = 2 *  math.ceil( (#player.GetAll() / 3) )
+				nbVacToSpawn = 2 *  math.ceil( ((#player.GetAll() + #GetLambdaPlayers()) / 3) )
 			else
 				nbVacToSpawn = 0
 			end
@@ -100,43 +100,6 @@ local function Spawn_SlashVaccine()
 end
 hook.Add( "sls_round_PostStart", "Slasher Vaccine Spawn", Spawn_SlashVaccine )
 
-local function Spawn_SlashPages()
-	if GM.MAP.Killer.SpecialRound == "GM.MAP.Pages" and (GM.MAP.Pages) then --If we have data for this map
-		for k, v in pairs( GM.MAP.Pages ) do
-
-			if (v == GM.MAP.Pages.Page) then
-				nbPageToSpawn = 4 * math.ceil( (#player.GetAll() / 2.5) )
-			else
-				nbPageToSpawn = 0
-			end
-
-			while (nbPageToSpawn >= 0) do
-				w = table.Random(v)
-
-				if !w.spw then
-					--get the type of entity
-					local entType = w.type
-					--spawn it
-					local newEnt = ents.Create(entType)
-					if w.model then newEnt:SetModel(w.model) end --set model
-					if w.ang then newEnt:SetAngles(w.ang) end --set angle
-					if w.pos then newEnt:SetPos(w.pos) end --set position
-					newEnt:Spawn()
-					local physobj = newEnt:GetPhysicsObject()
-					physobj:EnableMotion(false)
-
-					newEnt:Activate()
-					newEnt:EmitSound("SlenderRising.SignWhispers")
-
-					w.spw = true
-				end
-				nbPageToSpawn = nbPageToSpawn -1
-			end
-		end
-	end
-end
-hook.Add( "sls_round_PostStart", "Slasher Page Spawn", Spawn_SlashPages )
-
 hook.Add( "sls_round_PreStart", "sls_ReinitObjectives", function( ply, text, public )
 	if GM.MAP.Goal then --If we have data for this map
 		for k, v in pairs( GM.MAP.Goal ) do
@@ -145,13 +108,7 @@ hook.Add( "sls_round_PreStart", "sls_ReinitObjectives", function( ply, text, pub
 			end
 		end
 	end
-	if GM.MAP.Pages then --If we have data for this map
-		for k, v in pairs( GM.MAP.Pages ) do
-			for m, w in pairs( v ) do
-				w.spw = false
-			end
-		end
-	end
+
 	if GM.MAP.Vaccine then --If we have data for this map
 		for k, v in pairs( GM.MAP.Vaccine ) do
 			for m, w in pairs( v ) do

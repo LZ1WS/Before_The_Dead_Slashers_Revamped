@@ -42,8 +42,8 @@ local function DrawColorModify( tab )
 		tab[ "$pp_colour_contrast" ] 	= 1
 		tab[ "$pp_colour_colour" ] 		= 1
 		tab[ "$pp_colour_mulr" ] 		= 10
-		tab[ "$pp_colour_mulg" ] 		= 60
-		tab[ "$pp_colour_mulb" ] 		= 1	
+		tab[ "$pp_colour_mulg" ] 		= 30
+		tab[ "$pp_colour_mulb" ] 		= 1
 	else
 		tab[ "$pp_colour_addr" ] 		= 0.02
 		tab[ "$pp_colour_addg" ] 		= 0.02
@@ -61,22 +61,45 @@ local function DrawColorModify( tab )
 	for k, v in pairs( tab ) do
 
 		mat_ColorMod:SetFloat( k, v )
-		
+
 	end
 
 	render.SetMaterial( mat_ColorMod )
 	render.DrawScreenQuad()
 end
 
+local color_killer = Color(90,20,0,255)
+local color_junky = Color(29,90,0)
+
+hook.Add( "Think", "Survivor_Light", function()
+	if LocalPlayer():Team() != TEAM_SURVIVORS or !GM.ROUND.Active then return end
+
+	local junky = getSurvivorByClass(CLASS_SURV_JUNKY)
+
+	if junky then
+		local dlight = DynamicLight( LocalPlayer():EntIndex() )
+		if ( dlight ) then
+			dlight.pos = LocalPlayer():GetShootPos()
+			dlight.r = color_junky.r
+			dlight.g = color_junky.g
+			dlight.b = color_junky.b
+			dlight.brightness = 1
+			dlight.Decay = 10
+			dlight.Size = 1000
+			dlight.DieTime = CurTime() + 1
+		end
+	end
+end)
+
 hook.Add( "Think", "Killer_Light", function()
-	if LocalPlayer():Team() ~= TEAM_KILLER or !GM.ROUND.Active then return end
+	if LocalPlayer():Team() != TEAM_KILLER or !GM.ROUND.Active then return end
+
 	local dlight = DynamicLight( LocalPlayer():EntIndex() )
-	clr = Color(90,20,0,255)
 	if ( dlight ) then
 		dlight.pos = LocalPlayer():GetShootPos()
-		dlight.r = clr.r
-		dlight.g = clr.g
-		dlight.b = clr.b
+		dlight.r = color_killer.r
+		dlight.g = color_killer.g
+		dlight.b = color_killer.b
 		dlight.brightness = 1
 		dlight.Decay = 10
 		dlight.Size = 1000
