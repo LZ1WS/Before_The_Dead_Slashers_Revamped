@@ -34,16 +34,16 @@ local function DrawColorModify( tab )
 	    tab["$pp_colour_mulr"] = -38.25/255
 	    tab["$pp_colour_mulg"] = -38.25/255
 	    tab["$pp_colour_mulb"] = -38.25/255
-	elseif GM.ROUND.Survivors && GM.ROUND.Active && LocalPlayer().ClassID == CLASS_SURV_JUNKY then
+	--[[elseif GM.ROUND.Survivors && GM.ROUND.Active && LocalPlayer().ClassID == CLASS_SURV_JUNKY then
 		tab[ "$pp_colour_addr" ] 		= 0
 		tab[ "$pp_colour_addg" ] 		= 0
 		tab[ "$pp_colour_addb" ] 		= 0
 		tab[ "$pp_colour_brightness" ] 	= 0.1
 		tab[ "$pp_colour_contrast" ] 	= 1
 		tab[ "$pp_colour_colour" ] 		= 1
-		tab[ "$pp_colour_mulr" ] 		= 10
-		tab[ "$pp_colour_mulg" ] 		= 30
-		tab[ "$pp_colour_mulb" ] 		= 1
+		tab[ "$pp_colour_mulr" ] 		= 2
+		tab[ "$pp_colour_mulg" ] 		= 2
+		tab[ "$pp_colour_mulb" ] 		= 1]]
 	else
 		tab[ "$pp_colour_addr" ] 		= 0.02
 		tab[ "$pp_colour_addg" ] 		= 0.02
@@ -83,7 +83,7 @@ hook.Add( "Think", "Survivor_Light", function()
 			dlight.r = color_junky.r
 			dlight.g = color_junky.g
 			dlight.b = color_junky.b
-			dlight.brightness = 1
+			dlight.brightness = -1
 			dlight.Decay = 10
 			dlight.Size = 1000
 			dlight.DieTime = CurTime() + 1
