@@ -10,7 +10,7 @@ GM.KILLERS[KILLER_WESKER].UniqueWeapon = false
 GM.KILLERS[KILLER_WESKER].ExtraWeapons = {}
 GM.KILLERS[KILLER_WESKER].SpecialRound = "GM.MAP.Vaccine"
 GM.KILLERS[KILLER_WESKER].StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
-GM.KILLERS[KILLER_WESKER].ChaseMusic = "albertwesker/chase/chase.wav"
+GM.KILLERS[KILLER_WESKER].ChaseMusic = "albertwesker/chase/chase.ogg"
 GM.KILLERS[KILLER_WESKER].TerrorMusic = "albertwesker/terror/terror.wav"
 
 if CLIENT then

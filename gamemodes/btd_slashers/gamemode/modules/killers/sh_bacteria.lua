@@ -10,7 +10,7 @@ GM.KILLERS[KILLER_BACTERIA].RunSpeed = 220
 GM.KILLERS[KILLER_BACTERIA].UniqueWeapon = true
 GM.KILLERS[KILLER_BACTERIA].ExtraWeapons = {"tfa_nmrih_fists"} --demogorgon_claws
 GM.KILLERS[KILLER_BACTERIA].StartMusic = "sound/bacteria/voice/intro.ogg"
-GM.KILLERS[KILLER_BACTERIA].ChaseMusic = "bacteria/chase/chase.wav"
+GM.KILLERS[KILLER_BACTERIA].ChaseMusic = "bacteria/chase/chase.ogg"
 GM.KILLERS[KILLER_BACTERIA].TerrorMusic = "bacteria/terror/terror.wav"
 
 GM.KILLERS[KILLER_BACTERIA].Abilities = {"bacteria/voice/jumpscare.ogg"}

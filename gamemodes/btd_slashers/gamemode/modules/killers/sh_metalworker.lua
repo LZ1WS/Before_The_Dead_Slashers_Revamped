@@ -10,7 +10,7 @@ GM.KILLERS[KILLER_METALWORKER].RunSpeed = 210
 GM.KILLERS[KILLER_METALWORKER].UniqueWeapon = false
 GM.KILLERS[KILLER_METALWORKER].ExtraWeapons = {"weapon_alertropes", "fnafgm_securitytablet_sa", "weapon_weld"}
 GM.KILLERS[KILLER_METALWORKER].StartMusic = "sound/metalworker/voice/intro.mp3"
-GM.KILLERS[KILLER_METALWORKER].ChaseMusic = "metalworker/chase/chase.wav"
+GM.KILLERS[KILLER_METALWORKER].ChaseMusic = "metalworker/chase/chase.ogg"
 GM.KILLERS[KILLER_METALWORKER].TerrorMusic = "metalworker/terror/terror.wav"
 
 if CLIENT then

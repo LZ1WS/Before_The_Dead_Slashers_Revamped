@@ -10,7 +10,7 @@ GM.KILLERS[KILLER_MUTE].RunSpeed = 198
 GM.KILLERS[KILLER_MUTE].UniqueWeapon = true
 GM.KILLERS[KILLER_MUTE].ExtraWeapons = {"mute_knife"}
 GM.KILLERS[KILLER_MUTE].StartMusic = "sound/slender/voice/intro.mp3"
-GM.KILLERS[KILLER_MUTE].ChaseMusic = "mute/chase/chase.wav"
+GM.KILLERS[KILLER_MUTE].ChaseMusic = "mute/chase/chase.ogg"
 GM.KILLERS[KILLER_MUTE].TerrorMusic = "mute/terror/terror.wav"
 GM.KILLERS[KILLER_MUTE].AbilityCooldown = 30
 

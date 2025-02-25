@@ -11,7 +11,7 @@ GM.KILLERS[KILLER_LEOKASPER].RunSpeed = 210
 GM.KILLERS[KILLER_LEOKASPER].UniqueWeapon = false
 GM.KILLERS[KILLER_LEOKASPER].ExtraWeapons = {}
 GM.KILLERS[KILLER_LEOKASPER].StartMusic = "sound/kasper/voice/intro.mp3"
-GM.KILLERS[KILLER_LEOKASPER].ChaseMusic = "kasper/chase/chase.wav"
+GM.KILLERS[KILLER_LEOKASPER].ChaseMusic = "kasper/chase/chase.ogg"
 GM.KILLERS[KILLER_LEOKASPER].TerrorMusic = "kasper/terror/terror.wav"
 
 if CLIENT then

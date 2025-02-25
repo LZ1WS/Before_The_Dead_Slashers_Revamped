@@ -9,7 +9,7 @@ GM.KILLERS[KILLER_MYERS].RunSpeed = 200
 GM.KILLERS[KILLER_MYERS].UniqueWeapon = true
 GM.KILLERS[KILLER_MYERS].ExtraWeapons = {"mm_kitchen_knife"}
 GM.KILLERS[KILLER_MYERS].StartMusic = "sound/halloween/Shape_Menu_Theme.mp3"
-GM.KILLERS[KILLER_MYERS].ChaseMusic = "shape/chase/happyhalloween.wav"
+GM.KILLERS[KILLER_MYERS].ChaseMusic = "shape/chase/happyhalloween.ogg"
 GM.KILLERS[KILLER_MYERS].TerrorMusic = "defaultkiller/terror/terror.wav"
 
 hook.Add("sls_round_PostStart", "sls_myersability_PostStart", function()

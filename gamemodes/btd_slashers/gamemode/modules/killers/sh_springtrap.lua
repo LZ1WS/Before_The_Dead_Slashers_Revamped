@@ -8,7 +8,7 @@ GM.KILLERS[KILLER_SPRINGTRAP].RunSpeed = 200
 GM.KILLERS[KILLER_SPRINGTRAP].UniqueWeapon = true
 GM.KILLERS[KILLER_SPRINGTRAP].ExtraWeapons = {"tfa_nmrih_fists"}
 GM.KILLERS[KILLER_SPRINGTRAP].StartMusic = "sound/springtrap/voice/intro.mp3"
-GM.KILLERS[KILLER_SPRINGTRAP].ChaseMusic = "springtrap/chase/springtrapchase.wav"
+GM.KILLERS[KILLER_SPRINGTRAP].ChaseMusic = "springtrap/chase/springtrapchase.ogg"
 GM.KILLERS[KILLER_SPRINGTRAP].TerrorMusic = "springtrap/terror/terrorspring.wav"
 
 GM.KILLERS[KILLER_SPRINGTRAP].AbilityCooldown = 10

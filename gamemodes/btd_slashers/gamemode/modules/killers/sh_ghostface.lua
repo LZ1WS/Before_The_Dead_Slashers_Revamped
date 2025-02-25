@@ -12,7 +12,7 @@ GM.KILLERS[KILLER_GHOSTFACE].ExtraWeapons = {}
 GM.KILLERS[KILLER_GHOSTFACE].StartMusic = "sound/slashers/ambient/slashers_start_game_ghostface.wav"
 GM.KILLERS[KILLER_GHOSTFACE].ChaseMusic = "slashers/ambient/chase_ghostface.wav"
 GM.KILLERS[KILLER_GHOSTFACE].TerrorMusic = "defaultkiller/terror/terror.wav"
-GM.KILLERS[KILLER_GHOSTFACE].EscapeMusic = "ghostface/escape/ghostface_escape.wav"
+GM.KILLERS[KILLER_GHOSTFACE].EscapeMusic = "ghostface/escape/ghostface_escape.ogg"
 
 if CLIENT then
 	GM.KILLERS[KILLER_GHOSTFACE].Desc = GM.LANG:GetString("class_desc_ghostface")

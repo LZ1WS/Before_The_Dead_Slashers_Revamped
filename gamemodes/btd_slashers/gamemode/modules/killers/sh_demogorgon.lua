@@ -10,9 +10,9 @@ GM.KILLERS[KILLER_DEMOGORGON].RunSpeed = 220
 GM.KILLERS[KILLER_DEMOGORGON].UniqueWeapon = true
 GM.KILLERS[KILLER_DEMOGORGON].ExtraWeapons = {"demogorgon_claws"}
 GM.KILLERS[KILLER_DEMOGORGON].StartMusic = "sound/bacteria/voice/intro.ogg"
-GM.KILLERS[KILLER_DEMOGORGON].ChaseMusic = "demogorgon/chase/chase.wav"
+GM.KILLERS[KILLER_DEMOGORGON].ChaseMusic = "demogorgon/chase/chase.ogg"
 GM.KILLERS[KILLER_DEMOGORGON].TerrorMusic = "bacteria/terror/terror.wav"
-GM.KILLERS[KILLER_DEMOGORGON].EscapeMusic = "demogorgon/escape/demo_escape.wav"
+GM.KILLERS[KILLER_DEMOGORGON].EscapeMusic = "demogorgon/escape/demo_escape.ogg"
 
 if CLIENT then
 	GM.KILLERS[KILLER_DEMOGORGON].Desc = GM.LANG:GetString("class_desc_demogorgon")

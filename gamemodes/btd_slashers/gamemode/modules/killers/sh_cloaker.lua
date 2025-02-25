@@ -11,7 +11,7 @@ GM.KILLERS[KILLER_CLOAKER].UniqueWeapon = false
 GM.KILLERS[KILLER_CLOAKER].ExtraWeapons = {}
 GM.KILLERS[KILLER_CLOAKER].Joke = true
 GM.KILLERS[KILLER_CLOAKER].StartMusic = "sound/cloaker/voice/intro.mp3"
-GM.KILLERS[KILLER_CLOAKER].ChaseMusic = "cloaker/chase/cloakerchase.wav"
+GM.KILLERS[KILLER_CLOAKER].ChaseMusic = "cloaker/chase/cloakerchase.ogg"
 GM.KILLERS[KILLER_CLOAKER].TerrorMusic = "defaultkiller/terror/terror.wav"
 
 GM.KILLERS[KILLER_CLOAKER].Abilities = {"cloaker/ability/vuvuvu.mp3"}

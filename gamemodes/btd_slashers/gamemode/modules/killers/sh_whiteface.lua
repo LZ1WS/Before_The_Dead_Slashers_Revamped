@@ -9,7 +9,7 @@ GM.KILLERS[KILLER_WHITEFACE].RunSpeed = 200
 GM.KILLERS[KILLER_WHITEFACE].UniqueWeapon = false
 GM.KILLERS[KILLER_WHITEFACE].ExtraWeapons = {}
 GM.KILLERS[KILLER_WHITEFACE].StartMusic = "sound/whiteface/voice/intro.mp3"
-GM.KILLERS[KILLER_WHITEFACE].ChaseMusic = "whiteface/chase/chase.wav"
+GM.KILLERS[KILLER_WHITEFACE].ChaseMusic = "whiteface/chase/chase.ogg"
 GM.KILLERS[KILLER_WHITEFACE].TerrorMusic = "whiteface/terror/terror.wav"
 GM.KILLERS[KILLER_WHITEFACE].EscapeMusic = "whiteface/ability/ability.mp3"
 

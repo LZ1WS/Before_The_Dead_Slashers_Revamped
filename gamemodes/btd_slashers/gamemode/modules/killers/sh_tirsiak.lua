@@ -11,7 +11,7 @@ GM.KILLERS[KILLER_TIRSIAK].UniqueWeapon = false
 GM.KILLERS[KILLER_TIRSIAK].ExtraWeapons = {}
 GM.KILLERS[KILLER_TIRSIAK].VoiceCallouts = {"tirsiak/voice/Tirsiak1.ogg", "tirsiak/voice/Tirsiak2.ogg", "tirsiak/voice/Tirsiak3.ogg", "tirsiak/voice/Tirsiak4.ogg"}
 GM.KILLERS[KILLER_TIRSIAK].StartMusic = "sound/tirsiak/voice/intro.mp3"
-GM.KILLERS[KILLER_TIRSIAK].ChaseMusic = "tirsiak/chase/chase.wav"
+GM.KILLERS[KILLER_TIRSIAK].ChaseMusic = "tirsiak/chase/chase.ogg"
 GM.KILLERS[KILLER_TIRSIAK].TerrorMusic = "defaultkiller/terror/terror.wav"
 
 GM.KILLERS[KILLER_TIRSIAK].Abilities = {"tirsiak/ability/freeze.mp3"}

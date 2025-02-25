@@ -12,7 +12,7 @@ GM.KILLERS[KILLER_SPECIMEN8].ExtraWeapons = {}
 GM.KILLERS[KILLER_SPECIMEN8].Abilities = {"deerlord/voice/DL_02.ogg"}
 GM.KILLERS[KILLER_SPECIMEN8].VoiceCallouts = {"deerlord/voice/DL_01.ogg", "deerlord/voice/DL_02.ogg", "deerlord/voice/DL_03.ogg", "deerlord/voice/DL_04.ogg", "deerlord/voice/DL_05.ogg"}
 GM.KILLERS[KILLER_SPECIMEN8].StartMusic = "sound/deerlord/voice/intro.wav"
-GM.KILLERS[KILLER_SPECIMEN8].ChaseMusic = "deerlord/chase/chase.wav"
+GM.KILLERS[KILLER_SPECIMEN8].ChaseMusic = "deerlord/chase/chase.ogg"
 GM.KILLERS[KILLER_SPECIMEN8].TerrorMusic = "deerlord/voice/intro.wav"
 
 GM.KILLERS[KILLER_SPECIMEN8].AbilityCooldown = 45

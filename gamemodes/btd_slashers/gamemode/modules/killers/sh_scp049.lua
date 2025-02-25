@@ -11,7 +11,7 @@ GM.KILLERS[KILLER_SCP049].UniqueWeapon = true
 GM.KILLERS[KILLER_SCP049].ExtraWeapons = {"weapon_scp049"}
 GM.KILLERS[KILLER_SCP049].VoiceCallouts = {"plaguescp/voice/spotted1.mp3", "plaguescp/voice/spotted2.mp3", "plaguescp/voice/spotted3.mp3", "plaguescp/voice/spotted4.mp3", "plaguescp/voice/spotted5.mp3", "plaguescp/voice/spotted6.mp3", "plaguescp/voice/spotted7.mp3"}
 GM.KILLERS[KILLER_SCP049].StartMusic = "sound/slashers/effects/notif_2.wav"
-GM.KILLERS[KILLER_SCP049].ChaseMusic = "plaguescp/chase/chase.wav"
+GM.KILLERS[KILLER_SCP049].ChaseMusic = "plaguescp/chase/chase.ogg"
 GM.KILLERS[KILLER_SCP049].TerrorMusic = "plaguescp/terror/terror.wav"
 
 if CLIENT then

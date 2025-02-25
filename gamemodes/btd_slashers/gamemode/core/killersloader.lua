@@ -8,13 +8,13 @@ GM.MAP.SetupKillers = function()
 	GM.MAP.Killer.index = GetGlobalInt("RNDKiller", 1)
 
 	GM.MAP.StartMusic = GM.KILLERS[rndnumber].StartMusic or "sound/slashers/ambient/slashers_start_game_jason.wav"
-	GM.MAP.ChaseMusic = GM.KILLERS[rndnumber].ChaseMusic or "jason/chase/chase.wav"
+	GM.MAP.ChaseMusic = GM.KILLERS[rndnumber].ChaseMusic or "jason/chase/chase.ogg"
 	--GM.MAP.TerrorMusic = GM.KILLERS[rndnumber].TerrorMusic
 
 	if GM.KILLERS[rndnumber].EscapeMusic then
 		GM.MAP.EscapeMusic = GM.KILLERS[rndnumber].EscapeMusic
 	else
-		GM.MAP.EscapeMusic = "default_escape/escape" .. math.random(1, 2) .. ".wav"
+		GM.MAP.EscapeMusic = "default_escape/escape" .. math.random(1, 2) .. ".ogg"
 	end
 
 	GM.MAP.Killer.SpecialRound = GM.KILLERS[rndnumber].SpecialRound or "NONE"

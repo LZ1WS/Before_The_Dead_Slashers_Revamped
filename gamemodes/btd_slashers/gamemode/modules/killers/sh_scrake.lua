@@ -9,7 +9,7 @@ GM.KILLERS[KILLER_SCRAKE].RunSpeed = 200
 GM.KILLERS[KILLER_SCRAKE].UniqueWeapon = true
 GM.KILLERS[KILLER_SCRAKE].ExtraWeapons = {"tfa_nmrih_chainsaw"}
 GM.KILLERS[KILLER_SCRAKE].StartMusic = "sound/scrake/voice/intro.mp3"
-GM.KILLERS[KILLER_SCRAKE].ChaseMusic = "scrake/chase/chase.wav"
+GM.KILLERS[KILLER_SCRAKE].ChaseMusic = "scrake/chase/chase.ogg"
 GM.KILLERS[KILLER_SCRAKE].TerrorMusic = "scrake/terror/terror.wav"
 GM.KILLERS[KILLER_SCRAKE].AbilityCooldown = 45
 

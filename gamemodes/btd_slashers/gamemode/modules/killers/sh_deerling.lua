@@ -10,7 +10,7 @@ GM.KILLERS[KILLER_DEERLING].RunSpeed = 240
 GM.KILLERS[KILLER_DEERLING].UniqueWeapon = true
 GM.KILLERS[KILLER_DEERLING].ExtraWeapons = {"tfa_iw7_tactical_knife"}
 GM.KILLERS[KILLER_DEERLING].StartMusic = "sound/deerling/voice/intro.mp3"
-GM.KILLERS[KILLER_DEERLING].ChaseMusic = "deerling/chase/chase.wav"
+GM.KILLERS[KILLER_DEERLING].ChaseMusic = "deerling/chase/chase.ogg"
 GM.KILLERS[KILLER_DEERLING].TerrorMusic = "deerling/terror/terror.wav"
 
 GM.KILLERS[KILLER_DEERLING].Abilities = {"deerling/voice/deerling_ability.ogg"}

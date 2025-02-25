@@ -9,7 +9,7 @@ GM.KILLERS[KILLER_XENO].RunSpeed = 120
 GM.KILLERS[KILLER_XENO].UniqueWeapon = true
 GM.KILLERS[KILLER_XENO].ExtraWeapons = {"tfa_echo_clawsnew"}
 GM.KILLERS[KILLER_XENO].StartMusic = "sound/bacteria/voice/spawnlocal.ogg"
-GM.KILLERS[KILLER_XENO].ChaseMusic = "xenomorph/chase/chase.wav"
+GM.KILLERS[KILLER_XENO].ChaseMusic = "xenomorph/chase/chase.ogg"
 GM.KILLERS[KILLER_XENO].TerrorMusic = "xenomorph/terror/terror.wav"
 
 GM.KILLERS[KILLER_XENO].Abilities = {"xenomorph/voice/alien_stalking_01.ogg", "xenomorph/voice/alien_stalking_02.ogg", "xenomorph/voice/alien_stalking_03.ogg", "xenomorph/voice/alien_stalking_04.ogg", "xenomorph/voice/alien_stalking_05.ogg"}

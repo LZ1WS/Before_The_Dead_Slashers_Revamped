@@ -9,7 +9,7 @@ GM.KILLERS[KILLER_IMPOSTOR].Serious.Name = "the Alternate"
 GM.KILLERS[KILLER_IMPOSTOR].Serious.Model = "models/dejtriyev/scaryblackman.mdl"
 
 GM.KILLERS[KILLER_IMPOSTOR].Serious.StartMusic = "sound/alternate/voice/intro.mp3"
-GM.KILLERS[KILLER_IMPOSTOR].Serious.ChaseMusic = "alternate/chase/chase.wav"
+GM.KILLERS[KILLER_IMPOSTOR].Serious.ChaseMusic = "alternate/chase/chase.ogg"
 GM.KILLERS[KILLER_IMPOSTOR].Serious.Abilities = {"amogus/ability/amogus_transform1.mp3", "amogus/ability/amogus_transform2.mp3", "alternate/ability/alternate_reveal.mp3"}
 GM.KILLERS[KILLER_IMPOSTOR].Serious.VoiceCallouts = {"alternate/ability/alternate_callout2.mp3", "alternate/ability/alternate_callout3.mp3", "alternate/ability/alternate_callout4.mp3"}
 

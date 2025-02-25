@@ -9,7 +9,7 @@ GM.KILLERS[KILLER_BRUTE].RunSpeed = 200
 GM.KILLERS[KILLER_BRUTE].UniqueWeapon = true
 GM.KILLERS[KILLER_BRUTE].ExtraWeapons = {"tfa_nmrih_sledge"}
 GM.KILLERS[KILLER_BRUTE].StartMusic = "sound/brute/voice/intro.ogg"
-GM.KILLERS[KILLER_BRUTE].ChaseMusic = "brute/chase/chase.wav"
+GM.KILLERS[KILLER_BRUTE].ChaseMusic = "brute/chase/chase.ogg"
 GM.KILLERS[KILLER_BRUTE].TerrorMusic = "brute/terror/terror.wav"
 GM.KILLERS[KILLER_BRUTE].AbilityCooldown = 15
 

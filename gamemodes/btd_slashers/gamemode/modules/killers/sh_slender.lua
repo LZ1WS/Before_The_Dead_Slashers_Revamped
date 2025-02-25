@@ -9,7 +9,7 @@ GM.KILLERS[KILLER_SLENDER].UniqueWeapon = true
 GM.KILLERS[KILLER_SLENDER].ExtraWeapons = {"weapon_static"}
 GM.KILLERS[KILLER_SLENDER].SpecialRound = "GM.MAP.Pages"
 GM.KILLERS[KILLER_SLENDER].StartMusic = "sound/slender/voice/intro.mp3"
-GM.KILLERS[KILLER_SLENDER].ChaseMusic = "slender/chase/slenderchase.wav"
+GM.KILLERS[KILLER_SLENDER].ChaseMusic = "slender/chase/slenderchase.ogg"
 GM.KILLERS[KILLER_SLENDER].TerrorMusic = "slender/terror/terrorslender.wav"
 
 GM.KILLERS[KILLER_SLENDER].AbilityCooldown = 5
