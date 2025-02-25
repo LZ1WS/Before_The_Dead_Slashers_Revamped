@@ -24,14 +24,21 @@ function sls.debuff.HolyWeakenPlayer(ply)
     end)
 end
 
-hook.Add( "Move", "sls_maxspeed", function( ply, mv )
+hook.Add( "SetupMove", "sls_maxspeed", function( ply, mv )
     if !mv:KeyDown(IN_SPEED) or mv:KeyDown(IN_DUCK) then return end
 
-    if mv:KeyDown(IN_SPEED) then
+    local walkSpeed = ply:GetWalkSpeed()
+    local stamina = ply:GetStamina()
+
+    if mv:KeyDown(IN_SPEED) and ply:GetVelocity():LengthSqr() >= (walkSpeed * walkSpeed) and ( ply:OnGround() or ply:WaterLevel() ~= 0 ) and !ply:InVehicle() then
+		if stamina <= 0 then
+			mv:SetMaxClientSpeed(walkSpeed)
+            return
+		end
+
         local max_speed = ply:GetNW2Float("sls_max_speed", ply:GetRunSpeed())
 
         mv:SetMaxClientSpeed(max_speed)
-        mv:SetMaxSpeed(max_speed)
 
         return
     end
