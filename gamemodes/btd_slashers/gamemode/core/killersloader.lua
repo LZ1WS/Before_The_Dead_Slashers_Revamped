@@ -34,6 +34,8 @@ GM.MAP.SetupKillers = function()
 		GM.MAP.Killer.Icon = GM.KILLERS[rndnumber].Icon or Material("icons/icon_jason.png")
 	end
 
+	GM.MAP.Killer.UseAbility = nil
+
 	if (GM.KILLERS[rndnumber].UseAbility) then
 		function GM.MAP.Killer:UseAbility(ply)
 			GM.KILLERS[rndnumber].UseAbility(ply)

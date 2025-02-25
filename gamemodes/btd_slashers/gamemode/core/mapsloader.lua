@@ -71,7 +71,8 @@ hook.Add("PostGamemodeLoaded","sls_mapsloadData",loadMapsData)
 if SERVER then
 
 	local function UseAbility(len, ply)
-		if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return end
+		if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return false end
+		if !isfunction(GM.MAP.Killer.UseAbility) then return false end
 
 		local check, why = hook.Run("KillerPreUseAbility", ply)
 
@@ -110,6 +111,7 @@ else
 	local function PlayerButtonDown(ply, button)
 		if !IsFirstTimePredicted() then return end
 		if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return false end
+		if !isfunction(GM.MAP.Killer.UseAbility) then return false end
 
 		if GM.ROUND.Active && ply:Team() == TEAM_KILLER && button == getMenuKey() then
 			local check, why = hook.Run("KillerPreUseAbility", ply)
