@@ -8,7 +8,7 @@ local GM = GM or GAMEMODE
 
 GM.Name = "Slashers";
 GM.Author = "Garrus2142 & L.Z|W.S";
-GM.Version = "6.3.2"
+GM.Version = "6.4.0"
 GM.Version_Github = 0
 GM.Version_Type = ".GIT"
 GM.Github = "https://github.com/LZ1WS/Before_The_Dead_Slashers_Revamped"
