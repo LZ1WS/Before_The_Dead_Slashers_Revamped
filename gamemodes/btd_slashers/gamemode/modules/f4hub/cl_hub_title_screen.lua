@@ -90,13 +90,6 @@ local title_allow_gameui
 local just_joined = true
 
 function PANEL:Init()
-
-	if LobbyMusic and !LobbyMusic:IsPlaying() then
-		LobbyMusic:Play()
-	elseif LobbyMusic and LobbyMusic:GetVolume() == 0 then
-		LobbyMusic:ChangeVolume(1)
-	end
-
 	title_allow_gameui = false
 
 	self:SetSize(ScrW(), ScrH())
@@ -143,7 +136,6 @@ function PANEL:Init()
 
 	self.Play.DoClick = function()
 		surface.PlaySound("UI/buttonclickrelease.wav")
-		LobbyMusic:FadeOut(4)
 
 		if just_joined then
 			RunConsoleCommand("gm_showhelp")
@@ -193,9 +185,11 @@ function PANEL:Init()
 
 		title_allow_gameui = true
 
+		gui.ActivateGameUI()
+
 		self:Remove()
 
-		gui.ActivateGameUI()
+		title_allow_gameui = false
 	end
 
 	self.GameUI.Paint = function(_, w, h) surface.SetDrawColor(color_white) surface.SetMaterial(butMat) surface.DrawTexturedRect(0, 0, w, h * 2) end
@@ -213,6 +207,8 @@ function PANEL:Init()
 
 	self.Holder:SizeToContentsY()
 	self.Holder:SetTall(self.Holder:GetTall() + 20)
+
+	self:PlayMusic()
 end
 
 function PANEL:Paint(w, h)
@@ -226,30 +222,55 @@ function PANEL:Think()
 end
 
 function PANEL:OnRemove()
+	if (IsValid(self.channel)) then
+		self.channel:Stop()
+		self.channel = nil
+	end
+end
+
+function PANEL:PlayMusic()
+	local path = (GM.MAP.LobbyMusic and ("sound/" .. GM.MAP.LobbyMusic)) or ("sound/lobby/normal" .. math.random(1, 10) .. ".ogg")
+
+	local url = path:match("http[s]?://.+")
+	local play = url and sound.PlayURL or sound.PlayFile
+	path = url and url or path
+
+	play(path, "noplay noblock", function(channel, error, message)
+		if (!IsValid(self) or !IsValid(channel)) then
+			return
+		end
+
+		channel:SetVolume(0.1)
+		channel:EnableLooping(true)
+		channel:Play()
+
+		self.channel = channel
+
+--[[		self:CreateAnimation(audioFadeInTime, {
+			index = 10,
+			target = {volume = 1},
+
+			Think = function(animation, panel)
+				if (IsValid(panel.channel)) then
+					panel.channel:SetVolume(self.volume * 0.5)
+				end
+			end
+		})]]
+	end)
 end
 
 vgui.Register("slsTitleScreen", PANEL, "EditablePanel")
 
 hook.Add("InitPostEntity","sls_lobbymusic_init", function()
-	if GM.MAP.LobbyMusic then
-		LobbyMusic = CreateSound( game.GetWorld(), GM.MAP.LobbyMusic)
-	else
-		LobbyMusic = CreateSound( game.GetWorld(), "lobby/normal" .. math.random(1, 10) .. ".wav")
-	end
-
 	TITLESCREEN = vgui.Create( "slsTitleScreen" )
 end)
 
-hook.Add("Tick", "sls_open_title_screen", function()
-	if !IsValid(LocalPlayer()) then return end
-
-	if gui.IsGameUIVisible() and !title_allow_gameui then
-		if IsValid(TITLESCREEN) then gui.HideGameUI() return end
+hook.Add( "OnPauseMenuShow", "sls_open_title_screen", function()
+	if !title_allow_gameui then
+		if IsValid(TITLESCREEN) then return false end
 
 		TITLESCREEN = vgui.Create( "slsTitleScreen" )
 
-		gui.HideGameUI()
-	elseif !gui.IsGameUIVisible() and title_allow_gameui and !IsValid(TITLESCREEN) then
-		title_allow_gameui = false
+		return false
 	end
-end)
+end )
