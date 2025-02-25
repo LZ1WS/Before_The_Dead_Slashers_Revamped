@@ -242,23 +242,28 @@ function CalcStaminaChange(ply)
 	end
 end
 
-hook.Add("StartCommand", "sls_stamina_disable", function(ply, cmd)
+local CMoveData = FindMetaTable("CMoveData")
+
+function CMoveData:RemoveKeys(keys)
+	-- Using bitwise operations to clear the key bits.
+	local newbuttons = bit.band(self:GetButtons(), bit.bnot(keys))
+	self:SetButtons(newbuttons)
+end
+
+hook.Add("SetupMove", "sls_stamina_disable", function(ply, mvd)
 
 	if !GAMEMODE.ROUND.Active || !GAMEMODE.ROUND.Survivors  then return end
 
 	if table.HasValue(GAMEMODE.ROUND.Survivors, ply )  then
-		local NewButtons = cmd:GetButtons()
 		local stamina = ply:GetStamina()
 
 		if stamina <= 0 and ply:KeyDown(IN_SPEED) then
-			NewButtons = NewButtons - IN_SPEED
+			mvd:RemoveKeys(IN_SPEED)
 		end
 
 		if ply:KeyDown(IN_JUMP) and ply:OnGround() and !ply:InVehicle() and stamina <= 5 then
-			NewButtons = NewButtons - IN_JUMP
+			mvd:RemoveKeys(IN_JUMP)
 		end
-
-		cmd:SetButtons(NewButtons)
 	end
 end)
 
