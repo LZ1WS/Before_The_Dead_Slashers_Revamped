@@ -52,7 +52,11 @@ cvars.AddChangeCallback("slashers_specialround_npcs", function(convar_name, valu
 	local npc_table = string.Split(new_string, ",")
 
 	for k,v in ipairs(npc_table) do
-		npc_table[k] = string.Trim(v)
+		local ent = string.Trim(v)
+
+		if scripted_ents.GetStored(ent) then
+			npc_table[k] = ent
+		end
 	end
 
 	--PrintTable(npc_table)
@@ -66,12 +70,15 @@ hook.Add("InitPostEntity", "sls_modify_npctypes", function()
 	local npc_table = string.Split(new_string, ",")
 
 	for k,v in ipairs(npc_table) do
-		npc_table[k] = string.Trim(v)
+		local ent = string.Trim(v)
+
+		if scripted_ents.GetStored(ent) then
+			npc_table[k] = ent
+		end
 	end
 
 	--PrintTable(npc_table)
 	GM.ROUND.Special.NPC.Types = npc_table
-
 end)
 
 if SERVER then
@@ -208,11 +215,11 @@ GM.ROUND.Special.NPC.Start = function()
 				else
 					killer:SetPos(table.Random(ents.FindByClass("info_player_terrorist")):GetPos())
 				end
-		
+
 				if game.GetMap() == "ai_lockdown" and killer:GetClass() == "npc_isolation_xeno" then
 				killer:SetPos(Vector(-1139.123047, 846.606506, -767.968750))
 				end
-		
+
 				killer:SetHealth(9999999999)
 				killer.WalkSpeed = 200
 				killer.RunSpeed = 200
