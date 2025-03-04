@@ -58,6 +58,7 @@ LANG["class_desc_xeno"] = "You're an hostile alien lifeform, which uses it's ech
 LANG["class_desc_aiden"] = "You're a killer, which is using his CCTV cameras to keep prime zones secure and clearing them from unwanted targets. Press Q to use the camera and immediately change position for an successful attack."
 LANG["class_desc_demogorgon"] = "You can travel through the world beyond ours through portals. By holding the RMB, you can pounce on the survivor, also you see auras of survivors near your portals while holding RMB. Hold CTRL to place a portal underneath you when prompt appears. Hold CTRL and aim to another portal while standing on another one to travel through other world to selected portal."
 LANG["class_desc_brute"] = "You're a Brute, focusing on raw power and simple rush tactics.\n Press Q to use special battle ram, which can prevent survivors attempts of stunning you and knock them down for an easy execution, or either instantly get rid of doors on your way."
+LANG["class_desc_alternate"] = "I've got a gift for you!\nThe Alternate is an unknown creature that feeds of human's fear and that can mimic and disguise itself as a survivor by pressing Q."
 LANG["class_desc_wip"] = "Work in progress."
 
 LANG["scp049_infect"] = " HP, can infect (RMB)."
