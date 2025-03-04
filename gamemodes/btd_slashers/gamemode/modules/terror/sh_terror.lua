@@ -73,27 +73,43 @@ hook.Add("sls_killer_loaded", "sls_terror_init", function()
     end
 end)
 
+local minTR = 8
+local medTR = 16
+local maxTR = 32
+
 hook.Add("sls_round_PostStart", "sls_terror_start", function()
+    if (CLIENT) then
+        local terrorLevel = sls.killers.Get(GM.MAP.Killer.index).TerrorRadius
 
-if (CLIENT) then
+        if terrorLevel then
+            minTR = terrorLevel[1] or 8
+            medTR = terrorLevel[2] or 16
+            maxTR = terrorLevel[3] or 32
+        end
+
         timer.Create("sls_terror_tick", 1, 0, function()
-        if !IsValid(GM.ROUND.Killer) then timer.Remove("sls_terror_tick") return end
-        local distance = GM.ROUND.Killer:GetPos():Distance(LocalPlayer():GetPos())
+            if LocalPlayer():Team() == TEAM_KILLER then timer.Remove("sls_terror_tick") return end
+            if !IsValid(GM.ROUND.Killer) then timer.Remove("sls_terror_tick") return end
+            if !LocalPlayer():Alive() or LocalPlayer().ChaseSoundPlaying then return end
+            if GM.ROUND.Escape or GM.ROUND.Killer:GetNWBool("sls_chase_disabled") then return end
 
-        if (distance < (1.904 * 32) * 50 * 0.9 and !GM.ROUND.Killer:GetNWBool("sls_chase_disabled") and LocalPlayer():Alive() and !LocalPlayer().ChaseSoundPlaying and LocalPlayer() != GM.ROUND.Killer and !GM.ROUND.Escape ) then
-            if(distance < (1.904 * 16) * 50 * 0.9) then
-                if(distance < ( 1.904 * 8 ) * 50 * 0.9) then
-                terror_pass(3)
+            local survPos = LocalPlayer():GetPos()
+            local killPos = GM.ROUND.Killer:GetPos()
+            local distance = killPos:Distance(survPos)
+
+            if (distance < (1.904 * maxTR) * 27.57) then
+                if(distance < (1.904 * medTR) * 27.57) then
+                    if(distance < ( 1.904 * minTR ) * 27.57) then
+                        terror_pass(3)
+                    else
+                        terror_pass(2)
+                    end
                 else
-                terror_pass(2)
+                    terror_pass(1)
                 end
             else
-                terror_pass(1)
+                terror_pass(0)
             end
-        else
-            terror_pass(0)
-        end
-    end)
-end
-
+        end)
+    end
 end)
