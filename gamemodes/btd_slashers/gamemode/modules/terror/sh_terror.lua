@@ -88,10 +88,24 @@ hook.Add("sls_round_PostStart", "sls_terror_start", function()
         end
 
         timer.Create("sls_terror_tick", 1, 0, function()
-            if LocalPlayer():Team() == TEAM_KILLER then timer.Remove("sls_terror_tick") return end
-            if !IsValid(GM.ROUND.Killer) then timer.Remove("sls_terror_tick") return end
-            if !LocalPlayer():Alive() or LocalPlayer().ChaseSoundPlaying then return end
-            if GM.ROUND.Escape or GM.ROUND.Killer:GetNWBool("sls_chase_disabled") then return end
+            if LocalPlayer():Team() == TEAM_KILLER then
+                timer.Remove("sls_terror_tick")
+                terror_pass(0)
+                return
+            end
+            if !IsValid(GM.ROUND.Killer) then
+                timer.Remove("sls_terror_tick")
+                terror_pass(0)
+                return
+            end
+            if !LocalPlayer():Alive() or LocalPlayer().ChaseSoundPlaying then
+                terror_pass(0)
+                return
+            end
+            if GM.ROUND.Escape or GM.ROUND.Killer:GetNWBool("sls_chase_disabled") then
+                terror_pass(0)
+                return
+            end
 
             local survPos = LocalPlayer():GetPos()
             local killPos = GM.ROUND.Killer:GetPos()
