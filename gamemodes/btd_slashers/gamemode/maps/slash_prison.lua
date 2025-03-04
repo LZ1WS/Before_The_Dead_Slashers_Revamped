@@ -8,7 +8,7 @@ GM.MAP.Goal = {
 		{type="sls_generator", pos=Vector(527.28125, 41.25, 16.21875), ang=Angle(-0.0625, -127, -0.09375),},
 		{type="sls_generator", pos=Vector(-368.5625, -883.78125, -143.6875), ang=Angle(-0.09375, 27.25, 0),},
 		{type="sls_generator", pos=Vector(-85.125, 332.53125, -143.75), ang=Angle(-0.09375, 89.375, 0),},
-		},		
+		},
 
 		Jerrican = {
 			{type="sls_jerrican", pos=Vector(132.90625, 869.25, 351.21875), ang=Angle(0.15625, 50.8125, 0.375),},
@@ -43,7 +43,6 @@ GM.MAP.Goal = {
 			},
 
 			Locker = {
-				{type="prop_huntress_locker", pos=Vector(-499.40625, 1191.71875, 337.5625), ang=Angle(-0.0625, -0.15625, -0.03125),},
 				{type="prop_huntress_locker", pos=Vector(-499.5, 1333.8125, 337.5), ang=Angle(0, 0, -0.21875),},
 				{type="prop_huntress_locker", pos=Vector(-802.15625, 453.03125, 17.5625), ang=Angle(0, 1, -0.0625),},
 				{type="prop_huntress_locker", pos=Vector(-803.46875, 557.90625, 17.53125), ang=Angle(0, -0.34375, 0.0625),},
@@ -81,7 +80,6 @@ GM.MAP.Goal = {
 				{type="prop_huntress_locker", pos=Vector(-316.46875, -451.28125, 17.5625), ang=Angle(0.03125, -179.90625, -0.0625),},
 				{type="prop_huntress_locker", pos=Vector(-316.46875, -350.375, 17.5625), ang=Angle(0, 179.96875, -0.0625),},
 				},
-				
 
 				Radio = {
 					{type="sls_radio", pos=Vector(-502.96875, -874.3125, 300.4375), ang=Angle(0, 4.5625, 0),},
@@ -89,7 +87,7 @@ GM.MAP.Goal = {
 					{type="sls_radio", pos=Vector(109.4375, -904.125, 356), ang=Angle(0.0625, -90.8125, -0.21875),},
 					{type="sls_radio", pos=Vector(113.09375, -329.71875, 210.5), ang=Angle(0, -90.875, 0.03125),},
 					{type="sls_radio", pos=Vector(635.96875, -1840.1875, 209.03125), ang=Angle(0, 87.15625, 0),},
-					},					
+					},
 
 	}
 
@@ -129,8 +127,8 @@ GM.MAP.Goal = {
 				{type="sr2_sg", pos=Vector(-132.375, -803.46875, 232.4375), ang=Angle(-1.46875, -156.46875, -84.8125),},
 				{type="sr2_sg", pos=Vector(115.25, -902.96875, 358.125), ang=Angle(-1.28125, -1.6875, -84.75),},
 				{type="sr2_sg", pos=Vector(-58.59375, -1840.25, 274.90625), ang=Angle(-1.21875, -153.15625, -85.5625),},
-				},				
-					
+				},
+
 	}
 
 	GM.MAP.Vaccine = {
