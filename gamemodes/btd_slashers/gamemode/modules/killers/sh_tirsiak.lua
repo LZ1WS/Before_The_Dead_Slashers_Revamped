@@ -3,8 +3,8 @@ local GM = GM or GAMEMODE
 GM.KILLERS[KILLER_TIRSIAK] = {}
 
 -- Killer
-GM.KILLERS[KILLER_TIRSIAK].Name = "Tirsiak"
-GM.KILLERS[KILLER_TIRSIAK].Model = "models/dreadhunger/player/hunter.mdl"
+GM.KILLERS[KILLER_TIRSIAK].Name = "Unknown Specimen 4"
+GM.KILLERS[KILLER_TIRSIAK].Model = "models/hainzofelps/sjsmtirsiak/tirsiak_pm.mdl"
 GM.KILLERS[KILLER_TIRSIAK].WalkSpeed = 190
 GM.KILLERS[KILLER_TIRSIAK].RunSpeed = 210
 GM.KILLERS[KILLER_TIRSIAK].UniqueWeapon = false
