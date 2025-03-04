@@ -27,7 +27,7 @@ GM.KILLERS[KILLER_SLENDER].SpecialGoals = {
 	["CurrentObjective"] = "find_pages"
 }
 
-local function FindGroundAt(pos)
+--[[local function FindGroundAt(pos)
 	local Tr = util.QuickTrace(pos + Vector(0,0,30), Vector(0,0,-300), {GM.ROUND.Killer})
 	if ((Tr.Hit) and !(Tr.StartSolid)) then return Tr.HitPos end
 
@@ -39,28 +39,111 @@ local function IsLocationClear(pos)
 	local tr = util.TraceEntity( trace, GM.ROUND.Killer )
 	local nowallpassing = util.TraceLine(trace)
 	return util.IsInWorld(pos) and tr and nowallpassing.HitPos == pos -- todo
+end]]
+
+-- Code from VMAnip Dishonored Abilities (Blink only)
+local function BLINK_FULLSIZEDTRACE( pos, normal, halfhull, filter )
+	return util.QuickTrace( pos, normal * halfhull * 2, filter ).Hit
+end
+
+local function BLINK_PLACEMENT( pos, normal, filter )
+	local hull = 16
+	local hull_tall = 72
+	local ang = normal:Angle()
+	local center = pos + normal * hull
+
+	local right = ang:Right()
+	local up = ang:Up()
+	local frw = ang:Forward()
+
+	local ftr = util.QuickTrace( center, frw * hull, filter )
+
+	local canblink = !ftr.Hit
+
+	if !canblink then
+		return center, false
+	end
+
+	local ltr = util.QuickTrace( center, -right * hull, filter )
+	local rtr = util.QuickTrace( center, right * hull, filter )
+	local btr = util.QuickTrace( center, -up * hull, filter )
+	local ttr = util.QuickTrace( center, up * hull, filter )
+
+	if ltr.HitSky || rtr.HitSky || btr.HitSky || ttr.HitSky then
+		return center, false
+	end
+
+	if canblink && ltr.Hit then
+		canblink = !BLINK_FULLSIZEDTRACE( ltr.HitPos, right, hull, filter )
+	elseif canblink && rtr.Hit then
+		canblink = !BLINK_FULLSIZEDTRACE( rtr.HitPos, -right, hull, filter )
+	elseif canblink && btr.Hit then
+		canblink = !BLINK_FULLSIZEDTRACE( btr.HitPos, up, hull, filter )
+	elseif canblink && ttr.Hit then
+		canblink = !BLINK_FULLSIZEDTRACE( ttr.HitPos, -up, hull, filter )
+	end
+
+	return center + ang:Right() * ( 1 - ltr.Fraction ) * hull
+		- ang:Right() * ( 1 - rtr.Fraction ) * hull
+		+ ang:Up() * ( 1 - btr.Fraction ) * hull
+		- ang:Up() * ( 1 - ttr.Fraction ) * hull,
+		canblink,
+		normal.z > 0.5
+end
+
+local function WDA_CAST_BLINK( ply )
+	local length = 500
+	local tr = util.TraceLine( { start = ply:EyePos(), endpos = ply:EyePos() + ply:EyeAngles():Forward() * length, filter = ply } )
+	local pos, canblink = BLINK_PLACEMENT( tr.HitPos, tr.HitNormal, ply )
+	local _, hull = ply:GetHull()
+	if ply:Crouching() then
+		_, hull = ply:GetHullDuck()
+	end
+	local ttr = util.QuickTrace( pos - Vector( 0, 0, 16 ), Vector( 0, 0, hull.z ), ply )
+	if ttr.Hit then
+
+		ttr = util.QuickTrace( ttr.HitPos, Vector( 0, 0, -hull.z ), ply )
+		if ttr.Hit then canblink = false end
+		pos = ttr.HitPos
+	end
+	if !canblink then return end
+
+	local ctr = util.TraceLine( { start = pos + Vector( 0, 0, 16 ), endpos = pos + Vector( 0, 0, 16 ) - tr.HitNormal * 18 } )
+	local ctrd = util.QuickTrace( ctr.HitPos, Vector( 0, 0, -16 ) )
+	local utr = util.QuickTrace( ctrd.HitPos, Vector( 0, 0, hull.z ) )
+
+	if !ctr.Hit && !utr.Hit then
+		pos = ctrd.HitPos
+	else
+		pos = pos - Vector( 0, 0, 16 )
+	end
+
+	ply:SetFOV(FOV + 25, 0.25)
+
+	timer.Simple(0.125, function()
+		ply:SetFOV(FOV, 0.25)
+	end)
+
+	ply:EmitSound("slender/blink_swep/teleport" .. math.random(1, 2) .. ".mp3", 256, 100)
+	ply:SetPos( pos )
 end
 
 -- Ability
 GM.KILLERS[KILLER_SLENDER].UseAbility = function(ply)
 	if CLIENT then return end
 
-	local FOV = ply:GetFOV()
-	local aimpoint = ply:GetEyeTrace()
-	local TraceDist = aimpoint.StartPos:Distance(aimpoint.HitPos)
+	--local FOV = ply:GetFOV()
+	--local aimpoint = ply:GetEyeTrace()
+	--local TraceDist = aimpoint.StartPos:Distance(aimpoint.HitPos)
 
-	if TraceDist < 500 and IsLocationClear(aimpoint.HitPos) then
-		ply:SetFOV(FOV + 25, 0.25)
+	WDA_CAST_BLINK(ply)
 
-		timer.Simple(0.125, function()
-			ply:SetFOV(FOV, 0.25)
-		end)
+	--[[if TraceDist < 500 and IsLocationClear(aimpoint.HitPos) then
 
-		ply:EmitSound("slender/blink_swep/teleport" .. math.random(1, 2) .. ".mp3", 256, 100)
 		ply:SetPos(FindGroundAt(aimpoint.HitPos))
 		--ply:SetRunSpeed(GM.MAP.Killer.RunSpeed)
 		--ply:SetWalkSpeed(GM.MAP.Killer.WalkSpeed)
-	end
+	end]]
 end
 
 local function Spawn_SlashPages()
