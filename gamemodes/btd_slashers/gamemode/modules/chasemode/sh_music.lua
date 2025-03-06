@@ -1,5 +1,11 @@
 local GM = GM or GAMEMODE
 
+local chaseConvar = GetConVar("slashers_chase_volume")
+local chaseVolume = (chaseConvar:GetInt() / 100) or 1
+
+local escapeConvar = GetConVar("slashers_escape_volume")
+local escapeVolume = (escapeConvar:GetInt() / 100) or 1
+
 function sls_music_InitValue()
 	if CLIENT then
 		local path = (GM.MAP.ChaseMusic and ("sound/" .. GM.MAP.ChaseMusic))
@@ -9,7 +15,7 @@ function sls_music_InitValue()
 				return
 			end
 
-			channel:SetVolume(1)
+			channel:SetVolume(chaseVolume)
 			channel:EnableLooping(true)
 			--channel:Play()
 
@@ -23,7 +29,7 @@ function sls_music_InitValue()
 				return
 			end
 
-			channel:SetVolume(1)
+			channel:SetVolume(escapeVolume)
 			channel:EnableLooping(true)
 			--channel:Play()
 
@@ -40,6 +46,24 @@ function sls_music_InitValue()
 	end
 end
 hook.Add("sls_round_PostStart", "sls_music_PostStart", sls_music_InitValue)
+
+if CLIENT then
+	cvars.AddChangeCallback("slashers_chase_volume", function(convar_name, value_old, value_new)
+		if value_old == value_new then return end
+
+		if IsValid(ChaseSound) then
+			ChaseSound:SetVolume(value_new / 100)
+		end
+	end)
+
+	cvars.AddChangeCallback("slashers_escape_volume", function(convar_name, value_old, value_new)
+		if value_old == value_new then return end
+
+		if IsValid(ChaseSound) then
+			EscapeSound:SetVolume(value_new / 100)
+		end
+	end)
+end
 
 hook.Add("sls_round_StartEscape", "sls_music_startescape", function()
 	if CLIENT then
