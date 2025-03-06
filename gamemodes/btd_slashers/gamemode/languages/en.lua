@@ -129,8 +129,14 @@ LANG["votemap_random"] = "Random"
 
 -- HUB
 LANG["hub_play"] = "Play"
+
 LANG["hub_settings"] = "Settings"
-LANG["hub_settings_main"] = "Main Settings"
+LANG["hub_settings_main"] = "General"
+LANG["hub_settings_audio"] = "Audio"
+LANG["hub_audio_lobbyMusic"] = "Lobby Music Volume"
+LANG["hub_audio_chaseMusic"] = "Chase Music Volume"
+LANG["hub_audio_escapeMusic"] = "Escape Music Volume"
+
 LANG["hub_defaultmenu"] = "Default Menu"
 LANG["hub_disconnect"] = "Disconnect"
 

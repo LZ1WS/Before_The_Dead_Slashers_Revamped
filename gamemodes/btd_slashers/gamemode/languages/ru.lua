@@ -128,7 +128,12 @@ LANG["votemap_random"] = "Случайно"
 -- HUB
 LANG["hub_play"] = "Играть"
 LANG["hub_settings"] = "Настройки"
-LANG["hub_settings_main"] = "Основные Настройки"
+LANG["hub_settings_main"] = "Основные"
+LANG["hub_settings_audio"] = "Аудио"
+LANG["hub_audio_lobbyMusic"] = "Громкость музыки лобби"
+LANG["hub_audio_chaseMusic"] = "Громкость музыки погони"
+LANG["hub_audio_escapeMusic"] = "Громкость музыки побега"
+
 LANG["hub_defaultmenu"] = "Обычное Меню"
 LANG["hub_disconnect"] = "Отключиться"
 
