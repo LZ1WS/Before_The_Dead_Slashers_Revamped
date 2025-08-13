@@ -18,3 +18,9 @@ CreateConVar("slashers_unserious_killers", 1, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_A
 CreateConVar("slashers_specialround_chance", 30, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "The chance of special round occuring instead of a normal one (set to 0 to disable completely).", 0, 100)
 CreateConVar("slashers_specialround_npcs", "npc_isolation_xeno", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "The NPCs which spawn on NPC-Killer Special Round, separated by comma.")
 CreateConVar("slashers_lambdabots_num", 0, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set lambda bots amount to spawn.")
+
+if CLIENT then
+    CreateClientConVar("slashers_lobby_volume", 100, true, false, "Volume of music in the lobby screen. (set to 0 to mute).", 0, 100)
+    CreateClientConVar("slashers_chase_volume", 100, true, false, "Volume of chase music. (Min: 10; Max: 100).", 10, 100)
+    CreateClientConVar("slashers_escape_volume", 100, true, false, "Volume of escape music. (Min: 10; Max: 100).", 10, 100)
+end

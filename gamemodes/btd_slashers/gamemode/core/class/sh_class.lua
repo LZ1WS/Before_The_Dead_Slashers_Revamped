@@ -9,7 +9,6 @@ local GM = GM or GAMEMODE
 
 GM.CLASS = {}
 GM.CLASS.Survivors = {}
-GM.KILLERS = {}
 
 GM.CLASS.Survivors[CLASS_SURV_SPORTS] = {}
 GM.CLASS.Survivors[CLASS_SURV_SPORTS].name = "Sports"

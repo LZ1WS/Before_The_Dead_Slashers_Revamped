@@ -7,15 +7,144 @@ local color_properties = Color( 0, 0, 0, 145)
 local color_main_settings = Color( 61, 0, 117, 145)
 local color_checkbox = Color( 236, 240, 241, 80 )
 
+local settingsMain = {
+	["DButton"] = {
+		{
+			["title"] = "Discord",
+			["dock"] = TOP,
+			["dockMargin"] = {0, 0, 0, 5},
+			["font"] = "Roboto F4",
+			["sound"] = "UI/buttonclickrelease.wav",
+			["URL"] = "https://discord.gg/MRs5zBXq9z",
+		},
+
+		{
+			["title"] = "Workshop",
+			["dock"] = TOP,
+			["dockMargin"] = {0, 0, 0, 5},
+			["font"] = "Roboto F4",
+			["sound"] = "UI/buttonclickrelease.wav",
+			["URL"] = "https://steamcommunity.com/sharedfiles/filedetails/?id=2804558040",
+		},
+	},
+
+	["DCheckBoxLabel"] = {
+		{
+			["title"] = GM.LANG:GetString("hub_intro_checkbox"),
+			["dock"] = BOTTOM,
+			["dockMargin"] = {45, 0, 0, 0},
+			["font"] = "ChatFont",
+			["textColor"] = Color(18, 191, 243),
+			["sound"] = "ui/buttonrollover.wav",
+			["indent"] = 4,
+			["initFunc"] = function(_, panel)
+				panel:SetValue( LocalPlayer():GetNWBool("sls_intro_disabled", true) )
+
+				if LocalPlayer():GetNWBool("sls_intro_disabled", false) then
+					panel:SetAlpha(50)
+				end
+
+				panel.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, self.Label:GetWide() + self.Button:GetWide() + 20, h, color_checkbox) end
+			end,
+			["customFunc"] = function(_, panel, val)
+				LocalPlayer():SetNWBool("sls_intro_disabled", val)
+				surface.PlaySound("ui/buttonrollover.wav")
+				if !val then
+					panel:AlphaTo(50, 0.2)
+				else
+					panel:AlphaTo(255, 0.2)
+				end
+			end
+		},
+
+		{
+			["title"] = GM.LANG:GetString("hub_killer_checkbox"),
+			["dock"] = BOTTOM,
+			["dockMargin"] = {90, 0, 0, 0},
+			["font"] = "ChatFont",
+			["textColor"] = Color(243, 156, 18, 255),
+			["sound"] = "ui/buttonrollover.wav",
+			["indent"] = 4,
+			["initFunc"] = function(_, panel)
+				panel:SetValue( LocalPlayer():GetNWBool("sls_killer_choose", true) )
+
+				if LocalPlayer():GetNWBool("sls_killer_choose", false) then
+					panel:SetAlpha(50)
+				end
+
+				panel.Paint = function( self, w, h ) draw.RoundedBox( 16, 0, 0, panel.Label:GetWide() + panel.Button:GetWide() + 20, h,  color_checkbox) end
+			end,
+			["customFunc"] = function(_, panel, val)
+				LocalPlayer():SetNWBool("sls_killer_choose", val)
+
+				net.Start("sls_killer_choose_nw")
+				net.WriteBool(val)
+				net.SendToServer()
+
+				surface.PlaySound("ui/buttonrollover.wav")
+				if !val then
+					panel:AlphaTo(50, 0.2)
+				else
+					panel:AlphaTo(255, 0.2)
+				end
+			end
+		},
+	},
+}
+
+local lobbyConVar = GetConVar("slashers_lobby_volume")
+local chaseConVar = GetConVar("slashers_chase_volume")
+local escapeConVar = GetConVar("slashers_escape_volume")
+
+local settingsAudio = {
+	["DNumSlider"] = {
+		{
+			["title"] = GM.LANG:GetString("hub_audio_lobbyMusic"),
+			["dock"] = TOP,
+			["dockMargin"] = {0, 0, 0, 5},
+			["font"] = "ChatFont",
+			--["sound"] = "ui/buttonrollover.wav",
+			["conVar"] = "slashers_lobby_volume",
+			["decimals"] = 0,
+			["min"] = lobbyConVar:GetMin(),
+			["max"] = lobbyConVar:GetMax(),
+		},
+
+		{
+			["title"] = GM.LANG:GetString("hub_audio_chaseMusic"),
+			["dock"] = TOP,
+			["dockMargin"] = {0, 0, 0, 5},
+			["font"] = "ChatFont",
+			--["sound"] = "ui/buttonrollover.wav",
+			["conVar"] = "slashers_chase_volume",
+			["decimals"] = 0,
+			["min"] = chaseConVar:GetMin(),
+			["max"] = chaseConVar:GetMax(),
+		},
+
+		{
+			["title"] = GM.LANG:GetString("hub_audio_escapeMusic"),
+			["dock"] = TOP,
+			["dockMargin"] = {0, 0, 0, 5},
+			["font"] = "ChatFont",
+			--["sound"] = "ui/buttonrollover.wav",
+			["conVar"] = "slashers_escape_volume",
+			["decimals"] = 0,
+			["min"] = escapeConVar:GetMin(),
+			["max"] = escapeConVar:GetMax(),
+		},
+	},
+}
+
 local PANEL = {}
 
 function PANEL:Init()
-
 	self:Dock(FILL)
 	self:DockPadding(75, 350, 75, 10)
 
-	self:Populate()
-
+	self.Buttons = {}
+	self.CheckBoxes = {}
+	self.Sliders = {}
 end
 
 function PANEL:Paint(w, h)
@@ -23,99 +152,110 @@ function PANEL:Paint(w, h)
 end
 
 function PANEL:Populate()
-	local settings_w, settings_h = self:GetSize()
+	--local settings_w, settings_h = self:GetSize()
 
-	local Discord = self:Add("DButton")
-	Discord:SetText( "Discord" )
-	Discord:Dock(TOP)
-	Discord:DockMargin(0, 0, 0, 5)
-	Discord:SetSize(ScrW() * 0.10, ScrH() * 0.05)
-	Discord:SetFontInternal("Roboto F4")
-	Discord.DoClick = function()
-		surface.PlaySound("UI/buttonclickrelease.wav")
-		gui.OpenURL("https://discord.gg/MRs5zBXq9z")
-	end
+	for pnlType, settingTbl in pairs(settingsMain) do
+		for _, setting in ipairs(settingTbl) do
+			local settingPanel = self:Add(pnlType)
 
-	local Workshop = self:Add("DButton")
-	Workshop:SetText( "Workshop" )
-	Workshop:Dock(TOP)
-	Workshop:DockMargin(0, 0, 0, 5)
-	Workshop:SetSize(ScrW() * 0.10, ScrH() * 0.05)
-	Workshop:SetFontInternal("Roboto F4")
-	Workshop.DoClick = function()
-		surface.PlaySound("UI/buttonclickrelease.wav")
-		gui.OpenURL("https://steamcommunity.com/sharedfiles/filedetails/?id=2804558040")
-	end
+			if pnlType == "DButton" then
+				settingPanel:SetText(setting.title or "Unknown")
+				settingPanel:Dock(setting.dock or TOP)
+				settingPanel:DockMargin(unpack(setting.dockMargin))
+				settingPanel:SetSize(ScrW() * 0.10, ScrH() * 0.05)
+				settingPanel:SetFontInternal(setting.font or "Roboto F4")
 
-	local sls_intro_disable = self:Add( "DCheckBoxLabel" ) -- Create the checkbox
-	--sls_killer_Checkbox:Dock(TOP)
-	--sls_intro_disable:SetPos(settings_w / 0.298, settings_h * 39.50)
-	sls_intro_disable:Dock(BOTTOM)
-	sls_intro_disable:DockMargin(45, 0, 0, 0)
-	--sls_intro_disable:SetWidth(sls_intro_disable:GetWide() / 2)
-	sls_intro_disable:SetText(GM.LANG:GetString("hub_intro_checkbox"))					-- Set the text next to the box
-	sls_intro_disable:SetFont("ChatFont")
-	sls_intro_disable:SetValue( LocalPlayer():GetNWBool("sls_intro_disabled", true) )						-- Initial value
-	if LocalPlayer():GetNWBool("sls_intro_disabled", false) then
-		sls_intro_disable:SetAlpha(50)
-	end
+				if isfunction(setting.initFunc) then
+					setting:initFunc(settingPanel)
+				end
 
-	function sls_intro_disable:OnChange( val )
-		LocalPlayer():SetNWBool("sls_intro_disabled", val)
-		surface.PlaySound("ui/buttonrollover.wav")
-		if !val then
-			sls_intro_disable:AlphaTo(50, 0.2)
-		else
-			sls_intro_disable:AlphaTo(255, 0.2)
+				settingPanel.DoClick = function()
+					if setting.sound then
+						surface.PlaySound(setting.sound)
+					end
+
+					if setting.URL then
+						gui.OpenURL(setting.URL)
+					end
+
+					if isfunction(setting.customFunc) then
+						setting:CustomFunc(settingPanel)
+					end
+				end
+
+				settingPanel.index = #self.Buttons + 1
+
+				self.Buttons[settingPanel.index] = settingPanel
+			end
+
+			if pnlType == "DCheckBoxLabel" then
+				settingPanel:Dock(setting.dock)
+				settingPanel:DockMargin(unpack(setting.dockMargin))
+				settingPanel:SetText(setting.title or "Unknown")
+				settingPanel:SetTextColor(setting.textColor)
+				settingPanel:SetFont(setting.font)
+				settingPanel:SetIndent( setting.indent )
+
+				if isfunction(setting.initFunc) then
+					setting:initFunc(settingPanel)
+				end
+
+				settingPanel.OnChange = function(_, val)
+					if setting.sound then
+						surface.PlaySound(setting.sound)
+					end
+
+					if isfunction(setting.customFunc) then
+						setting:CustomFunc(settingPanel, val)
+					end
+				end
+
+				settingPanel.index = #self.CheckBoxes + 1
+
+				self.CheckBoxes[settingPanel.index] = settingPanel
+			end
 		end
 	end
+end
 
-	sls_intro_disable:SetTextColor(Color(18, 191, 243))
-	sls_intro_disable:SetIndent( 4 )
-	sls_intro_disable.Paint = function( _, w, h ) draw.RoundedBox( 16, 0, 0, sls_intro_disable.Label:GetWide() + sls_intro_disable.Button:GetWide() + 20, h, color_checkbox) end
-	--[[local Checkbox_w, _ = sls_intro_disable:GetChild(1):GetSize()
-	sls_intro_disable.Paint = function( _, w, h ) draw.RoundedBox( 16, 0, 0, ScrW() * Checkbox_w * 1.10 / ScrW(), h, color_checkbox) end
-	sls_intro_disable:SizeToContents()
-	local Checkbox_w2, Checkbox_h2 = sls_intro_disable:GetSize()
-	sls_intro_disable:SetSize(Checkbox_w2 + 12, Checkbox_h2)]]
+function PANEL:PopulateAudio()
+	for pnlType, settingTbl in pairs(settingsAudio) do
+		for _, setting in ipairs(settingTbl) do
+			local settingPanel = self:Add(pnlType)
 
-	local sls_killer_Checkbox = self:Add( "DCheckBoxLabel" ) -- Create the checkbox
-	sls_killer_Checkbox:Dock(BOTTOM)
-	sls_killer_Checkbox:DockMargin(90, 0, 0, 0)
-	--sls_killer_Checkbox:SetPos(settings_w / 0.255, settings_h * 40.50)
-	sls_killer_Checkbox:SetText(GM.LANG:GetString("hub_killer_checkbox"))					-- Set the text next to the box
-	sls_killer_Checkbox:SetFont("ChatFont")
-	sls_killer_Checkbox:SetValue( LocalPlayer():GetNWBool("sls_killer_choose", true) )						-- Initial value
+			if pnlType == "DNumSlider" then
+				settingPanel:SetText(setting.title or "Unknown")
+				settingPanel:Dock(setting.dock or TOP)
+				settingPanel:DockMargin(unpack(setting.dockMargin))
+				settingPanel:SetSize(ScrW() * 0.10, ScrH() * 0.05)
+				settingPanel:SetFontInternal(setting.font or "Roboto F4")
+				settingPanel:SetMinMax(setting.min or 0, setting.max or 100)
+				settingPanel:SetDecimals(setting.decimals or 0)
 
-	if !LocalPlayer():GetNWBool("sls_killer_choose", true) then
-		sls_killer_Checkbox:SetAlpha(50)
-	end
+				if setting.conVar then
+					settingPanel:SetConVar(setting.conVar)
+				end
 
-	function sls_killer_Checkbox:OnChange( val )
-		LocalPlayer():SetNWBool("sls_killer_choose", val)
+				if isfunction(setting.initFunc) then
+					setting:initFunc(settingPanel)
+				end
 
-		net.Start("sls_killer_choose_nw")
-		net.WriteBool(val)
-		net.SendToServer()
+				settingPanel.OnValueChanged = function(_, value)
+					if setting.sound then
+						surface.PlaySound(setting.sound)
+					end
 
-		surface.PlaySound("ui/buttonrollover.wav")
-		if !val then
-			sls_killer_Checkbox:AlphaTo(50, 0.2)
-		else
-			sls_killer_Checkbox:AlphaTo(255, 0.2)
+					if isfunction(setting.customFunc) then
+						setting:CustomFunc(settingPanel, value)
+					end
+				end
+
+				settingPanel.index = #self.Sliders + 1
+
+				self.Sliders[settingPanel.index] = settingPanel
+			end
 		end
 	end
-
-	sls_killer_Checkbox:SetTextColor(Color(243, 156, 18, 255))
-	sls_killer_Checkbox:SetIndent( 4 )
-	sls_killer_Checkbox.Paint = function( _, w, h ) draw.RoundedBox( 16, 0, 0, sls_killer_Checkbox.Label:GetWide() + sls_killer_Checkbox.Button:GetWide() + 20, h,  color_checkbox) end
-	--[[Checkbox_w, Checkbox_h = sls_killer_Checkbox:GetChild(1):GetSize()
-	sls_killer_Checkbox.Paint = function( _, w, h ) draw.RoundedBox( 16, 0, 0, ScrW() * Checkbox_w * 1.14 / ScrW(), h,  color_checkbox) end
-	sls_killer_Checkbox:SizeToContents()
-
-	Checkbox_w2, Checkbox_h2 = sls_killer_Checkbox:GetSize()
-	sls_killer_Checkbox:SetSize(Checkbox_w2 + 12, Checkbox_h2)]]
-
 end
 
 --[[function PANEL:PaintOver(w, h)
@@ -124,12 +264,9 @@ end
 end]]
 
 function PANEL:OnRemove()
-	--timer.Simple(0.1, function()
-		--PLUGIN.healthPanel = nil
-	--end)
 end
 
-vgui.Register("slsSettingsMain", PANEL, "EditablePanel")
+vgui.Register("slsSettingsPanel", PANEL, "EditablePanel")
 
 PANEL = {}
 
@@ -143,10 +280,14 @@ function PANEL:Init()
 	self.Properties:Dock( FILL )
 	self.Properties.Paint = function( _, w, h ) draw.RoundedBox( 4, 0, 0, w, h, color_properties ) end
 
-	self.MainSettings = self:Add("slsSettingsMain")
+	self.MainSettings = self:Add("slsSettingsPanel")
+	self.MainSettings:Populate()
+
+	self.AudioSettings = self:Add("slsSettingsPanel")
+	self.AudioSettings:PopulateAudio()
 
 	self.Properties:AddSheet( GM.LANG:GetString("hub_settings_main"), self.MainSettings, "icon16/wrench.png" )
-
+	self.Properties:AddSheet( GM.LANG:GetString("hub_settings_audio"), self.AudioSettings, "icon16/sound.png" )
 end
 
 function PANEL:Paint(w, h)
@@ -159,9 +300,6 @@ end
 end]]
 
 function PANEL:OnRemove()
-	--timer.Simple(0.1, function()
-		--PLUGIN.healthPanel = nil
-	--end)
 end
 
 vgui.Register("slsHubSettings", PANEL, "EditablePanel")

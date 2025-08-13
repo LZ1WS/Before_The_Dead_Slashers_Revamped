@@ -28,7 +28,6 @@ for _, v in ipairs(mapsLua) do
 end
 
 local function loadMapsData()
---SetGlobalInt("RNDKiller", math.random(1, 3))
 	if SERVER then
 		util.AddNetworkString("sls_mapsloader_useability")
 
@@ -37,32 +36,20 @@ local function loadMapsData()
 				print("ERROR: The current map isn't supported by gamemode.")
 			end)
 		else
-			--print(GetGlobalInt("sls_killerrnd"))
---SetGlobalInt("RNDKiller", math.random(1, 8))
---net.Start("RNDKiller")
---net.WriteInt(GetGlobalInt("RNDKiller", 3), 5)
---net.Broadcast()
 			print("Loading Slashers map data " .. game.GetMap())
 			AddCSLuaFile(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
 			include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-		--print(GetGlobalInt("RNDKiller",0))
 		end
 	else
-
 		if !table.HasValue(GM.MAPS, game.GetMap()) then
 			timer.Create("sls_error_map", 5, 0, function()
 				print("ERROR: The current map isn't supported by gamemode.")
 			end)
 		else
-hook.Add("InitPostEntity", "PlayerLoadedMAP", function()
-			--net.Receive("RNDKiller", function()
---SetGlobalInt("RNDKiller", net.ReadInt(5))
-		--end)
-
-			print(GetGlobalInt("RNDKiller",0))
-			print("Loading Slashers map data " .. game.GetMap())
-			include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
-end)
+			hook.Add("InitPostEntity", "PlayerLoadedMAP", function()
+				print("Loading Slashers map data " .. game.GetMap())
+				include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
+			end)
 		end
 	end
 end
@@ -71,13 +58,13 @@ hook.Add("PostGamemodeLoaded","sls_mapsloadData",loadMapsData)
 if SERVER then
 
 	local function UseAbility(len, ply)
-		if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return false end
+		if ply:Team() ~= TEAM_KILLER then return false end
+		if ply:GetKiller() ~= GM.MAP:GetKillerIndex() then return false end
 		if !isfunction(GM.MAP.Killer.UseAbility) then return false end
 
 		local check, why = hook.Run("KillerPreUseAbility", ply)
 
 		if !check then
-
 			if why then
 				if istable(why) then
 					ply:Notify(why, "cross")
@@ -110,14 +97,14 @@ else
 
 	local function PlayerButtonDown(ply, button)
 		if !IsFirstTimePredicted() then return end
-		if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return false end
+		if ply:Team() ~= TEAM_KILLER then return false end
+		if ply:GetKiller() ~= GM.MAP:GetKillerIndex() then return false end
 		if !isfunction(GM.MAP.Killer.UseAbility) then return false end
 
-		if GM.ROUND.Active && ply:Team() == TEAM_KILLER && button == getMenuKey() then
+		if GM.ROUND.Active && button == getMenuKey() then
 			local check, why = hook.Run("KillerPreUseAbility", ply)
 
 			if !check then
-
 				if why then
 					if istable(why) then
 						ply:Notify(why, "cross")

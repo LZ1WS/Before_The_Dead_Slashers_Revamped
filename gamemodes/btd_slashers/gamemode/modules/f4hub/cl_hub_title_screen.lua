@@ -215,10 +215,19 @@ function PANEL:Paint(w, h)
 	Derma_DrawBackgroundBlur(self)
 end
 
+local lobbyConVar = GetConVar("slashers_lobby_volume")
+local volume = (lobbyConVar:GetInt() / 100) or 0.1
+
 function PANEL:Think()
 	--[[if input.IsKeyDown(KEY_ESCAPE) then
 		return self:Remove()
 	end]]
+
+	if (IsValid(self.channel) and (lobbyConVar:GetInt() / 100) != volume) then
+		volume = lobbyConVar:GetInt() / 100
+
+		self.channel:SetVolume(volume)
+	end
 end
 
 function PANEL:OnRemove()
@@ -240,7 +249,7 @@ function PANEL:PlayMusic()
 			return
 		end
 
-		channel:SetVolume(0.1)
+		channel:SetVolume(volume)
 		channel:EnableLooping(true)
 		channel:Play()
 

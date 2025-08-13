@@ -23,3 +23,30 @@ function PLAYER:Notify(text, notify_type)
     end
 
 end
+
+function PLAYER:GetKiller(randomize)
+    local id = self:GetNWInt("choosen_killer")
+
+    if id == 0 then
+        if randomize then
+            for index, info in RandomPairs(GM.KILLERS) do
+                if (info.SpecialRound) then
+                    if info.SpecialRound == "GM.MAP.Pages" and !GM.MAP.Pages then continue end
+                    if info.SpecialRound == "GM.MAP.Vaccine" and !GM.MAP.Vaccine then continue end
+                end
+
+                if GetConVar("slashers_unserious_killers"):GetInt() == 0 and info.Joke then continue end
+                if GetConVar("slashers_unserious_killers"):GetInt() == 1 and info.Serious then continue end
+
+                id = index
+                break
+            end
+        end
+
+        if self:Team() == TEAM_KILLER then
+            return GM.MAP:GetKillerIndex()
+        end
+	end
+
+    return id
+end
