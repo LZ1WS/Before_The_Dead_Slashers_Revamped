@@ -1,13 +1,13 @@
 local GM = GM or GAMEMODE
 
-local chaseConvar = GetConVar("slashers_chase_volume")
-local chaseVolume = (chaseConvar:GetInt() / 100) or 1
-
-local escapeConvar = GetConVar("slashers_escape_volume")
-local escapeVolume = (escapeConvar:GetInt() / 100) or 1
-
 function sls_music_InitValue()
 	if CLIENT then
+		local chaseConvar = GetConVar("slashers_chase_volume")
+		local chaseVolume = (chaseConvar:GetInt() / 100) or 1
+
+		local escapeConvar = GetConVar("slashers_escape_volume")
+		local escapeVolume = (escapeConvar:GetInt() / 100) or 1
+
 		local path = (GM.MAP.ChaseMusic and ("sound/" .. GM.MAP.ChaseMusic))
 
 		sound.PlayFile(path, "noplay noblock", function(channel, error, message)
