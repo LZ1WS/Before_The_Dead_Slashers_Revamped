@@ -1,4 +1,5 @@
-local GM = GM or GAMEMODE
+-- PENDING FOR REWORK
+--[[local GM = GM or GAMEMODE
 
 GM.ROUND.Special = GM.ROUND.Special or {}
 
@@ -232,4 +233,4 @@ GM.ROUND.Special.NPC.Start = function()
 	timer.Simple(GM.CONFIG["round_freeze_start"], function() for _,ent in ipairs(ents.FindByClass("prop_physics")) do if (ent:GetPhysicsObject()) then ent:GetPhysicsObject():EnableMotion(false) end end end)
 
 end
-end
+end]]
