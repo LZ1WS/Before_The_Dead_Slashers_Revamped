@@ -1,28 +1,27 @@
 local GM = GM or GAMEMODE
+local KILLER = KILLER
 
-GM.KILLERS[KILLER_WHITEFACE] = {}
+KILLER.Name = "White Face"
+KILLER.Model = "models/imscared/whiteface.mdl"
+KILLER.WalkSpeed = 200
+KILLER.RunSpeed = 200
+KILLER.UniqueWeapon = false
+KILLER.ExtraWeapons = {}
+KILLER.StartMusic = "sound/whiteface/voice/intro.mp3"
+KILLER.ChaseMusic = "whiteface/chase/chase.ogg"
+KILLER.TerrorMusic = "whiteface/terror/terror.wav"
+KILLER.EscapeMusic = "whiteface/ability/ability.mp3"
 
-GM.KILLERS[KILLER_WHITEFACE].Name = "White Face"
-GM.KILLERS[KILLER_WHITEFACE].Model = "models/imscared/whiteface.mdl"
-GM.KILLERS[KILLER_WHITEFACE].WalkSpeed = 200
-GM.KILLERS[KILLER_WHITEFACE].RunSpeed = 200
-GM.KILLERS[KILLER_WHITEFACE].UniqueWeapon = false
-GM.KILLERS[KILLER_WHITEFACE].ExtraWeapons = {}
-GM.KILLERS[KILLER_WHITEFACE].StartMusic = "sound/whiteface/voice/intro.mp3"
-GM.KILLERS[KILLER_WHITEFACE].ChaseMusic = "whiteface/chase/chase.ogg"
-GM.KILLERS[KILLER_WHITEFACE].TerrorMusic = "whiteface/terror/terror.wav"
-GM.KILLERS[KILLER_WHITEFACE].EscapeMusic = "whiteface/ability/ability.mp3"
-
-GM.KILLERS[KILLER_WHITEFACE].Abilities = {"whiteface/ability/charge.wav"}
-GM.KILLERS[KILLER_WHITEFACE].AbilityCooldown = 35
+KILLER.Abilities = {"whiteface/ability/charge.wav"}
+KILLER.AbilityCooldown = 35
 
 if CLIENT then
-	GM.KILLERS[KILLER_WHITEFACE].Desc = GM.LANG:GetString("class_desc_whiteface")
-	GM.KILLERS[KILLER_WHITEFACE].Icon = Material("icons/whiteface.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_whiteface")
+	KILLER.Icon = Material("icons/whiteface.png")
 end
 
 hook.Add("sls_round_StartEscape", "sls_WFability", function(ply)
-	if GetGlobalInt("RNDKiller", 1) != KILLER_WHITEFACE then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 
 	if GM.ROUND.Escape then
 		sls.util.ModifyMaxSpeed(GM.ROUND.Killer, 300)
@@ -30,8 +29,7 @@ hook.Add("sls_round_StartEscape", "sls_WFability", function(ply)
 end)
 
 if CLIENT then
-
-	WFAbil = {
+	local WFAbil = {
 		["$pp_colour_brightness"] = 0,
 		["$pp_colour_addr"] = 0,
 		["$pp_colour_addg"] = 0,
@@ -44,7 +42,7 @@ if CLIENT then
 	}
 
 	hook.Add("SetupWorldFog", "WFFog", function()
-		if GetGlobalInt("RNDKiller", 1) != KILLER_WHITEFACE then return end
+		if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 
 		local fogstart, fogend = render.GetFogDistances()
 
@@ -74,7 +72,7 @@ if CLIENT then
 	end)
 
 	hook.Add("RenderScreenspaceEffects", "WFRage", function()
-		if LocalPlayer():Alive() && LocalPlayer():Team() == TEAM_SURVIVORS && GetGlobalInt("RNDKiller", 1) == KILLER_WHITEFACE && GM.ROUND.Escape then
+		if LocalPlayer():Alive() && LocalPlayer():Team() == TEAM_SURVIVORS && GM.MAP:GetKillerIndex() == KILLER_WHITEFACE && GM.ROUND.Escape then
 
 		if WFAbil["$pp_colour_colour"] < 3 then
 			WFAbil["$pp_colour_colour"] = WFAbil["$pp_colour_colour"] + 0.001
@@ -86,7 +84,7 @@ if CLIENT then
 
 		DrawColorModify( WFAbil )
 		DrawBloom( 0.65, 2, 10, 10, 3, 1, 1, 1, 1)
-		elseif !GM.ROUND.Escape or !LocalPlayer():Alive() or GetGlobalInt("RNDKiller", 1) != KILLER_WHITEFACE then
+		elseif !GM.ROUND.Escape or !LocalPlayer():Alive() or GM.MAP:GetKillerIndex() != KILLER_WHITEFACE then
 
 		if WFAbil["$pp_colour_colour"] > 1 then
 			WFAbil["$pp_colour_colour"] = 1
@@ -104,17 +102,13 @@ if CLIENT then
 end
 
 
-GM.KILLERS[KILLER_WHITEFACE].UseAbility = function(ply)
+function KILLER:UseAbility(ply)
 	if CLIENT then return end
-
-	local info = GM.KILLERS[KILLER_WHITEFACE]
-
-	local charges = 0
 
 	ply:AddFlags(FL_ATCONTROLS)
 
-	local chargesnd = ply:StartLoopingSound(info.Abilities[1])
-
+	local chargesnd = ply:StartLoopingSound(self.Abilities[1])
+	local charges = 0
 	timer.Create("wf_dash_forward", 0, 0, function()
 		local forward = ply:GetAimVector()
 		forward.z = 0
@@ -133,8 +127,6 @@ GM.KILLERS[KILLER_WHITEFACE].UseAbility = function(ply)
 				timer.Simple(1, function()
 					v:SetNWBool("sls_wf_takendamage", nil)
 				end)
-
-				continue
 			end
 		end
 	end)
@@ -144,5 +136,6 @@ GM.KILLERS[KILLER_WHITEFACE].UseAbility = function(ply)
 		ply:RemoveFlags(FL_ATCONTROLS)
 		ply:StopLoopingSound(chargesnd)
 	end)
-
 end
+
+KILLER_WHITEFACE = KILLER.index

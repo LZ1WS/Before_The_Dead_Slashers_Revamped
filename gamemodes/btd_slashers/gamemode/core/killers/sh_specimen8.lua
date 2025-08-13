@@ -1,25 +1,24 @@
 local GM = GM or GAMEMODE
-
-GM.KILLERS[KILLER_SPECIMEN8] = {}
+local KILLER = KILLER
 
 -- Killer
-GM.KILLERS[KILLER_SPECIMEN8].Name = "Specimen 8"
-GM.KILLERS[KILLER_SPECIMEN8].Model = "models/violetqueen/sjsm/deerlord.mdl"
-GM.KILLERS[KILLER_SPECIMEN8].WalkSpeed = 190
-GM.KILLERS[KILLER_SPECIMEN8].RunSpeed = 190
-GM.KILLERS[KILLER_SPECIMEN8].UniqueWeapon = false
-GM.KILLERS[KILLER_SPECIMEN8].ExtraWeapons = {}
-GM.KILLERS[KILLER_SPECIMEN8].Abilities = {"deerlord/voice/DL_02.ogg"}
-GM.KILLERS[KILLER_SPECIMEN8].VoiceCallouts = {"deerlord/voice/DL_01.ogg", "deerlord/voice/DL_02.ogg", "deerlord/voice/DL_03.ogg", "deerlord/voice/DL_04.ogg", "deerlord/voice/DL_05.ogg"}
-GM.KILLERS[KILLER_SPECIMEN8].StartMusic = "sound/deerlord/voice/intro.wav"
-GM.KILLERS[KILLER_SPECIMEN8].ChaseMusic = "deerlord/chase/chase.ogg"
-GM.KILLERS[KILLER_SPECIMEN8].TerrorMusic = "deerlord/voice/intro.wav"
+KILLER.Name = "Specimen 8"
+KILLER.Model = "models/violetqueen/sjsm/deerlord.mdl"
+KILLER.WalkSpeed = 190
+KILLER.RunSpeed = 190
+KILLER.UniqueWeapon = false
+KILLER.ExtraWeapons = {}
+KILLER.Abilities = {"deerlord/voice/DL_02.ogg"}
+KILLER.VoiceCallouts = {"deerlord/voice/DL_01.ogg", "deerlord/voice/DL_02.ogg", "deerlord/voice/DL_03.ogg", "deerlord/voice/DL_04.ogg", "deerlord/voice/DL_05.ogg"}
+KILLER.StartMusic = "sound/deerlord/voice/intro.wav"
+KILLER.ChaseMusic = "deerlord/chase/chase.ogg"
+KILLER.TerrorMusic = "deerlord/voice/intro.wav"
 
-GM.KILLERS[KILLER_SPECIMEN8].AbilityCooldown = 45
+KILLER.AbilityCooldown = 45
 
 if CLIENT then
-	GM.KILLERS[KILLER_SPECIMEN8].Desc = GM.LANG:GetString("class_desc_specimen8")
-	GM.KILLERS[KILLER_SPECIMEN8].Icon = Material("icons/spec8.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_specimen8")
+	KILLER.Icon = Material("icons/spec8.png")
 end
 
 if CLIENT then
@@ -27,7 +26,7 @@ if CLIENT then
 	local ourMat = Material( "overlays/rad" )
 
 	hook.Add("RenderScreenspaceEffects", "Specimen8_static", function()
-		if GetGlobalInt("RNDKiller", 1) != KILLER_SPECIMEN8 then return end
+		if GM.MAP:GetKillerIndex() != KILLER.index then return end
 
 		if LocalPlayer():Team() != TEAM_KILLER then
 			render.UpdateScreenEffectTexture()
@@ -41,7 +40,7 @@ if CLIENT then
 end
 
 hook.Add("ShouldCollide", "sls_Specimen8", function(ent1, ent2)
-	if GetGlobalInt("RNDKiller", 1) != KILLER_SPECIMEN8 then return end
+	if GM.MAP:GetKillerIndex() != KILLER.index then return end
 
 	if (ent1:IsPlayer() and ent1:Team() == TEAM_KILLER and (string.find(ent2:GetClass(), "prop_door*") or string.find(ent2:GetClass(), "func_door*"))) or (ent2:IsPlayer() and ent2:Team() == TEAM_KILLER and (string.find(ent1:GetClass(), "prop_door*") or string.find(ent1:GetClass(), "prop_door*"))) then
 		return false
@@ -50,10 +49,10 @@ hook.Add("ShouldCollide", "sls_Specimen8", function(ent1, ent2)
 	end
 end)
 
-GM.KILLERS[KILLER_SPECIMEN8].UseAbility = function(ply)
+function KILLER:UseAbility(ply)
 	if CLIENT then return end
 
-	local info = GM.KILLERS[KILLER_SPECIMEN8]
+	local info = self
 
 	timer.Create("specimen8_ability", 0.15, 0, function()
 		for _, v in RandomPairs(ents.FindByClass("func_door*")) do
@@ -69,9 +68,9 @@ GM.KILLERS[KILLER_SPECIMEN8].UseAbility = function(ply)
 
 	sls.util.PlayGlobalSound(info.Abilities[1])
 
-	local buff = GM.KILLERS[KILLER_SPECIMEN8].RunSpeed * 0.4
+	local buff = KILLER.RunSpeed * 0.4
 
-	sls.util.ModifyMaxSpeed(ply, GM.KILLERS[KILLER_SPECIMEN8].RunSpeed + buff, 15)
+	sls.util.ModifyMaxSpeed(ply, info.RunSpeed + buff, 15)
 
 	timer.Simple(15, function()
 		timer.Remove("specimen8_ability")
@@ -85,3 +84,5 @@ GM.KILLERS[KILLER_SPECIMEN8].UseAbility = function(ply)
 		end
 	end)
 end
+
+KILLER_SPECIMEN8 = KILLER.index

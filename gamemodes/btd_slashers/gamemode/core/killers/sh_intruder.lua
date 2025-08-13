@@ -1,21 +1,20 @@
 local GM = GM or GAMEMODE
-
-GM.KILLERS[KILLER_INTRUDER] = {}
+local KILLER = KILLER
 
 -- Killer
-GM.KILLERS[KILLER_INTRUDER].Name = "the Intruder"
-GM.KILLERS[KILLER_INTRUDER].Model = "models/steinman/slashers/intruder_pm.mdl"
-GM.KILLERS[KILLER_INTRUDER].WalkSpeed = 200
-GM.KILLERS[KILLER_INTRUDER].RunSpeed = 200
-GM.KILLERS[KILLER_INTRUDER].UniqueWeapon = false
-GM.KILLERS[KILLER_INTRUDER].ExtraWeapons = {"weapon_beartrap", "weapon_alertropes", "weapon_dooraxe"}
-GM.KILLERS[KILLER_INTRUDER].StartMusic = "sound/slashers/ambient/slasher_start_game_intruder.wav"
-GM.KILLERS[KILLER_INTRUDER].ChaseMusic = "slashers/ambient/chase_intruder.wav"
-GM.KILLERS[KILLER_INTRUDER].TerrorMusic = "metalworker/terror/terror.wav"
+KILLER.Name = "the Intruder"
+KILLER.Model = "models/steinman/slashers/intruder_pm.mdl"
+KILLER.WalkSpeed = 200
+KILLER.RunSpeed = 200
+KILLER.UniqueWeapon = false
+KILLER.ExtraWeapons = {"weapon_beartrap", "weapon_alertropes", "weapon_dooraxe"}
+KILLER.StartMusic = "sound/slashers/ambient/slasher_start_game_intruder.wav"
+KILLER.ChaseMusic = "slashers/ambient/chase_intruder.wav"
+KILLER.TerrorMusic = "metalworker/terror/terror.wav"
 
 if CLIENT then
-	GM.KILLERS[KILLER_INTRUDER].Desc = GM.LANG:GetString("class_desc_intruder")
-	GM.KILLERS[KILLER_INTRUDER].Icon = Material("icons/icon_intruder.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_intruder")
+	KILLER.Icon = Material("icons/icon_intruder.png")
 	local trapsEntity = {}
 	local function getEntityToDrawHalo()
 		trapsEntity = net.ReadTable()
@@ -49,3 +48,5 @@ else
 	end
 	hook.Add("Think","sls_detectProximityTraps",sendTrapProximity)
 end
+
+KILLER_INTRUDER = KILLER.index

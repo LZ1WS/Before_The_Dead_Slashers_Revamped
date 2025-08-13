@@ -1,25 +1,25 @@
 local GM = GM or GAMEMODE
+local KILLER = KILLER
 
-GM.KILLERS[KILLER_SLENDER] = {}
-GM.KILLERS[KILLER_SLENDER].Name = "Slenderman"
-GM.KILLERS[KILLER_SLENDER].Model = "models/slendereightpages/SlenderMan SMTEP.mdl"
-GM.KILLERS[KILLER_SLENDER].WalkSpeed = 120
-GM.KILLERS[KILLER_SLENDER].RunSpeed = 160
-GM.KILLERS[KILLER_SLENDER].UniqueWeapon = true
-GM.KILLERS[KILLER_SLENDER].ExtraWeapons = {"weapon_static"}
-GM.KILLERS[KILLER_SLENDER].SpecialRound = "GM.MAP.Pages"
-GM.KILLERS[KILLER_SLENDER].StartMusic = "sound/slender/voice/intro.mp3"
-GM.KILLERS[KILLER_SLENDER].ChaseMusic = "slender/chase/slenderchase.ogg"
-GM.KILLERS[KILLER_SLENDER].TerrorMusic = "slender/terror/terrorslender.wav"
+KILLER.Name = "Slenderman"
+KILLER.Model = "models/slendereightpages/SlenderMan SMTEP.mdl"
+KILLER.WalkSpeed = 120
+KILLER.RunSpeed = 160
+KILLER.UniqueWeapon = true
+KILLER.ExtraWeapons = {"weapon_static"}
+KILLER.SpecialRound = "GM.MAP.Pages"
+KILLER.StartMusic = "sound/slender/voice/intro.mp3"
+KILLER.ChaseMusic = "slender/chase/slenderchase.ogg"
+KILLER.TerrorMusic = "slender/terror/terrorslender.wav"
 
-GM.KILLERS[KILLER_SLENDER].AbilityCooldown = 5
+KILLER.AbilityCooldown = 5
 
 if CLIENT then
-	GM.KILLERS[KILLER_SLENDER].Desc = GM.LANG:GetString("class_desc_slender")
-	GM.KILLERS[KILLER_SLENDER].Icon = Material("icons/slenderman.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_slender")
+	KILLER.Icon = Material("icons/slenderman.png")
 end
 
-GM.KILLERS[KILLER_SLENDER].SpecialGoals = {
+KILLER.SpecialGoals = {
 	[1] = "find_pages",
 	[2] = "find_shotgun",
 	[3] = "kill_slender",
@@ -129,7 +129,7 @@ local function WDA_CAST_BLINK( ply )
 end
 
 -- Ability
-GM.KILLERS[KILLER_SLENDER].UseAbility = function(ply)
+function KILLER:UseAbility(ply)
 	if CLIENT then return end
 
 	--local FOV = ply:GetFOV()
@@ -149,7 +149,7 @@ end
 local function Spawn_SlashPages()
 	if CLIENT then return end
 
-	if GM.MAP.Killer.SpecialRound == "GM.MAP.Pages" and (GM.MAP.Pages) then --If we have data for this map
+	if GM.MAP.Killer.SpecialRound == "GM.MAP.Pages" && GM.MAP.Pages then --If we have data for this map
 		for k, v in pairs( GM.MAP.Pages ) do
 
 			if (v == GM.MAP.Pages.Page) then
@@ -198,7 +198,7 @@ end)
 hook.Add( "sls_round_PostStart", "slender_start_objectives", function( ply, text, public )
 	if CLIENT then return end
 
-	if GetGlobalInt("RNDKiller", 1) ~= KILLER_SLENDER then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 
 	local info = GM.MAP.Killer.SpecialGoals
 
@@ -220,7 +220,7 @@ hook.Add( "sls_round_PostStart", "slender_start_objectives", function( ply, text
 end)
 
 hook.Add( "sls_NextObjective", "slender_objectives", function(goal)
-	if GetGlobalInt("RNDKiller", 1) ~= KILLER_SLENDER then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 
 	local info = GM.MAP.Killer.SpecialGoals
 
@@ -258,3 +258,5 @@ hook.Add( "sls_NextObjective", "slender_objectives", function(goal)
 	end
 
 end)
+
+KILLER_SLENDER = KILLER.index

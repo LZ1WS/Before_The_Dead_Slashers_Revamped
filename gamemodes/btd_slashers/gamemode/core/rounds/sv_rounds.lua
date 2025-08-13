@@ -20,20 +20,11 @@ util.AddNetworkString("sls_round_PlayerConnect")
 util.AddNetworkString("sls_round_SetupCamera")
 util.AddNetworkString("sls_round_Camera")
 util.AddNetworkString("sls_round_UpdateEndTime")
+util.AddNetworkString("sls_round_RevealSurvs")
 util.AddNetworkString("sls_plykiller")
 util.AddNetworkString("sls_lobby_music_play")
 util.AddNetworkString("rnd_killer")
 util.AddNetworkString("RNDKiller")
---[[	if SERVER then
-hook.Add("PlayerInitialSpawn","GlobalKillerRND",function()
-local rndnumber = math.random(1, 3)
-net.Start("RNDKiller")
-net.WriteInt(rndnumber, 5)
-net.Broadcast()
-SetGlobalInt("sls_killerrnd", rndnumber)
-print(GetGlobalInt("sls_killerrnd", 1))
-end)
-end]]--
 
 local function CheckNavMesh()
 
@@ -141,25 +132,8 @@ function GM.ROUND:Start(forceKiller)
 		GM.ROUND.Killer = GM.ROUND:ChooseKiller()
 	end
 
-
-	local rnd_killer_number
-	for number, killer in RandomPairs(GM.KILLERS) do
-		if (killer.SpecialRound) then
-			if killer.SpecialRound == "GM.MAP.Pages" and !(GM.MAP.Pages) then continue end
-			if killer.SpecialRound == "GM.MAP.Vaccine" and !(GM.MAP.Vaccine) then continue end
-		end
-
-		if GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.Joke and !killer.Serious then continue end
-
-		rnd_killer_number = number
-	end
-	local killer = GM.ROUND.Killer:GetNWInt("choosen_killer", rnd_killer_number)
-
-	SetGlobalInt("RNDKiller", killer)
-	GM.MAP.SetupKillers()
-	net.Start("sls_plykiller")
-	net.WriteInt(killer, 8)
-	net.Broadcast()
+	local killer = GM.ROUND.Killer:GetKiller(true)
+	GM.MAP.SetupKillers(killer)
 
 	local i = 0
 	for _, v in ipairs(player.GetAll()) do
@@ -170,15 +144,6 @@ function GM.ROUND:Start(forceKiller)
 		end
 		i = i + 1
 	end
-
-	--[[	local i = 0
-	for _, v in ipairs(player.GetAll()) do
-		if i > 10 then break end
-		if GM.ROUND.Killer != v then
-			table.insert(GM.ROUND.Survivors, v)
-		end
-		i = i + 1
-	end]]--
 
 	for n = 1, bots_num do
 		if #GM.ROUND.Survivors > 10 then break end
@@ -192,23 +157,39 @@ function GM.ROUND:Start(forceKiller)
 	local spawnpoints = ents.FindByClass("info_player_counterterrorist")
 	for _, v in ipairs(GM.ROUND.Survivors) do
 		if v:IsPlayer() then
-		v:Spawn()
+			v:Spawn()
 		end
+
 		if istable(GM.MAP.Config) then
-		v:SetPos(table.Random(surv_spawns))
+			v:SetPos(table.Random(surv_spawns))
 		else
-		v:SetPos(table.Random(spawnpoints):GetPos())
+			v:SetPos(table.Random(spawnpoints):GetPos())
 		end
+
 		if !v:IsPlayer() then
 			v.l_forcedTeam = TEAM_SURVIVORS
 			v:Spawn()
 		end
+
 		v:Freeze(true)
+
 		if v:IsPlayer() then
-		v:ScreenFade(SCREENFADE.IN, Color(0, 0, 0), 2, GM.CONFIG["round_freeze_start"] - 2)
+			v:ScreenFade(SCREENFADE.IN, Color(0, 0, 0), 2, GM.CONFIG["round_freeze_start"] - 2)
 		end
+
 		v:SetNWBool("Escaped", false)
 	end
+
+	hook.Add( "SetupPlayerVisibility", "sls_LambdaBots_PVS", function( ply )
+		for _, bot in ipairs(ents.FindByClass("npc_lambdaplayer")) do
+			if bot:IsValid() and !ply:TestPVS( bot ) then
+				AddOriginToPVS( bot:GetPos() )
+			end
+		end
+
+		hook.Remove("SetupPlayerVisibility", "sls_LambdaBots_PVS")
+	end )
+
 	GM.CLASS:SetupSurvivors()
 
 	if IsValid(GM.ROUND.Killer) then
@@ -454,6 +435,7 @@ hook.Add("LambdaOnKilled", "sls_round_LambdaDeath", PlayerDisconnected)
 hook.Add("PlayerDisconnected", "sls_round_PlayerDisconnected", PlayerDisconnected)
 
 local debounce_timer = false
+local timeOutWH = 0
 
 local function Think()
 	local curtime = CurTime()
@@ -463,7 +445,13 @@ local function Think()
 		if GM.ROUND.WaitingPolice then
 			GM.ROUND:StartEscape()
 		else
-			GM.ROUND:End()
+			if timeOutWH <= CurTime() then
+				timeOutWH = CurTime() + 10
+
+				net.Start("sls_round_RevealSurvs")
+				net.Send(GM.ROUND.Killer)
+			end
+			--GM.ROUND:End()
 		end
 	end
 

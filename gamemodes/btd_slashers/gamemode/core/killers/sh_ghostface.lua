@@ -1,22 +1,21 @@
 local GM = GM or GAMEMODE
-
-GM.KILLERS[KILLER_GHOSTFACE] = {}
+local KILLER = KILLER
 
 -- Killer
-GM.KILLERS[KILLER_GHOSTFACE].Name = "Ghostface"
-GM.KILLERS[KILLER_GHOSTFACE].Model = "models/player/cla/classic_ghostface.mdl"
-GM.KILLERS[KILLER_GHOSTFACE].WalkSpeed = 190
-GM.KILLERS[KILLER_GHOSTFACE].RunSpeed = 240
-GM.KILLERS[KILLER_GHOSTFACE].UniqueWeapon = false
-GM.KILLERS[KILLER_GHOSTFACE].ExtraWeapons = {}
-GM.KILLERS[KILLER_GHOSTFACE].StartMusic = "sound/slashers/ambient/slashers_start_game_ghostface.wav"
-GM.KILLERS[KILLER_GHOSTFACE].ChaseMusic = "slashers/ambient/chase_ghostface.wav"
-GM.KILLERS[KILLER_GHOSTFACE].TerrorMusic = "defaultkiller/terror/terror.wav"
-GM.KILLERS[KILLER_GHOSTFACE].EscapeMusic = "ghostface/escape/ghostface_escape.ogg"
+KILLER.Name = "Ghostface"
+KILLER.Model = "models/player/cla/classic_ghostface.mdl"
+KILLER.WalkSpeed = 190
+KILLER.RunSpeed = 240
+KILLER.UniqueWeapon = false
+KILLER.ExtraWeapons = {}
+KILLER.StartMusic = "sound/slashers/ambient/slashers_start_game_ghostface.wav"
+KILLER.ChaseMusic = "slashers/ambient/chase_ghostface.wav"
+KILLER.TerrorMusic = "defaultkiller/terror/terror.wav"
+KILLER.EscapeMusic = "ghostface/escape/ghostface_escape.ogg"
 
 if CLIENT then
-	GM.KILLERS[KILLER_GHOSTFACE].Desc = GM.LANG:GetString("class_desc_ghostface")
-	GM.KILLERS[KILLER_GHOSTFACE].Icon = Material("icons/icon_ghostface.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_ghostface")
+	KILLER.Icon = Material("icons/icon_ghostface.png")
 end
 
 -- Convars
@@ -86,7 +85,7 @@ end
 local function PlayerUse(ply, ent)
 	if !GM.ROUND.Active || !IsValid(GM.ROUND.Killer) then return end
 	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
-	if GetGlobalInt("RNDKiller", 1) != KILLER_GHOSTFACE then return end
+	if GM.MAP:GetKillerIndex() != KILLER.index then return end
 
 	if ply:Team() != TEAM_SURVIVORS then return end
 	if ply.ClassID == CLASS_SURV_SHY then return end
@@ -104,3 +103,5 @@ end
 hook.Add("PlayerUse", "sls_kability_PlayerUse", PlayerUse)
 
 end
+
+KILLER_GHOSTFACE = KILLER.index

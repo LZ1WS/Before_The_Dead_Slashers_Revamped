@@ -1,21 +1,21 @@
 local GM = GM or GAMEMODE
+local KILLER = KILLER
 
-GM.KILLERS[KILLER_PROXY] = {}
 -- Killer
-GM.KILLERS[KILLER_PROXY].Name = "the Proxy"
-GM.KILLERS[KILLER_PROXY].Model = "models/slender_arrival/chaser.mdl"
-GM.KILLERS[KILLER_PROXY].WalkSpeed = 200
-GM.KILLERS[KILLER_PROXY].RunSpeed = 200
-GM.KILLERS[KILLER_PROXY].UniqueWeapon = false
-GM.KILLERS[KILLER_PROXY].ExtraWeapons = {}
-GM.KILLERS[KILLER_PROXY].StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
-GM.KILLERS[KILLER_PROXY].ChaseMusic = "slashers/ambient/chase_proxy.wav"
-GM.KILLERS[KILLER_PROXY].TerrorMusic = "slender/terror/terrorslender.wav"
-GM.KILLERS[KILLER_PROXY].AbilityCooldown = 10
+KILLER.Name = "the Proxy"
+KILLER.Model = "models/slender_arrival/chaser.mdl"
+KILLER.WalkSpeed = 200
+KILLER.RunSpeed = 200
+KILLER.UniqueWeapon = false
+KILLER.ExtraWeapons = {}
+KILLER.StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
+KILLER.ChaseMusic = "slashers/ambient/chase_proxy.wav"
+KILLER.TerrorMusic = "slender/terror/terrorslender.wav"
+KILLER.AbilityCooldown = 10
 
 if CLIENT then
-	GM.KILLERS[KILLER_PROXY].Desc = GM.LANG:GetString("class_desc_proxy")
-	GM.KILLERS[KILLER_PROXY].Icon = Material("icons/icon_proxy.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_proxy")
+	KILLER.Icon = Material("icons/icon_proxy.png")
 end
 
 -- Ability
@@ -98,7 +98,7 @@ if CLIENT then
 		if !showProxy or !proxyPos  then return end
 		local pos = proxyPos:ToScreen()
 		surface.SetDrawColor(Color(255, 255, 255))
-		surface.SetMaterial(GM.KILLERS[KILLER_PROXY].Icon)
+		surface.SetMaterial(KILLER.Icon)
 		surface.DrawTexturedRect(pos.x - 64, pos.y - 64, 64, 64)
 	end
 	hook.Add("HUDPaintBackground","sls_proxyicon_draw",drawIconOnProxy)
@@ -136,7 +136,7 @@ else
 	end
 	net.Receive("sls_kability_survivorseekiller", ResponsePlayerSeeKiller)
 
-    GM.KILLERS[KILLER_PROXY].UseAbility = function(ply)
+	function KILLER:UseAbility(ply)
 		local PlayerWeapon = ply:GetActiveWeapon()
 		if KillerInView then
 			net.Start( "notificationSlasher" )
@@ -203,7 +203,7 @@ else
 	for k,v in pairs(player.GetAll()) do
 		v:DrawShadow( true )
 		if IsValid(GAMEMODE.CLASS.Killers) and GM.ROUND.Killer:Team() == TEAM_KILLER then
-			v:SetNW2Float("sls_max_speed", nil)
+			GM.ROUND.Killer:SetNW2Float("sls_max_speed", nil)
 			GM.ROUND.Killer.InvisibleActive = false
 		end
 		v:SetRenderMode(RENDERMODE_TRANSALPHA )
@@ -219,7 +219,7 @@ hook.Add("sls_round_PostStart","sls_kability_ResetViewKillerAfterEnd",ResetVisib
 
 local timerSend = 0
 local function sendPosWhenInvisible()
-	if GetGlobalInt("RNDKiller", 1) != KILLER_PROXY then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 	if IsValid(GM.ROUND.Killer) &&   GM.ROUND.Active && timerSend < CurTime()  then
 		timerSend = CurTime() + 0.5
 		local shygirl = getSurvivorByClass(CLASS_SURV_SHY)
@@ -249,7 +249,7 @@ hook.Add("Think","sls_sendposkillerwheninvisible",sendPosWhenInvisible)
 end
 
 local function initCol()
-	if GetGlobalInt("RNDKiller", 1) != KILLER_PROXY then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 	local allentities = ents.GetAll()
 	for k, v in pairs(allentities) do
 		if (v:IsPlayer()) or (string.find(v:GetClass(), "prop_door*") or string.find(v:GetClass(), "func_door*")) then
@@ -262,7 +262,7 @@ hook.Add("sls_round_PostStart","sls_kability_TestInit", initCol)
 
 
 local function ShouldCollide( ent1, ent2 )
-	if GetGlobalInt("RNDKiller", 1) != KILLER_PROXY then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 	if ent1:IsPlayer() and ent1:GetColor().a == 0 and  (string.find(ent2:GetClass(), "prop_door*") or string.find(ent2:GetClass(), "func_door*")) or
 		ent2:IsPlayer() and ent2:GetColor().a == 0 and  (string.find(ent1:GetClass(), "prop_door*") or string.find(ent1:GetClass(), "prop_door*")) then
 		return false
@@ -274,3 +274,5 @@ local function ShouldCollide( ent1, ent2 )
 	return true
 end
 hook.Add("ShouldCollide", "sls_kability_ShouldCollide", ShouldCollide)
+
+KILLER_PROXY = KILLER.index

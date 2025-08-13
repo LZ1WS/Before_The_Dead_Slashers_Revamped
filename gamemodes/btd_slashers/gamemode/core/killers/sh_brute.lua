@@ -1,21 +1,20 @@
 local GM = GM or GAMEMODE
+local KILLER = KILLER
 
-GM.KILLERS[KILLER_BRUTE] = {}
-
-GM.KILLERS[KILLER_BRUTE].Name = "Brute"
-GM.KILLERS[KILLER_BRUTE].Model = "models/sirris/SergeiKozin.mdl"
-GM.KILLERS[KILLER_BRUTE].WalkSpeed = 200
-GM.KILLERS[KILLER_BRUTE].RunSpeed = 200
-GM.KILLERS[KILLER_BRUTE].UniqueWeapon = true
-GM.KILLERS[KILLER_BRUTE].ExtraWeapons = {"tfa_nmrih_sledge"}
-GM.KILLERS[KILLER_BRUTE].StartMusic = "sound/brute/voice/intro.ogg"
-GM.KILLERS[KILLER_BRUTE].ChaseMusic = "brute/chase/chase.ogg"
-GM.KILLERS[KILLER_BRUTE].TerrorMusic = "brute/terror/terror.wav"
-GM.KILLERS[KILLER_BRUTE].AbilityCooldown = 15
+KILLER.Name = "Brute"
+KILLER.Model = "models/sirris/SergeiKozin.mdl"
+KILLER.WalkSpeed = 200
+KILLER.RunSpeed = 200
+KILLER.UniqueWeapon = true
+KILLER.ExtraWeapons = {"tfa_nmrih_sledge"}
+KILLER.StartMusic = "sound/brute/voice/intro.ogg"
+KILLER.ChaseMusic = "brute/chase/chase.ogg"
+KILLER.TerrorMusic = "brute/terror/terror.wav"
+KILLER.AbilityCooldown = 15
 
 if CLIENT then
-    GM.KILLERS[KILLER_BRUTE].Desc = GM.LANG:GetString("class_desc_brute")
-    GM.KILLERS[KILLER_BRUTE].Icon = Material("icons/brute.png")
+    KILLER.Desc = GM.LANG:GetString("class_desc_brute")
+    KILLER.Icon = Material("icons/brute.png")
 end
 
 local function Bash_Door(ent, wep)
@@ -38,7 +37,7 @@ local function Bash_Door(ent, wep)
 
 end
 
-GM.KILLERS[KILLER_BRUTE].UseAbility = function(ply)
+function KILLER:UseAbility(ply)
     if CLIENT then return end
 
     ply:SetNWBool("sls_ram_killer", true)
@@ -84,7 +83,7 @@ GM.KILLERS[KILLER_BRUTE].UseAbility = function(ply)
 end
 
 hook.Add( "CalcMainActivity", "sls_brute_fallover", function( ply )
-    if GetGlobalInt("RNDKiller", 1) ~= KILLER_BRUTE then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 
     if ply:GetNWBool("sls_ram_killer", false) then
         local seq = ply:LookupSequence( "ACT_HL2MP_RUN_CHARGING" )
@@ -102,7 +101,9 @@ end
 end )
 
 hook.Add("sls_round_End", "sls_bruteabil_End", function()
-    if GetGlobalInt("RNDKiller", 1) ~= KILLER_BRUTE then return end
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 
     timer.Remove("brute_dash_forward")
 end)
+
+KILLER_BRUTE = KILLER.index

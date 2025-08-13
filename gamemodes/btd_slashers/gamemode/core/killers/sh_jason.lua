@@ -1,20 +1,19 @@
 local GM = GM or GAMEMODE
 
-GM.KILLERS[KILLER_JASON] = {}
 -- Killer
-GM.KILLERS[KILLER_JASON].Name = "Jason"
-GM.KILLERS[KILLER_JASON].Model = "models/player/mkx_jason.mdl"
-GM.KILLERS[KILLER_JASON].WalkSpeed = 190
-GM.KILLERS[KILLER_JASON].RunSpeed = 240
-GM.KILLERS[KILLER_JASON].UniqueWeapon = false
-GM.KILLERS[KILLER_JASON].ExtraWeapons = {}
-GM.KILLERS[KILLER_JASON].StartMusic = "sound/slashers/ambient/slashers_start_game_jason.wav"
-GM.KILLERS[KILLER_JASON].ChaseMusic = "jason/chase/chase.wav"
-GM.KILLERS[KILLER_JASON].TerrorMusic = "jason/terror/terror.wav"
+KILLER.Name = "Jason"
+KILLER.Model = "models/player/mkx_jason.mdl"
+KILLER.WalkSpeed = 190
+KILLER.RunSpeed = 240
+KILLER.UniqueWeapon = false
+KILLER.ExtraWeapons = {}
+KILLER.StartMusic = "sound/slashers/ambient/slashers_start_game_jason.wav"
+KILLER.ChaseMusic = "jason/chase/chase.wav"
+KILLER.TerrorMusic = "jason/terror/terror.wav"
 
 if CLIENT then
-	GM.KILLERS[KILLER_JASON].Desc = GM.LANG:GetString("class_desc_jason")
-	GM.KILLERS[KILLER_JASON].Icon = Material("icons/icon_jason.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_jason")
+	KILLER.Icon = Material("icons/icon_jason.png")
 end
 
 -- Convars
@@ -96,7 +95,7 @@ else
 		if !GM.ROUND.Active or !IsValid(GM.ROUND.Killer) then return end
 		if ply:Team() != TEAM_SURVIVORS then return end
 		if ply.ClassID == CLASS_SURV_SHY then return end
-		if GetGlobalInt("RNDKiller", 1) != KILLER_JASON then return end
+		if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 		if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 
 		net.Start("sls_kability_AddStep")
@@ -116,3 +115,5 @@ hook.Add( "PlayerFootstep", "sls_kability_CDisableSoundFootStepsUnique", functio
 		return
 	end
 end )
+
+KILLER_JASON = KILLER.index

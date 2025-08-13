@@ -1,29 +1,28 @@
 local GM = GM or GAMEMODE
+local KILLER = KILLER
 
-GM.KILLERS[KILLER_IMPOSTOR] = {}
-
-GM.KILLERS[KILLER_IMPOSTOR].Name = "the Impostor"
-GM.KILLERS[KILLER_IMPOSTOR].Model = "models/slashco/slashers/amogus/amogus.mdl"
-GM.KILLERS[KILLER_IMPOSTOR].WalkSpeed = 200
-GM.KILLERS[KILLER_IMPOSTOR].RunSpeed = 200
-GM.KILLERS[KILLER_IMPOSTOR].UniqueWeapon = true
-GM.KILLERS[KILLER_IMPOSTOR].ExtraWeapons = {"slshandsswep", "mute_knife"}
-GM.KILLERS[KILLER_IMPOSTOR].Joke = true
-GM.KILLERS[KILLER_IMPOSTOR].StartMusic = "sound/amogus/voice/intro.mp3"
-GM.KILLERS[KILLER_IMPOSTOR].ChaseMusic = "amogus/chase/amoguschase.ogg"
-GM.KILLERS[KILLER_IMPOSTOR].TerrorMusic = "defaultkiller/terror/terror.wav"
-GM.KILLERS[KILLER_IMPOSTOR].Abilities = {"amogus/ability/amogus_transform1.mp3", "amogus/ability/amogus_transform2.mp3", "amogus/ability/amogus_reveal.mp3"}
-GM.KILLERS[KILLER_IMPOSTOR].VoiceCallouts = {"amogus/ability/amogus_sus.mp3"}
+KILLER.Name = "the Impostor"
+KILLER.Model = "models/slashco/slashers/amogus/amogus.mdl"
+KILLER.WalkSpeed = 200
+KILLER.RunSpeed = 200
+KILLER.UniqueWeapon = true
+KILLER.ExtraWeapons = {"slshandsswep", "mute_knife"}
+KILLER.Joke = true
+KILLER.StartMusic = "sound/amogus/voice/intro.mp3"
+KILLER.ChaseMusic = "amogus/chase/amoguschase.ogg"
+KILLER.TerrorMusic = "defaultkiller/terror/terror.wav"
+KILLER.Abilities = {"amogus/ability/amogus_transform1.mp3", "amogus/ability/amogus_transform2.mp3", "amogus/ability/amogus_reveal.mp3"}
+KILLER.VoiceCallouts = {"amogus/ability/amogus_sus.mp3"}
 
 if CLIENT then
-	GM.KILLERS[KILLER_IMPOSTOR].Desc = GM.LANG:GetString("class_desc_amogus")
-	GM.KILLERS[KILLER_IMPOSTOR].Icon = Material("icons/amogus.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_amogus")
+	KILLER.Icon = Material("icons/amogus.png")
 end
 
-GM.KILLERS[KILLER_IMPOSTOR].UseAbility = function(ply)
+function KILLER:UseAbility(ply)
 	if CLIENT then return end
 
-	local info = GM.KILLERS[KILLER_IMPOSTOR]
+	local info = KILLER
 
 	if !ply:GetNWBool("sls_killer_disguised", false) then
 		local rnd_survivor = GM.ROUND.Survivors[ math.random( #GM.ROUND.Survivors ) ]
@@ -75,3 +74,5 @@ hook.Add("CalcMainActivity", "sls_amogus_animation", function(ply)
 	end
 	return ply.CalcIdeal, ply.CalcSeqOverride
 end)
+
+KILLER_IMPOSTOR = KILLER.index

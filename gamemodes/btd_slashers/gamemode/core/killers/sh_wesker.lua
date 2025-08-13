@@ -1,25 +1,24 @@
 local GM = GM or GAMEMODE
+local KILLER = KILLER
 
-GM.KILLERS[KILLER_WESKER] = {}
-
-GM.KILLERS[KILLER_WESKER].Name = "Albert Wesker"
-GM.KILLERS[KILLER_WESKER].Model = "Models/Player/slow/amberlyn/re5/wesker/slow.mdl"
-GM.KILLERS[KILLER_WESKER].WalkSpeed = 200
-GM.KILLERS[KILLER_WESKER].RunSpeed = 200
-GM.KILLERS[KILLER_WESKER].UniqueWeapon = false
-GM.KILLERS[KILLER_WESKER].ExtraWeapons = {}
-GM.KILLERS[KILLER_WESKER].SpecialRound = "GM.MAP.Vaccine"
-GM.KILLERS[KILLER_WESKER].StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
-GM.KILLERS[KILLER_WESKER].ChaseMusic = "albertwesker/chase/chase.ogg"
-GM.KILLERS[KILLER_WESKER].TerrorMusic = "albertwesker/terror/terror.wav"
+KILLER.Name = "Albert Wesker"
+KILLER.Model = "Models/Player/slow/amberlyn/re5/wesker/slow.mdl"
+KILLER.WalkSpeed = 200
+KILLER.RunSpeed = 200
+KILLER.UniqueWeapon = false
+KILLER.ExtraWeapons = {}
+KILLER.SpecialRound = "GM.MAP.Vaccine"
+KILLER.StartMusic = "sound/slashers/ambient/slashers_start_game_proxy.wav"
+KILLER.ChaseMusic = "albertwesker/chase/chase.ogg"
+KILLER.TerrorMusic = "albertwesker/terror/terror.wav"
 
 if CLIENT then
-	GM.KILLERS[KILLER_WESKER].Desc = GM.LANG:GetString("class_desc_wesker")
-	GM.KILLERS[KILLER_WESKER].Icon = Material("icons/wesker.png")
+	KILLER.Desc = GM.LANG:GetString("class_desc_wesker")
+	KILLER.Icon = Material("icons/wesker.png")
 end
 
-hook.Add("sls_round_PostStart", "introfixwesker", function()
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_WESKER].Name then return end
+--[[hook.Add("sls_round_PostStart", "introfixwesker", function()
+	if GM.MAP.Killer.Name ~= KILLER.Name then return end
 for _,v in ipairs(player.GetAll()) do
 v:ConCommand("play albertwesker/voice/intro.mp3")
 end
@@ -37,7 +36,7 @@ end
 
 if SERVER then
 hook.Add( "PlayerShouldTakeDamage", "Wesker_infection", function( ply, attacker )
-	if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_WESKER].Name then return end
+	if GM.MAP.Killer.Name ~= KILLER.Name then return end
 	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 if ply:IsPlayer() and attacker:IsPlayer() and ply:Team() == TEAM_SURVIVORS and attacker:Team() == TEAM_KILLER and ply:GetNWBool("sls_wesker_infected", false) == false then
 ply:SetNWBool("sls_wesker_infected", true)
@@ -68,7 +67,7 @@ end
 end )
 end
 	hook.Add("sls_round_End", "sls_kability_End_wesker", function()
-		if GM.MAP.Killer.Name ~= GM.KILLERS[KILLER_WESKER].Name then return end
+		if GM.MAP.Killer.Name ~= KILLER.Name then return end
 		if SERVER then
 for _,players in pairs(player.GetAll()) do
 if timer.Exists("wesker_infection" .. players:SteamID64()) or timer.Exists("wesker_infection" .. players:EntIndex()) then
@@ -81,4 +80,6 @@ players:SetNWBool("sls_wesker_infected", false)
 end
 end
 	end
-end)
+
+KILLER_WESKER = KILLER.index
+end)]]

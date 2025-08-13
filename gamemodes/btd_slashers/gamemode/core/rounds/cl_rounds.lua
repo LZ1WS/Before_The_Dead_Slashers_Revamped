@@ -75,11 +75,7 @@ local function PostStart()
 		elseif LocalPlayer():Team() == TEAM_KILLER then
 			TeamName = GM.LANG:GetString("round_team_name_killer")
 			TeamText = GM.LANG:GetString("round_team_desc_killer")
-			if GetGlobalInt("RNDKiller",1) == 1 then
-			ImageCharac = "characteres/"..string.lower(GAMEMODE.MAP.Killer.Name)..".png"
-			else
 			ImageCharac = GM.MAP.Killer.Icon
-			end
 			CharacName = GAMEMODE.MAP.Killer.Name
 			CharacText = GAMEMODE.MAP.Killer.Desc
 		end
@@ -93,11 +89,9 @@ end
 hook.Add("sls_round_PostStart", "sls_round_PostStart", PostStart)
 
 net.Receive("sls_plykiller", function()
---local mapsLuaPath = "slashers/gamemode/maps"
-	SetGlobalInt("RNDKiller", net.ReadInt(8))
-	GM.MAP.SetupKillers()
-				--include("btd_slashers/gamemode/modules/killerseverywhere/sh_ksevery.lua")
-			--include(mapsLuaPath .. "/" .. game.GetMap() .. ".lua")
+	local index = net.ReadUInt(8)
+
+	GM.MAP.SetupKillers(index)
 end)
 
 
@@ -143,3 +137,15 @@ local function CalcView(ply, pos, ang)
 	end
 end
 hook.Add("CalcView", "sls_round_CalcView", CalcView)
+
+local whColor = Color(129, 0, 0)
+
+net.Receive("sls_round_RevealSurvs", function()
+	hook.Add("PreDrawHalos", "sls_killer_survHalos", function()
+		halo.Add(GM.ROUND.Survivors, whColor, 0, 0, 2, true, true)
+	end)
+
+	timer.Simple(9.5, function()
+		hook.Remove("PreDrawHalos", "sls_killer_survHalos")
+	end)
+end)

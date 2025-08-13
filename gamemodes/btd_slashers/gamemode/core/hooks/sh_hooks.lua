@@ -1,7 +1,6 @@
 local GM = GM or GAMEMODE
 
 hook.Add("KillerPreUseAbility", "sls_abilities_restrictions", function(ply)
-	if GetGlobalInt("RNDKiller", 1) ~= GM.MAP.Killer.index then return false end
 	if GM.ROUND.Killer:GetNWFloat("sls_killer_ability_cooldown", 0) > CurTime() then return false, {"class_ability_error_time", GM.ROUND.Killer:GetNWFloat("sls_killer_ability_cooldown", 0) - CurTime()} end
 	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return false, "debuff_holy" end
 
