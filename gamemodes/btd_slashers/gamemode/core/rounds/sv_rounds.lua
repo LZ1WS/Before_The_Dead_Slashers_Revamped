@@ -133,7 +133,7 @@ function GM.ROUND:Start(forceKiller)
 	end
 
 	local killer = GM.ROUND.Killer:GetKiller(true)
-	GM.MAP.SetupKillers(killer)
+	GM.MAP:SetupKillers(killer)
 
 	local i = 0
 	for _, v in ipairs(player.GetAll()) do
@@ -387,9 +387,6 @@ function GM:PlayerSpawn(ply)
 
 		-- Send data
 		if GM.ROUND.Active then
-			local map_info = table.Copy(GM.MAP.Killer)
-			map_info.UseAbility = nil
-
 			net.Start("sls_round_PlayerConnect")
 				net.WriteInt(GM.ROUND.Count, 16)
 				net.WriteInt(GM.ROUND.EndTime, 16)
@@ -399,7 +396,7 @@ function GM:PlayerSpawn(ply)
 				net.WriteBool(GM.ROUND.WaitingPolice)
 				net.WriteBool(GM.ROUND.Escape)
 				net.WriteTable(GM.CLASS:GetClassIDTable())
-				net.WriteTable(map_info)
+				net.WriteUInt(GM.MAP.Killer.index, 8)
 			net.Send(ply)
 		end
 	end

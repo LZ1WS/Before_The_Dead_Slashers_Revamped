@@ -37,7 +37,7 @@ function GM.MAP:GetKillerIndex()
 	return index
 end
 
-GM.MAP.SetupKillers = function(index)
+function GM.MAP:SetupKillers(index)
 	local info = sls.killers.Get(index)
 
 	if SERVER then
