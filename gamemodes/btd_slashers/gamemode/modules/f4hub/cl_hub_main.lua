@@ -214,9 +214,6 @@ function PANEL:Populate()
 		local model = killer.Model
 		local icon = killer.Icon
 
-		if GetConVar("slashers_unserious_killers"):GetInt() == 0 and killer.Joke then continue end
-		if GetConVar("slashers_unserious_killers"):GetInt() == 1 and killer.Serious then continue end
-
 		local DermaImageButton = List:Add( "DImageButton" )
 		local killername = DermaImageButton:Add("DLabel")
 		killername:Dock(BOTTOM)
