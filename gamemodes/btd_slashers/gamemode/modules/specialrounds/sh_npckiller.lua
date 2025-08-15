@@ -142,7 +142,7 @@ GM.ROUND.Special.NPC.Start = function()
 	else
     SetGlobalInt("RNDKiller", KILLER_XENO)
 	end
-	GM.MAP.SetupKillers()
+	GM.MAP:SetupKillers()
 	net.Start("sls_plykiller")
 	if rnd_npc == "npc_sr_grossman" then
 		net.WriteInt(KILLER_SLENDER, 8)
