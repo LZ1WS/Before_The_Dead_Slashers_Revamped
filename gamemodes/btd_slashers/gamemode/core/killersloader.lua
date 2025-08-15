@@ -4,6 +4,27 @@ GM.KILLERS_LIST = {}
 
 sls.killers = sls.killers or {}
 
+function GM:InitializedKillers()
+	local toRemove = {}
+
+	for index, info in ipairs(GM.KILLERS) do
+		if info.Joke then
+			local serious = info.Serious and sls.killers.Get(info.Serious)
+			if GetConVar("slashers_unserious_killers"):GetInt() == 0 then
+				toRemove[index] = true
+			elseif GetConVar("slashers_unserious_killers"):GetInt() == 1 and serious then
+				toRemove[serious.index] = true
+			end
+		end
+	end
+
+	if next(toRemove) != nil then
+		for index, _ in ipairs(toRemove) do
+			sls.killers.Remove(index)
+		end
+	end
+end
+
 function GM.MAP:GetKillerInfo()
 	local index = self.Killer.index
 
@@ -52,66 +73,6 @@ GM.MAP.SetupKillers = function(index)
 		GM.MAP.Killer.UseAbility = info.UseAbility
 	end
 
-	--[[if GetConVar("slashers_unserious_killers"):GetInt() == 0 and info.Joke and info.Serious then
-		local serious = info.Serious
-
-		if serious.Name then
-			GM.MAP.Killer.Name = serious.Name
-		end
-
-		if serious.Desc then
-			GM.MAP.Killer.Desc = serious.Desc
-		end
-
-		if serious.Icon then
-			GM.MAP.Killer.Icon = serious.Icon
-		end
-
-		if serious.Model then
-			GM.MAP.Killer.Model = serious.Model
-		end
-
-		if serious.StartMusic then
-			GM.MAP.StartMusic = serious.StartMusic
-		end
-
-		if serious.ChaseMusic then
-			GM.MAP.ChaseMusic = serious.ChaseMusic
-		end
-
-		if serious.EscapeMusic then
-			GM.MAP.EscapeMusic = serious.EscapeMusic
-		end
-
-		if serious.WalkSpeed then
-			GM.MAP.Killer.WalkSpeed = serious.WalkSpeed
-		end
-
-		if serious.RunSpeed then
-			GM.MAP.Killer.RunSpeed = serious.RunSpeed
-		end
-
-		if serious.UniqueWeapon then
-			GM.MAP.Killer.UniqueWeapon = serious.UniqueWeapon
-		end
-
-		if serious.ExtraWeapons then
-			GM.MAP.Killer.ExtraWeapons = serious.ExtraWeapons
-		end
-
-		if serious.Abilities then
-			GM.MAP.Killer.Abilities = serious.Abilities
-		end
-
-		if serious.VoiceCallouts then
-			GM.MAP.Killer.VoiceCallouts = serious.VoiceCallouts
-		end
-
-		if (serious.UseAbility) then
-			GM.MAP.Killer.UseAbility = serious.UseAbility
-		end
-	end]]
-
 	GM.MAP.Killer.index = index
 
 	hook.Run("sls_killer_loaded")
@@ -139,7 +100,30 @@ function sls.killers.GetIndex(uniqueID)
 	return info.index
 end
 
+function sls.killers.Init(bNoHookTrigger)
+	sls.killers.LoadFromDir("btd_slashers/gamemode/core/killers")
+
+	if !bNoHookTrigger then
+		hook.Run("InitializedKillers")
+	end
+end
+
 local disabled = {["wesker"] = true}
+function sls.killers.Load(fileName)
+	local id = #GM.KILLERS + 1
+	local niceName = fileName:sub(4, -5)
+
+	if disabled[niceName] then return end
+
+	KILLER = setmetatable({uniqueID = niceName, index = id}, sls.meta.killer)
+
+	sls.util.Include(fileName, "shared")
+
+	GM.KILLERS[id] = KILLER
+	GM.KILLERS_LIST[niceName] = KILLER
+
+	KILLER = nil
+end
 
 function sls.killers.LoadFromDir(directory)
 	for _, v in ipairs(file.Find(directory.."/sh_*.lua", "LUA")) do
@@ -152,14 +136,6 @@ function sls.killers.LoadFromDir(directory)
 
 		sls.util.Include(directory.."/"..v, "shared")
 
-		if GetConVar("slashers_unserious_killers"):GetInt() == 0 and KILLER.Joke then
-			KILLER = nil
-			continue
-		elseif GetConVar("slashers_unserious_killers"):GetInt() == 1 and KILLER.Serious then
-			KILLER = nil
-			continue
-		end
-
 		GM.KILLERS[id] = KILLER
 		GM.KILLERS_LIST[niceName] = KILLER
 
@@ -167,8 +143,28 @@ function sls.killers.LoadFromDir(directory)
 	end
 end
 
-hook.Add("PostGamemodeLoaded","sls_killersLoad", function()
-	sls.killers.LoadFromDir("btd_slashers/gamemode/core/killers")
+local removalStr = "Removed killer %s!"
+local logColor = Color(77, 69, 191)
+function sls.killers.Remove(index)
+	local info
 
-	hook.Run("InitializedKillers")
+	if isnumber(index) then
+		info = GM.KILLERS[index]
+	elseif isstring(index) then
+		info = GM.KILLERS_LIST[index]
+	end
+
+	if !info then return false end
+	local uniqueID = info.uniqueID
+
+	table.remove(GM.KILLERS, index)
+	GM.KILLERS_LIST[uniqueID] = nil
+
+	MsgC(logColor, string.format(removalStr, uniqueID))
+
+	return true
+end
+
+hook.Add("PostGamemodeLoaded","sls_killersLoad", function()
+	sls.killers.Init()
 end)
