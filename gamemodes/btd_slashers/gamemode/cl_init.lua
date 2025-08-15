@@ -9,6 +9,7 @@ include("shared.lua")
 include("config.lua")
 include("core/_includes.lua")
 include("modulesloader.lua")
+include("thirdpartyloader.lua")
 
 local hide = {
 	CHudHealth = true,

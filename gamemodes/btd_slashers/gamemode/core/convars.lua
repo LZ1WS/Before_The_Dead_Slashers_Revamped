@@ -9,6 +9,7 @@ if SERVER then
     util.AddNetworkString("slashers_unserious_callback")
 
     cvars.AddChangeCallback("slashers_unserious_killers", function(_, oldValue, newValue)
+        if GM or !sls then return end
         net.Start("slashers_unserious_callback")
         net.Broadcast()
 

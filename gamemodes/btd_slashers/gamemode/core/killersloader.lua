@@ -117,7 +117,9 @@ function sls.killers.Load(fileName)
 
 	KILLER = setmetatable({uniqueID = niceName, index = id}, sls.meta.killer)
 
-	sls.util.Include(fileName, "shared")
+	sls.util.Include(fileName, "shared", true)
+
+	if SERVER then print("LOADING " .. string.TrimLeft(fileName, "btd_slashers/gamemode/core/killers/")) end
 
 	GM.KILLERS[id] = KILLER
 	GM.KILLERS_LIST[niceName] = KILLER
@@ -126,20 +128,14 @@ function sls.killers.Load(fileName)
 end
 
 function sls.killers.LoadFromDir(directory)
+	if SERVER then print("--- KILLERS ---") end
+
 	for _, v in ipairs(file.Find(directory.."/sh_*.lua", "LUA")) do
-		local id = #GM.KILLERS + 1
 		local niceName = v:sub(4, -5)
 
 		if disabled[niceName] then continue end
 
-		KILLER = setmetatable({uniqueID = niceName, index = id}, sls.meta.killer)
-
-		sls.util.Include(directory.."/"..v, "shared")
-
-		GM.KILLERS[id] = KILLER
-		GM.KILLERS_LIST[niceName] = KILLER
-
-		KILLER = nil
+		sls.killers.Load(directory.."/"..v)
 	end
 end
 
