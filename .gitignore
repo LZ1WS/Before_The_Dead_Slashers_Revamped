@@ -20,26 +20,6 @@ clientside_errors.txt
 *.inf
 *.db
 *.vbsp
-backgrounds/
-bin/
-cache/
-cfg/
-data/
-download/
-downloadlists/
-disabled_addons/
-disabled_plugins/
-fallbacks/
-base/
-sandbox/
-terrortown/
-html/
-lua/*
-maps/
-particles/
-resource/
-scenes/
-settings/
 
 *materials/
 *models/
