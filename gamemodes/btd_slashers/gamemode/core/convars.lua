@@ -10,11 +10,12 @@ if SERVER then
 
     cvars.AddChangeCallback("slashers_unserious_killers", function(_, oldValue, newValue)
         if GM or !sls then return end
+        if !IsFirstTimePredicted() then return end
         net.Start("slashers_unserious_callback")
         net.Broadcast()
 
         sls.killers.Init()
-    end)
+    end, "slashers_unserious_callback")
 end
 
 CreateConVar("slashers_lang_default", "en", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set default language of gamemode.")

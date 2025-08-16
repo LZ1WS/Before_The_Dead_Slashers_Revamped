@@ -5,22 +5,16 @@ GM.KILLERS_LIST = {}
 sls.killers = sls.killers or {}
 
 function GM:InitializedKillers()
-	local toRemove = {}
+	for index = #GM.KILLERS, 1, -1 do
+		local info = GM.KILLERS[index]
 
-	for index, info in ipairs(GM.KILLERS) do
 		if info.Joke then
 			local serious = info.Serious and sls.killers.Get(info.Serious)
 			if GetConVar("slashers_unserious_killers"):GetInt() == 0 then
-				toRemove[index] = true
+				sls.killers.Remove(index)
 			elseif GetConVar("slashers_unserious_killers"):GetInt() == 1 and serious then
-				toRemove[serious.index] = true
+				sls.killers.Remove(serious.index)
 			end
-		end
-	end
-
-	if next(toRemove) != nil then
-		for index, _ in ipairs(toRemove) do
-			sls.killers.Remove(index)
 		end
 	end
 end
@@ -101,15 +95,14 @@ function sls.killers.GetIndex(uniqueID)
 end
 
 function sls.killers.Init(bNoHookTrigger)
-	sls.killers.LoadFromDir("btd_slashers/gamemode/core/killers")
+	GM.KILLERS = {}
+	GM.KILLERS_LIST = {}
 
-	if !bNoHookTrigger then
-		hook.Run("InitializedKillers")
-	end
+	sls.killers.LoadFromDir("btd_slashers/gamemode/core/killers", bNoHookTrigger)
 end
 
 local disabled = {["wesker"] = true}
-function sls.killers.Load(fileName)
+function sls.killers.Load(fileName, filePath)
 	local id = #GM.KILLERS + 1
 	local niceName = fileName:sub(4, -5)
 
@@ -117,9 +110,9 @@ function sls.killers.Load(fileName)
 
 	KILLER = setmetatable({uniqueID = niceName, index = id}, sls.meta.killer)
 
-	sls.util.Include(fileName, "shared", true)
+	sls.util.Include(filePath, "shared", true)
 
-	if SERVER then print("LOADING " .. string.TrimLeft(fileName, "btd_slashers/gamemode/core/killers/")) end
+	if SERVER then print("LOADING " .. string.TrimLeft(filePath, "btd_slashers/gamemode/core/killers/")) end
 
 	GM.KILLERS[id] = KILLER
 	GM.KILLERS_LIST[niceName] = KILLER
@@ -127,7 +120,7 @@ function sls.killers.Load(fileName)
 	KILLER = nil
 end
 
-function sls.killers.LoadFromDir(directory)
+function sls.killers.LoadFromDir(directory, bNoHookTrigger)
 	if SERVER then print("--- KILLERS ---") end
 
 	for _, v in ipairs(file.Find(directory.."/sh_*.lua", "LUA")) do
@@ -135,11 +128,15 @@ function sls.killers.LoadFromDir(directory)
 
 		if disabled[niceName] then continue end
 
-		sls.killers.Load(directory.."/"..v)
+		sls.killers.Load(v, directory.."/"..v)
+	end
+
+	if !bNoHookTrigger then
+		hook.Run("InitializedKillers")
 	end
 end
 
-local removalStr = "Removed killer %s!"
+local removalStr = "Removed killer %s!\n"
 local logColor = Color(77, 69, 191)
 function sls.killers.Remove(index)
 	local info
@@ -151,12 +148,28 @@ function sls.killers.Remove(index)
 	end
 
 	if !info then return false end
+	index = info.index
 	local uniqueID = info.uniqueID
 
-	table.remove(GM.KILLERS, index)
+	GM.KILLERS[index] = nil
 	GM.KILLERS_LIST[uniqueID] = nil
 
 	MsgC(logColor, string.format(removalStr, uniqueID))
+
+	local newTbl = {}
+	local decrement = false
+	for i = 1, #GM.KILLERS do
+		local tab = GM.KILLERS[i]
+
+		if !tab then decrement = true continue end
+		if decrement then
+			tab.index = i - 1
+			GM.KILLERS_LIST[tab.uniqueID].index = i - 1
+		end
+
+		newTbl[#newTbl + 1] = tab
+	end
+	GM.KILLERS = newTbl
 
 	return true
 end
