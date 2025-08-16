@@ -1,4 +1,5 @@
 local GM = GM or GAMEMODE
+local KILLER = KILLER
 
 -- Killer
 KILLER.Name = "Jason"

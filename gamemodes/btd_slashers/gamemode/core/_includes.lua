@@ -25,12 +25,12 @@ function sls.util.IncludeDir(directory, bFromLua, bFromModules)
 
 end
 
-function sls.util.Include(fileName, realm)
+function sls.util.Include(fileName, realm, noShowMessage)
 	if (!fileName) then
 		error("[BTD] No file name specified for including.")
 	end
 
-	if SERVER then print("LOADING " .. fileName) end
+	if SERVER and !noShowMessage then print("LOADING " .. string.TrimLeft(fileName, "btd_slashers/gamemode/")) end
 
 	-- Only include server-side if we're on the server.
 	if ((realm == "server" or fileName:find("sv_")) and SERVER) then

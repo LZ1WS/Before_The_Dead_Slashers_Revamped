@@ -91,7 +91,7 @@ hook.Add("sls_round_PostStart", "sls_round_PostStart", PostStart)
 net.Receive("sls_plykiller", function()
 	local index = net.ReadUInt(8)
 
-	GM.MAP.SetupKillers(index)
+	GM.MAP:SetupKillers(index)
 end)
 
 

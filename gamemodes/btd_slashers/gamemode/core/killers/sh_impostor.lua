@@ -13,6 +13,7 @@ KILLER.ChaseMusic = "amogus/chase/amoguschase.ogg"
 KILLER.TerrorMusic = "defaultkiller/terror/terror.wav"
 KILLER.Abilities = {"amogus/ability/amogus_transform1.mp3", "amogus/ability/amogus_transform2.mp3", "amogus/ability/amogus_reveal.mp3"}
 KILLER.VoiceCallouts = {"amogus/ability/amogus_sus.mp3"}
+KILLER.Serious = "alternate"
 
 if CLIENT then
 	KILLER.Desc = GM.LANG:GetString("class_desc_amogus")

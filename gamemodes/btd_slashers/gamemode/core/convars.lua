@@ -5,6 +5,18 @@
 -- @Last Modified by:   Garrus2142
 -- @Last Modified time: 2017-08-09 23:19:12
 
+if SERVER then
+    util.AddNetworkString("slashers_unserious_callback")
+
+    cvars.AddChangeCallback("slashers_unserious_killers", function(_, oldValue, newValue)
+        if GM or !sls then return end
+        if !IsFirstTimePredicted() then return end
+        net.Start("slashers_unserious_callback")
+        net.Broadcast()
+
+        sls.killers.Init()
+    end, "slashers_unserious_callback")
+end
 
 CreateConVar("slashers_lang_default", "en", {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set default language of gamemode.")
 CreateConVar("slashers_round_min_player", 3, {FCVAR_SERVER_CAN_EXECUTE, FCVAR_ARCHIVE, FCVAR_REPLICATED}, "Set minimum players required to start a round.")
@@ -23,4 +35,8 @@ if CLIENT then
     CreateClientConVar("slashers_lobby_volume", 100, true, false, "Volume of music in the lobby screen. (set to 0 to mute).", 0, 100)
     CreateClientConVar("slashers_chase_volume", 100, true, false, "Volume of chase music. (Min: 10; Max: 100).", 10, 100)
     CreateClientConVar("slashers_escape_volume", 100, true, false, "Volume of escape music. (Min: 10; Max: 100).", 10, 100)
+
+    net.Receive("slashers_unserious_callback", function()
+        sls.killers.Init()
+    end)
 end

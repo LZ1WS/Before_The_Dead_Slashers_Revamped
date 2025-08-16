@@ -99,7 +99,7 @@ local function PlayerConnect()
 	for _, v in ipairs(net.ReadTable()) do
 		v.ply.ClassID = v.ClassID
 	end
-	GM.MAP.Killer = net.ReadTable()
+	GM.MAP:SetupKillers(net.ReadUInt(8))
 end
 net.Receive("sls_round_PlayerConnect", PlayerConnect)
 

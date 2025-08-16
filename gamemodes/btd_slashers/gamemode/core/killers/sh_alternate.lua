@@ -8,7 +8,6 @@ KILLER.StartMusic = "sound/alternate/voice/intro.mp3"
 KILLER.ChaseMusic = "alternate/chase/chase.ogg"
 KILLER.Abilities = {"amogus/ability/amogus_transform1.mp3", "amogus/ability/amogus_transform2.mp3", "alternate/ability/alternate_reveal.mp3"}
 KILLER.VoiceCallouts = {"alternate/ability/alternate_callout2.mp3", "alternate/ability/alternate_callout3.mp3", "alternate/ability/alternate_callout4.mp3"}
-KILLER.Serious = "impostor"
 
 if CLIENT then
     KILLER.Desc = GM.LANG:GetString("class_desc_alternate")

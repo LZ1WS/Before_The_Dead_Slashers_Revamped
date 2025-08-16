@@ -8,14 +8,15 @@
 DEFINE_BASECLASS( "gamemode_base" )
 include("shared.lua")
 include("config.lua")
-include("libs/zones.lua")
 include("core/_includes.lua")
 include("modulesloader.lua")
+include("thirdpartyloader.lua")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("config.lua")
 AddCSLuaFile("core/_includes.lua")
 AddCSLuaFile("modulesloader.lua")
+AddCSLuaFile("thirdpartyloader.lua")
 
 GAME_LUM = "g"
 

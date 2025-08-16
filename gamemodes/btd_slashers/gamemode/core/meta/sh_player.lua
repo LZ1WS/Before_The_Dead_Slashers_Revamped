@@ -35,9 +35,6 @@ function PLAYER:GetKiller(randomize)
                     if info.SpecialRound == "GM.MAP.Vaccine" and !GM.MAP.Vaccine then continue end
                 end
 
-                if GetConVar("slashers_unserious_killers"):GetInt() == 0 and info.Joke then continue end
-                if GetConVar("slashers_unserious_killers"):GetInt() == 1 and info.Serious then continue end
-
                 id = index
                 break
             end
