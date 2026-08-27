@@ -57,9 +57,9 @@ end
 
 hook.Add("CalcMainActivity", "sls_amogus_animation", function(ply)
 	if !IsValid(GM.ROUND.Killer) then return end
+	if ply:Team() ~= TEAM_KILLER then return end
 	if GM.ROUND.Killer:GetModel() ~= "models/slashco/slashers/amogus/amogus.mdl" then return end
 	if ply:IsOnGround() then
-
 		if !ply:GetNWBool("sls_ChaseSoundPlaying", false) then
 			ply.CalcIdeal = ACT_HL2MP_WALK
 			ply.CalcSeqOverride = ply:LookupSequence("prowl")
@@ -67,11 +67,8 @@ hook.Add("CalcMainActivity", "sls_amogus_animation", function(ply)
 			ply.CalcIdeal = ACT_HL2MP_RUN
 			ply.CalcSeqOverride = ply:LookupSequence("chase")
 		end
-
 	else
-
 		ply.CalcSeqOverride = ply:LookupSequence("float")
-
 	end
 	return ply.CalcIdeal, ply.CalcSeqOverride
 end)
