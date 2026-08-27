@@ -15,7 +15,8 @@ function CreateZone(vec1, vec2)
 
     OrderVectors(vec1, vec2)
     zone.coords = {vec1, vec2}
-    zone.id = table.insert(Zones, zone)
+    zone.id = #Zones + 1
+    table.insert(Zones, zone)
     setmetatable(zone, Zones_meta)
     return zone
 end
