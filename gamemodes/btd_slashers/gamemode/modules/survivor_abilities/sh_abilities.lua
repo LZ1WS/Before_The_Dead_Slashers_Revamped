@@ -10,7 +10,7 @@ hook.Add("sls_round_PostStart", "sls_survivor_abilities", function()
         if CLIENT then
         local color_green = Color( 0, 153, 0 )
         hook.Add("PreDrawHalos", "AddSteveHalos", function()
-            timer.Simple("10", function()
+            timer.Simple(10, function()
         hook.Remove("PreDrawHalos", "AddSteveHalos")
         end)
             local localply = LocalPlayer()
@@ -42,6 +42,7 @@ hook.Add("sls_round_PostStart", "sls_survivor_abilities", function()
         end)
         end
         timer.Simple(30, function()
+            if !IsValid(ply) then return end
             ply:SetNWBool("steveabilused", false)
             if SERVER then
                 ply:Notify({"class_ability_time"}, "safe")
