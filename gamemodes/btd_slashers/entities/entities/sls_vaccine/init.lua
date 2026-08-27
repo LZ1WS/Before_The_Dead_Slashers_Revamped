@@ -67,7 +67,7 @@ function ENT:Use(ply, caller)
 	if caller:GetNWBool("sls_wesker_infected", false) == true && caller:Team() == TEAM_SURVIVORS then
 		local tr = caller:GetEyeTrace()
 		self:SetUseType( CONTINUOUS_USE )
-		curentProgress = self:GetNWFloat('progressBar')
+		local curentProgress = self:GetNWFloat('progressBar')
 
 		if (curentProgress < 1 ) then
 
@@ -79,7 +79,7 @@ function ENT:Use(ply, caller)
 
 		if (curentProgress >= 1) then
 
-			self:GetNWFloat( 'progressBar', 0)
+			self:SetNWFloat( 'progressBar', 0)
 			self:EmitSound( "vaccine_used" .. math.random(1, 2), 75, 100, 1, CHAN_AUTO )
 
 			net.Start( "activateProgressionSlasher" )
