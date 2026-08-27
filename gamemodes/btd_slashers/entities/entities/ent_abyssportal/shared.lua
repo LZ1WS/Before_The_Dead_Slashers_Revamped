@@ -175,13 +175,17 @@ function ENT:OnRemove()
 		LocalPlayer():EmitSound("weapons/demo/sfx_qatar_portal_destroyed_warning_01.ogg")
 		LocalPlayer():EmitSound("weapons/demo/sfx_qatar_portal_destroyed_warning_02.ogg")
 		
-	else
-		
+else
+
 		local owner = self:GetOwner()
-		
-		local wpn = owner:GetWeapon( "demogorgon_claws" )
-		
-		wpn:SetPortalsLeft(wpn:GetPortalsLeft() + 1)
+
+		if IsValid(owner) then
+			local wpn = owner:GetWeapon( "demogorgon_claws" )
+
+			if IsValid(wpn) then
+				wpn:SetPortalsLeft(wpn:GetPortalsLeft() + 1)
+			end
+		end
 
 	end
 
