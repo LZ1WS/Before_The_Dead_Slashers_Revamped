@@ -53,7 +53,7 @@ function ENT:Initialize()
 	if SERVER then
 		if !IsValid(self.myowner) then
 			self.myowner=self.Owner
-			if !IsValid(myowner) then
+			if !IsValid(self.myowner) then
 				self.myowner=self.Entity
 			end
 		end
