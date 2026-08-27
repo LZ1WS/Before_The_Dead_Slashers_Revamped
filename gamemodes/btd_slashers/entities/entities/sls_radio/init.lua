@@ -78,6 +78,7 @@ function ENT:Use(ply)
 		hook.Run("sls_NextObjective", "Police")
 
 		self.Active = true
+		self:SetNWBool("activated", true)
 		self:EmitSound("slashers_radio")
 	else
 		if (!self:GetNWBool( "activated") && ply:IsPlayer()) then
