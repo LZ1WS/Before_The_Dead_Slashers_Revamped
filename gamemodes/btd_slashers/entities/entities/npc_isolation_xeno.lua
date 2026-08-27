@@ -955,6 +955,7 @@ function ENT:GetNearestToPlayerVent()
 	end
 	
 	if table.Count( ply ) == 0 then
+		if #vents == 0 then return nil end
 		return vents[math.random( 1, #vents )]	
 	else
 		ply = ply[ math.random( 1, #ply ) ]
@@ -1120,9 +1121,12 @@ function ENT:ReturnToMap( vent )
 		end
 	end
 
-	local filter = { vent }
-	table.Merge( vent, player.GetAll() )
-	local tr = util.TraceLine( { start = pos, endpos = pos - Vector( 0, 0, 1024 ), filter = vent } )
+	local filter = {}
+	if IsValid( vent ) then
+		table.insert( filter, vent )
+	end
+	table.Merge( filter, player.GetAll() )
+	local tr = util.TraceLine( { start = pos, endpos = pos - Vector( 0, 0, 1024 ), filter = filter } )
 	pos = tr.HitPos
 			
 	self:SetPos( pos )
