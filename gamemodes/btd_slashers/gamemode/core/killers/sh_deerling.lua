@@ -67,7 +67,7 @@ end)
 hook.Add("PlayerFootstep", "sls_deerling_second_ability", function(ply, pos, foot, sound, volume)
 	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 	if ply:Team() ~= TEAM_KILLER then return end
-	if GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
+	if GM.ROUND.Killer and GM.ROUND.Killer:GetNWBool("sls_holy_weaken_effect", false) then return end
 
 	if ply:GetNWBool("sls_deerling_ability_active", false) then
 		ply:EmitSound( "NPC_Dog.Footstep" ) -- Play the footsteps hunter is using
