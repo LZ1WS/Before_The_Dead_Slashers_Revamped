@@ -41,7 +41,7 @@ function KILLER:UseAbility(ply)
     if CLIENT then return end
 
     ply:SetNWBool("sls_ram_killer", true)
-    timer.Simple(ply:SequenceDuration(ply:LookupSequence( "wos_l4d_getup_from_pounced" )), function()
+    timer.Simple(ply:SequenceDuration(ply:LookupSequence( "ACT_HL2MP_RUN_CHARGING" )), function()
         ply:SetNWBool("sls_ram_killer", false)
     end)
 
