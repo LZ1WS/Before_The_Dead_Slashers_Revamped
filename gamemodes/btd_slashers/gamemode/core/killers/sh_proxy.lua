@@ -202,25 +202,29 @@ else
 	local function ResetVisibility()
 	for k,v in pairs(player.GetAll()) do
 		v:DrawShadow( true )
-		if GM.ROUND.Killer == KILLER_PROXY then
-			GM.ROUND.Killer:SetNW2Float("sls_max_speed", nil)
-			GM.ROUND.Killer.InvisibleActive = false
-		end
 		v:SetRenderMode(RENDERMODE_TRANSALPHA )
 		v:SetColor(Color(255,255,255))
 	end
-	if (!GAMEMODE.ROUND.Killer) then return end
+
+	if IsValid(GM.ROUND.Killer) and GM.MAP:GetKillerIndex() == KILLER_PROXY then
+		GM.ROUND.Killer:SetNW2Float("sls_max_speed", nil)
+		GM.ROUND.Killer.InvisibleActive = false
+
 		net.Start("sls_kability_Invisible")
 			net.WriteBool(false)
-		net.Send(GAMEMODE.ROUND.Killer)
+		net.Send(GM.ROUND.Killer)
+	end
 	end
 hook.Add("PostPlayerDeath","sls_kability_ResetViewKiller",ResetVisibility)
 hook.Add("sls_round_PostStart","sls_kability_ResetViewKillerAfterEnd",ResetVisibility)
 
 local timerSend = 0
+local wasActive = false
 local function sendPosWhenInvisible()
 	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
-	if IsValid(GM.ROUND.Killer) &&   GM.ROUND.Active && timerSend < CurTime()  then
+
+	if IsValid(GM.ROUND.Killer) && GM.ROUND.Active && timerSend < CurTime() then
+		wasActive = true
 		timerSend = CurTime() + 0.5
 		local shygirl = getSurvivorByClass(CLASS_SURV_SHY)
 		if !shygirl or !shygirl:IsPlayer() then return end
@@ -236,13 +240,13 @@ local function sendPosWhenInvisible()
 		net.WriteVector(GM.ROUND.Killer:GetPos())
 		net.WriteBool(true)
 		net.Send(shygirl)
-	end
-	if !GM.ROUND.Active && timerSend < CurTime() then
-			timerSend = CurTime() + 1
-			net.Start("sls_proxy_sendpos")
-			net.WriteVector(Vector(0,0,0))
-			net.WriteBool(false)
-			net.Broadcast()
+	elseif wasActive and !GM.ROUND.Active then
+		-- Clear every client's proxy icon once when the round ends.
+		wasActive = false
+		net.Start("sls_proxy_sendpos")
+		net.WriteVector(Vector(0,0,0))
+		net.WriteBool(false)
+		net.Broadcast()
 	end
 end
 hook.Add("Think","sls_sendposkillerwheninvisible",sendPosWhenInvisible)
