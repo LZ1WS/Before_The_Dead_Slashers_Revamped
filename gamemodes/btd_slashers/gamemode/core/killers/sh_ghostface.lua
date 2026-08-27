@@ -31,7 +31,7 @@ if CLIENT then
 	local function AddDoor()
 		local pos, endtime
 		pos = net.ReadVector()
-	endtime = net.ReadInt(16)
+	endtime = CurTime() + net.ReadInt(16)
 
 	table.insert(doors, {
 		pos = pos,
@@ -78,7 +78,7 @@ else
 
 	net.Start("sls_kability_AddDoor")
 	net.WriteVector(pos)
-	net.WriteInt(endtime, 16)
+	net.WriteInt(endtime - CurTime(), 16)
 	net.Send(GM.ROUND.Killer)
 end
 
