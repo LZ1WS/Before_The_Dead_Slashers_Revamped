@@ -192,7 +192,8 @@ local halo_table = {}
 Reload
 ---------------------------------------------------------*/
 function SWEP:SecondaryAttack()
-	if GAMEMODE.MAP.Killer.Name ~= GAMEMODE.KILLERS[KILLER_MUTE].Name then return end
+	local muteInfo = GAMEMODE.KILLERS[KILLER_MUTE]
+	if !muteInfo or GAMEMODE.MAP.Killer.Name ~= muteInfo.Name then return end
 if CLIENT then
 
 	local SurvivorsPly = player.GetAll()
