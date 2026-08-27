@@ -118,6 +118,7 @@ local function WDA_CAST_BLINK( ply )
 		pos = pos - Vector( 0, 0, 16 )
 	end
 
+	local FOV = ply:GetFOV()
 	ply:SetFOV(FOV + 25, 0.25)
 
 	timer.Simple(0.125, function()
@@ -230,7 +231,8 @@ hook.Add( "sls_NextObjective", "slender_objectives", function(goal)
 		info.CurrentObjective = "find_shotgun"
 		GAMEMODE.ROUND:UpdateEndTime(GAMEMODE.ROUND.EndTime + GetConVar("slashers_duration_addobj"):GetFloat())
 
-		for _, v in pairs( GM.MAP.Shotgun ) do
+		local shotgunSpawn = (GM.MAP.Pages and GM.MAP.Pages.Shotgun) or GM.MAP.Shotgun
+		for _, v in pairs( shotgunSpawn ) do
 			shotgun = table.Random(v)
 
 			--get the type of entity
