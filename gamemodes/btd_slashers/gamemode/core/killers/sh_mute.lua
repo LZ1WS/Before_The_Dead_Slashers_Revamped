@@ -28,6 +28,7 @@ hook.Add("PlayerFootstep", "sls_mute_second_ability", function(ply, pos, foot, s
 end)
 
 function KILLER:UseAbility(ply)
+	if CLIENT then return end
 	ply:EmitSound("mute/ability/ability.ogg")
 	ply:SetNWBool("sls_chase_disabled", true)
 
