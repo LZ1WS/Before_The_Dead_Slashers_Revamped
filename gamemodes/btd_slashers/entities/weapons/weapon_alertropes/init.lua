@@ -20,12 +20,12 @@ function SWEP:Equip(NewOwner)
 	self.firsthook = nil
 end
 
-local function traceline_hitworld(pos1, pos2)
+local function traceline_hitworld(wep, pos1, pos2)
 	local tracedata = {};
 
 	tracedata.start = Vector(pos1)
 	tracedata.endpos = Vector(pos2)
-	tracedata.filter = self
+	tracedata.filter = wep
 
 	local traceresult = util.TraceLine(tracedata)
 
@@ -45,7 +45,7 @@ function SWEP:PrimaryAttack()
 
 	if IsValid(self.firsthook) then
 
-		if traceline_hitworld(self.Owner:GetEyeTrace().HitPos, self.firsthook:GetPos()) or traceline_hitworld(self.firsthook:GetPos(), self.Owner:GetEyeTrace().HitPos)then
+		if traceline_hitworld(self, self.Owner:GetEyeTrace().HitPos, self.firsthook:GetPos()) or traceline_hitworld(self, self.firsthook:GetPos(), self.Owner:GetEyeTrace().HitPos)then
 			--self.Owner:PrintMessage(HUD_PRINTCENTER, "Hit world") -- A remplacer par la notif (1/2)
 			net.Start("notificationSlasher")
 				net.WriteTable({"traps_rope_hit_world"})
