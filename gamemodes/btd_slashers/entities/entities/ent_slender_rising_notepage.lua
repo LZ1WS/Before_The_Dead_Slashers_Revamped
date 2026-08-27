@@ -123,7 +123,9 @@ function ENT:Use( activator )
 				net.Send(GM.ROUND.Survivors)
 			end
 
-			sls.util.ModifyMaxSpeed(GM.ROUND.Killer, GM.ROUND.Killer:GetRunSpeed() + 10)
+			if IsValid(GM.ROUND.Killer) then
+				sls.util.ModifyMaxSpeed(GM.ROUND.Killer, GM.ROUND.Killer:GetRunSpeed() + 10)
+			end
 		end
 
 		if (info.NbPagesToFound == 0) then
