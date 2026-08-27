@@ -40,7 +40,7 @@ hook.Add("sls_round_PostStart", "sls_xeno_prey_ability", function()
             if killer:GetNWBool("sls_xeno_ability_active", false) then return end
 
             for _, ply in ipairs(GM.ROUND.Survivors) do
-                if !PlayerWithinBounds(killer, ply, 800) then return end
+                if !PlayerWithinBounds(killer, ply, 800) then continue end
 
                 if (ply:KeyDown(IN_JUMP) or ply:KeyDown(IN_FORWARD) or ply:KeyDown(IN_BACK) or ply:KeyDown(IN_MOVELEFT) or ply:KeyDown(IN_MOVERIGHT) or ply:IsSprinting()) and !ply:Crouching() then
 
@@ -61,6 +61,8 @@ end)
 
 -- Ability
 function KILLER:UseAbility(ply)
+    if CLIENT then return end
+
     ply:SetNWBool("sls_xeno_ability_active", !ply:GetNWBool("sls_xeno_ability_active", false))
 
     if !ply:GetNWBool("sls_xeno_ability_active", false) then
