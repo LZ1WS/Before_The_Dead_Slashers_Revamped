@@ -53,6 +53,7 @@ function SWEP:Initialize()
 end
 
 function SWEP:PrimaryAttack()
+	if CLIENT then return end
 
 	local owner = self:GetOwner()
 
@@ -61,7 +62,6 @@ function SWEP:PrimaryAttack()
 	owner:EmitSound(self.ShootSound)
 
 	self:Remove()
-
 end
 
 function SWEP:SecondaryAttack()
