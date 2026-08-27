@@ -64,7 +64,7 @@ function GM.ROUND:Start(forceKiller)
 	local spec_chance = GetConVar("slashers_specialround_chance"):GetInt() / 100
 	local bots_num = GetConVar("slashers_lambdabots_num"):GetInt()
 
-	if chance <= spec_chance and !table.IsEmpty(GM.ROUND.Special) then
+	if chance <= spec_chance then
 		if spec_chance == 0 then return end
 		GM.ROUND.SpecialType = table.Random(GM.ROUND.Special)
 
@@ -379,14 +379,16 @@ function GM:PlayerSpawn(ply)
 		ply:KillSilent()
 		ply.initialKill = true
 
-		net.Start("sls_round_SetupCamera")
-			net.WriteVector(GM.ROUND.CameraPos)
-			net.WriteAngle(GM.ROUND.CameraAng)
-		net.Send(ply)
-		ply:SetPos(GM.ROUND.CameraPos)
+		if GM.ROUND and GM.ROUND.CameraPos then
+			net.Start("sls_round_SetupCamera")
+				net.WriteVector(GM.ROUND.CameraPos)
+				net.WriteAngle(GM.ROUND.CameraAng)
+			net.Send(ply)
+			ply:SetPos(GM.ROUND.CameraPos)
+		end
 
 		-- Send data
-		if GM.ROUND.Active then
+		if GM.ROUND and GM.ROUND.Active then
 			net.Start("sls_round_PlayerConnect")
 				net.WriteInt(GM.ROUND.Count, 16)
 				net.WriteInt(GM.ROUND.EndTime, 16)
