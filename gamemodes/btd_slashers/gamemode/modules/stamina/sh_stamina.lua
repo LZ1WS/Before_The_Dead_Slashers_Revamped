@@ -139,9 +139,10 @@ local AlreadyBreathing = false
 
 function CalcStaminaChange(ply)
 	--local Change = FrameTime() * 5
-	if !GAMEMODE.ROUND.Active || !GAMEMODE.ROUND.Survivors  then return end
+	if !GAMEMODE.ROUND.Active or !GAMEMODE.ROUND.Survivors  then return end
 	--if !(ply.Stamina) then return end
-	if table.HasValue(GAMEMODE.ROUND.Survivors, ply )  then
+	if ply:Team() == TEAM_SURVIVORS then
+		local class = GAMEMODE.CLASS.Survivors[ply.ClassID]
 		local max_stamina = ply:GetMaxStamina()
 		local decay_mul = ply:GetStaminaDecayMul()
 		local regen_mul = ply:GetStaminaRegenMul()
@@ -182,8 +183,8 @@ function CalcStaminaChange(ply)
 		elseif not cmd:KeyDown(IN_JUMP) then
 			AlreadyJump = false
 		end]]
-		local walkSpeed = GAMEMODE.CLASS.Survivors[ply.ClassID].walkspeed
-		local runSpeed = GAMEMODE.CLASS.Survivors[ply.ClassID].runspeed
+		local walkSpeed = class.walkspeed
+		local runSpeed = class.runspeed
 
 		if ply:KeyDown(IN_SPEED) and ply:GetVelocity():LengthSqr() >= (walkSpeed * walkSpeed) and ( ply:OnGround() or ply:WaterLevel() ~= 0 ) and !ply:InVehicle() then
 			--if stamina <= 0 then
@@ -205,13 +206,13 @@ function CalcStaminaChange(ply)
 
 		if next_regen and next_regen < CurTime() then
 			if (ply:KeyDown(IN_FORWARD) or ply:KeyDown(IN_BACK) or ply:KeyDown(IN_MOVELEFT) or ply:KeyDown(IN_MOVERIGHT)) then
-				if GAMEMODE.CLASS.Survivors[ply.ClassID].name ~= "Sports" then
+				if class.name ~= "Sports" then
 					offset = 0.5 * regen_mul
 				else
 					offset = 1.5 * regen_mul
 				end
 			else
-				if GAMEMODE.CLASS.Survivors[ply.ClassID].name ~= "Sports" then
+				if class.name ~= "Sports" then
 					offset = 1 * regen_mul
 				else
 					offset = 2 * regen_mul
@@ -230,10 +231,17 @@ function CalcStaminaChange(ply)
 				ply:SetStamina(value)
 				if value == 0 then -- and not ply:GetNetVar("brth", false) then
 					--ply:SetRunSpeed(walkSpeed)
-					--ply:SetNetVar("brth", true)
+					if !ply.breath then
+						ply.breath = true
+						ply:SetNW2Bool("brth", true)
+					end
 					hook.Run("PlayerStaminaLost", ply)
 				elseif value >= 50 then --and ply:GetNetVar("brth", false) then
 					--ply:SetRunSpeed(runSpeed)
+					if ply.breath then
+						ply.breath = nil
+						ply:SetNW2Bool("brth", false)
+					end
 					--ply:SetNetVar("brth", nil)
 					hook.Run("PlayerStaminaGained", ply)
 				end
@@ -242,28 +250,11 @@ function CalcStaminaChange(ply)
 	end
 end
 
-local CMoveData = FindMetaTable("CMoveData")
-
-function CMoveData:RemoveKeys(keys)
-	-- Using bitwise operations to clear the key bits.
-	local newbuttons = bit.band(self:GetButtons(), bit.bnot(keys))
-	self:SetButtons(newbuttons)
-end
-
 hook.Add("SetupMove", "sls_stamina_disable", function(ply, mvd)
+	if !GAMEMODE.ROUND.Active or !GAMEMODE.ROUND.Survivors  then return end
 
-	if !GAMEMODE.ROUND.Active || !GAMEMODE.ROUND.Survivors  then return end
-
-	if table.HasValue(GAMEMODE.ROUND.Survivors, ply )  then
-		local stamina = ply:GetStamina()
-
-		if stamina <= 0 and ply:KeyDown(IN_SPEED) then
-			mvd:RemoveKeys(IN_SPEED)
-		end
-
-		if ply:KeyDown(IN_JUMP) and ply:OnGround() and !ply:InVehicle() and stamina <= 5 then
-			mvd:RemoveKeys(IN_JUMP)
-		end
+	if ply:Team() == TEAM_SURVIVORS and ply:GetNW2Bool("brth", false) then
+		mvd:SetMaxClientSpeed(ply:GetWalkSpeed())
 	end
 end)
 
@@ -346,8 +337,8 @@ if CLIENT then
 	local function HUDPaint()
 		local ply = LocalPlayer()
 		local bwide
-		if ply:Team() != TEAM_SURVIVORS || !ply:Alive() then return end
-		if !ply.ClassID || !GAMEMODE.ROUND.Active || !GAMEMODE.CLASS.Survivors[ply.ClassID].stamina then return end
+		if ply:Team() != TEAM_SURVIVORS or !ply:Alive() then return end
+		if !ply.ClassID or !GAMEMODE.ROUND.Active or !GAMEMODE.CLASS.Survivors[ply.ClassID].stamina then return end
 		--if !ply:GetNWFloat("sls_survivor_stamina") then return end
 
 		local stm = LocalPlayer():GetStamina()
