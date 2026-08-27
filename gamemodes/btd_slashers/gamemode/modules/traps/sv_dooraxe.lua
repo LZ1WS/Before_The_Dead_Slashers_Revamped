@@ -13,10 +13,14 @@ if SERVER then
 		if ply:Team() == TEAM_KILLER then return false end
 		if ent.trapeddoor == 2 then return false end
 		ent:Fire("Open")
-		ent.axe:GetPhysicsObject():EnableMotion(true)
-		ent.axe:GetPhysicsObject():ApplyForceCenter(Vector(0, 0, -1))
+		local axe = ent.axe
+		if IsValid(axe) and IsValid(axe:GetPhysicsObject()) then
+			axe:GetPhysicsObject():EnableMotion(true)
+			axe:GetPhysicsObject():ApplyForceCenter(Vector(0, 0, -1))
+		end
 		ply:Freeze(true)
 		timer.Simple(1, function()
+			if !IsValid(ply) then return end
 			ply:Kill()
 			ply:Freeze(false)
 		end)
