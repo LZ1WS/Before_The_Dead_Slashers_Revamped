@@ -18,6 +18,7 @@ if CLIENT then
 end
 
 function KILLER:UseAbility(ply)
+	if CLIENT then return end
 	if ply:GetNWBool("sls_chase_disabled", false) then
 		ply:SetNWBool("sls_kasper_buff_active", true)
 
@@ -37,9 +38,7 @@ function KILLER:UseAbility(ply)
 
 	if GM.ROUND.Killer:GetNWBool("sls_kasper_buff_active", false) or GM.ROUND.Killer:GetNWBool("sls_chase_disabled", false) then return end
 
-	if SERVER then
-		ply:Notify({"class_ability_kasper"}, "question")
-	end
+	ply:Notify({"class_ability_kasper"}, "question")
 
 	timer.Simple(5, function()
 		if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
@@ -68,7 +67,6 @@ hook.Add("sls_round_End", "sls_kasperabil_End", function()
 	for _, v in ipairs(player.GetAll()) do
 		v:SetNWBool("sls_chase_disabled", nil)
 	end
-
 end)
 
 KILLER_LEOKASPER = KILLER.index
