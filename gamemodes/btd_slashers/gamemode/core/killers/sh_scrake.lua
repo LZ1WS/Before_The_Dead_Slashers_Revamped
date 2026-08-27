@@ -57,8 +57,12 @@ end )
 hook.Add("sls_round_End", "sls_scrakeabil_End", function()
 	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
 
+	timer.Remove("sls_rage_timer")
+
 	for _, v in ipairs(player.GetAll()) do
+		v:SetNWBool("sls_scrake_enraged", nil)
 		v:SetNWBool("sls_heartbeat_disabled", nil)
+		v:SetJumpPower(90)
 	end
 end)
 
