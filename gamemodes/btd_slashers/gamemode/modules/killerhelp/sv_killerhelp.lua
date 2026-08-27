@@ -33,30 +33,28 @@ function FindNearestEntity( Name, pos, range )
 end
 
 local function ExitAppear()
-	if !IsValid(GM.ROUND.EscapeButton) or !IsValid(GM.ROUND.CustomEscape) then return end
+	if !IsValid(GM.ROUND.EscapeButton) and !GM.ROUND.CustomEscape then return end
 
-	local ButtonPos
 	local EscapePos
 
-	ButtonPos = GM.ROUND.EscapeButton:GetPos()
+	if IsValid(GM.ROUND.EscapeButton) then
+		local ButtonPos = GM.ROUND.EscapeButton:GetPos()
 
-	-- door_exit*
-	-- brush_car_1
-	-- prop_car_*
+		local Escape = FindNearestEntity("door_exit*", ButtonPos, 9000)
 
-	local Escape = FindNearestEntity("door_exit*",ButtonPos,9000)
+		if !Escape then
+			Escape = FindNearestEntity("prop_car_*", ButtonPos, 9000)
+		end
 
-	if (Escape == nil ) then
-		Escape = FindNearestEntity("prop_car_*",ButtonPos,9000)
-		EscapePos = Escape:GetPos()
-	else
-		EscapePos = Escape:GetPos()
+		if Escape then
+			EscapePos = Escape:GetPos()
+		end
 	end
 
 	if GM.ROUND.CustomEscape then
 		AddExit(GM.ROUND.CustomEscape["pos2"])
-	else
-	AddExit(Vector(EscapePos))
+	elseif EscapePos then
+		AddExit(Vector(EscapePos))
 	end
 
 end
@@ -82,7 +80,7 @@ local function Think()
 				v.kh_lastpos = v:GetPos()
 				v:SetNWBool("killerhelp_camp", false)
 
-			elseif curtime > v.kh_camptime + CAMP_DELAY && !v:GetNWBool("killerhelp_camp") && GAMEMODE.CLASS.Survivors[v.ClassID].name != "Emo" then
+			elseif curtime > v.kh_camptime + CAMP_DELAY && !v:GetNWBool("killerhelp_camp") && v:IsPlayer() && v.ClassID && GAMEMODE.CLASS.Survivors[v.ClassID] && GAMEMODE.CLASS.Survivors[v.ClassID].name != "Emo" then
 				-- Camp
 				v:SetNWBool("killerhelp_camp", true)
 			end
