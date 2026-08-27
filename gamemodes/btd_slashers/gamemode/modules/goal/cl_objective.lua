@@ -23,7 +23,7 @@ end )
 
 
 net.Receive( "modifyObjectiveSlasher", function()
-	if objText then
+	if IsValid(objText) then
 		objText:SetText( GAMEMODE.LANG:GetString(unpack(net.ReadTable())) )
 	end
 end )
@@ -81,19 +81,21 @@ function objectivePanel(objTextn,objType)
 	end
 -- Move down and the previous objective first
 if (ObjectiveAlreadySet) then
-	img_check:SetImage("materials/icons/icon_safe.png")
+	if IsValid(img_check) then
+		img_check:SetImage("materials/icons/icon_safe.png")
+	end
 
-	OBJPanel:SetTerm(6) -- Remove it
-	if(objTextn=='')then
-
+	if objTextn == '' then
+		if IsValid(OBJPanel) then
+			OBJPanel:SetTerm(6) -- Remove it
 			OBJPanel:MoveTo( OBJPanel.x+619, OBJPanel.y, 0.4, 5)
-			ObjectiveAlreadySet = false;
-			ObjectiveAlreadySet = false;
-			return
-	else
+		end
+		ObjectiveAlreadySet = false
+		return
+	elseif IsValid(OBJPanel) then
+		OBJPanel:SetTerm(6) -- Remove it
 		OBJPanel:MoveTo( OBJPanel.x, OBJPanel.y + 100, 1, 0)
 		OBJPanel:MoveTo( OBJPanel.x+619, OBJPanel.y + 100, 0.4, 5)
-
 	end
 end
 
