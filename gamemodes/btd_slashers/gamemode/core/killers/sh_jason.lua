@@ -32,7 +32,7 @@ if CLIENT then
 		ply = net.ReadEntity()
 		pos = net.ReadVector()
 		ang = net.ReadAngle()
-		endtime = net.ReadInt(16)
+		endtime = CurTime() + net.ReadInt(16)
 
 		ang.p = 0
 		ang.r = 0
@@ -54,7 +54,6 @@ if CLIENT then
 		if tr.Hit then
 			local tbl = {}
 			tbl.pos = tr.HitPos
-			tbl.foot = foot
 			tbl.endtime = endtime
 			tbl.angle = ang.y
 			tbl.normal = Vector(0, 0, 1)
@@ -103,7 +102,7 @@ else
 			net.WriteEntity(ply)
 			net.WriteVector(pos)
 			net.WriteAngle(ply:GetAimVector():Angle())
-			net.WriteInt(CurTime() + GetConVar("slashers_jason_step_duration"):GetFloat(), 16)
+			net.WriteInt(GetConVar("slashers_jason_step_duration"):GetFloat(), 16)
 		net.Send(GM.ROUND.Killer)
 	end
 	hook.Add("PlayerFootstep", "sls_kability_PlayerFootstep", PlayerFootstep)
