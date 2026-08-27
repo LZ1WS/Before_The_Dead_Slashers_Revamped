@@ -15,13 +15,18 @@ local function FindBySteamID(steamid)
 end
 
 concommand.Add("sls_restartround", function(ply, cmd, args)
-	if !ply:IsSuperAdmin() then return end
-	local ply = FindBySteamID(args[1])
-	GAMEMODE.ROUND:Start(ply)
+	if ply and !ply:IsSuperAdmin() then return end
+
+	if args[1] then
+		GAMEMODE.ROUND:Start(FindBySteamID(args[1]))
+	else
+		GAMEMODE.ROUND:Start()
+	end
 end)
 
 concommand.Add("sls_changelevel", function(ply, cmd, args)
-	if !ply:IsSuperAdmin() then return end
+	if ply and !ply:IsSuperAdmin() then return end
 	if !args || !args[1] then return end
+
 	RunConsoleCommand("changelevel", args[1])
 end)
