@@ -12,7 +12,7 @@ if SERVER then print("--- MODULES ---") end
 
 for _, mod in ipairs(directories) do
 	if GM.CONFIG["disabled_modules"][mod] then continue end
-	files = file.Find(modulesPath .. "/" .. mod .. "/*.lua", "LUA")
+	local files = file.Find(modulesPath .. "/" .. mod .. "/*.lua", "LUA")
 	if #files > 0 then
 		if SERVER then print("LOADING " .. mod) end
 	end
