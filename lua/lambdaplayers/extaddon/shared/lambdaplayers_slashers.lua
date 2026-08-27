@@ -362,6 +362,11 @@ if ( SERVER ) then
             local kothEnt = self.l_KOTH_Entity
 
             if ( self.l_TeamName or IsValid( kothEnt ) ) and ( !self:InCombat() or !self:CanSee( ene ) ) then
+                local myPos = self:GetPos()
+                local myForward = self:GetForward()
+                local dotView = -1
+                local eneDist = 2000 ^ 2
+
                 local surroundings = self:FindInSphere( nil, 2000, function( ent )
                     if LambdaIsValid( ent ) and ( !LambdaIsValid( ene ) or self:GetRangeSquaredTo( ent ) < self:GetRangeSquaredTo( ene ) ) and self:CanTarget( ent ) and self:CanSee( ent ) then
                         local areTeammates = LambdaTeams:AreTeammates( self, ent )
