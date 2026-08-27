@@ -1473,7 +1473,7 @@ if CLIENT then
 			if !IsValid(ply) then return end
 			wep = ply:GetActiveWeapon()
 			if IsValid(wep) and wep.IsTFAWeapon and wep.PlayerThinkClientFrame then
-				wep:PlayerThinkClientFrame(pl)
+				wep:PlayerThinkClientFrame(ply)
 			end
 
 		end)
@@ -1490,7 +1490,7 @@ hook.Add("PostDrawTranslucentRenderables", "postdrawtranslucentrenderables_tfaba
 	local wep = ply:GetActiveWeapon()
 
 	if wep.PostDrawTranslucentRenderables_TFA then
-		wep:PostDrawTranslucentRenderables_TFA(pl)
+		wep:PostDrawTranslucentRenderables_TFA(ply)
 	end
 
 end)
