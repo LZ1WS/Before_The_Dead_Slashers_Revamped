@@ -132,9 +132,9 @@ function SWEP:Deploy()
 	if ( IsValid( fpmodel ) ) then
 		fpmodel:SetWeaponModel( "models/slender-rising/state_invisible.mdl" , self )
 	end
-	self.Weapon:SetNetworkedBool( "Ironsights", false )
-	bIronsights = !self.Weapon:SetNetworkedBool( "Ironsights", b )
-	timer.Create( "ShowGun" .. self:EntIndex(), 0.1, 1, function() if IsValid(self.Owner) and IsValid(self) then self:SetIronsights( bIronsights ) fpmodel:SetWeaponModel( self.ViewModel , self ) end end )
+	self.bIronsights = not self.Weapon:GetNetworkedBool( "Ironsights", false )
+	self.Weapon:SetNetworkedBool( "Ironsights", self.bIronsights )
+	timer.Create( "ShowGun" .. self:EntIndex(), 0.1, 1, function() if IsValid(self.Owner) and IsValid(self) then self:SetIronsights( self.bIronsights ) fpmodel:SetWeaponModel( self.ViewModel , self ) end end )
 	self:SetNextPrimaryFire( CurTime() + 0.8 )
 	self:EmitSound("weapons/smg1/switch_single.wav")
 	timer.UnPause("FreakOut" .. self:EntIndex() )
@@ -149,7 +149,7 @@ function SWEP:CreateFreakOut()
 	if IsValid(self.Owner) and IsValid(self) then
 
 	if info.NbPagesToFound == 0 then
-		timer.Create( "FreakOut" .. self.Owner:EntIndex(), math.random(45,55), 1, function() if IsValid(self.Owner) and IsValid(self) and ( self:GetNetworkedBool( "FreakingOut" ) == false ) and IsFirstTimePredicted() then self:EmitSound("SlenderRising.ShotgunScare") self:EmitSound("SlenderRising.ShotgunTheme") self.NextScreenShake = CurTime() self:SetIronsights( bIronsights ) self:SetNetworkedBool( "FreakingOut", true ) self:SetHoldType( "knife" ) self.Owner:SetNetworkedBool( "ShotgunClicksLeft", math.random(10,17) ) self:CreateFreakOut() self:DeathTimer() end end )
+		timer.Create( "FreakOut" .. self.Owner:EntIndex(), math.random(45,55), 1, function() if IsValid(self.Owner) and IsValid(self) and ( self:GetNetworkedBool( "FreakingOut" ) == false ) and ( SERVER or IsFirstTimePredicted() ) then self:EmitSound("SlenderRising.ShotgunScare") self:EmitSound("SlenderRising.ShotgunTheme") self.NextScreenShake = CurTime() self:SetIronsights( self.bIronsights ) self:SetNetworkedBool( "FreakingOut", true ) self:SetHoldType( "knife" ) self.Owner:SetNetworkedBool( "ShotgunClicksLeft", math.random(10,17) ) self:CreateFreakOut() self:DeathTimer() end end )
 	end
 
 	end
@@ -157,7 +157,7 @@ function SWEP:CreateFreakOut()
 end
 
 function SWEP:DeathTimer()
-timer.Create( "FreakOutDie" .. self.Owner:EntIndex(), 3, 1, function() if IsValid(self.Owner) and IsValid(self) and IsFirstTimePredicted() then self:EmitSound("SlenderRising.Shotgun") self:PlayerFlash() self.Owner:Kill() end end )
+timer.Create( "FreakOutDie" .. self.Owner:EntIndex(), 3, 1, function() if IsValid(self.Owner) and IsValid(self) and ( SERVER or IsFirstTimePredicted() ) then self:EmitSound("SlenderRising.Shotgun") self:PlayerFlash() self.Owner:Kill() end end )
 end
 function SWEP:PrimaryAttack()
 
@@ -369,10 +369,14 @@ elseif ( self:GetNetworkedBool( "FreakingOut" ) == true ) then
 self.IronSightsPos = Vector( -5.9712, -34.4403, 21.2695 )
 self.IronSightsAng = Vector( -39.7254, 183.9815, 2.8173 )
 end
-   if self.NewFreakOut < CurTime() and NbPagesToFound == 0 and self.FreakOuts == false then
-	self.FreakOuts = true
-	self:CreateFreakOut()
-	self.NewFreakOut = CurTime() + 1
+   if self.NewFreakOut < CurTime() and self.FreakOuts == false then
+	local info = GAMEMODE.MAP and GAMEMODE.MAP.Killer and GAMEMODE.MAP.Killer.SpecialGoals
+
+	if info and info.NbPagesToFound == 0 then
+		self.FreakOuts = true
+		self:CreateFreakOut()
+		self.NewFreakOut = CurTime() + 1
+	end
 end
 	if ( self:GetNetworkedBool( "FreakingOut" ) == true ) and self.NextScreenShake < CurTime() then
 	self.NextScreenShake = CurTime() + 0.8
