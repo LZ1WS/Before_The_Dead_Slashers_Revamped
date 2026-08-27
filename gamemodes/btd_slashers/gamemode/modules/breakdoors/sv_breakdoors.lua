@@ -45,7 +45,7 @@ end
 
 local function WoodenState4(ent, aimvec)
 	ent:SetModel("models/props_doors/doormain_rural01_small_01.mdl")
-	ent:PhysicsInitConvex(wood1)
+	ent:PhysicsInit(SOLID_VPHYSICS)
 	ent:EnableCustomCollisions(true)
 
 	CreateDebris(ent, "models/props_doors/doormain_rural01_small_02.mdl", 6, aimvec)
@@ -175,10 +175,10 @@ local function BreakDoorsInitialize()
 end
 hook.Add("sls_round_PostStart", "breakdoors_PostStart", BreakDoorsInitialize)
 
-hook.Add("EntityTakeDamage", "breakdoors_EntityTakeDamage", 
-	function(ent, dmg) 
+hook.Add("EntityTakeDamage", "breakdoors_EntityTakeDamage",
+	function(ent, dmg)
 		if IsValid(ent) && ent.breakdoors_callback then
 			ent.breakdoors_callback(ent, dmg)
-		end 
+		end
 	end
 )
