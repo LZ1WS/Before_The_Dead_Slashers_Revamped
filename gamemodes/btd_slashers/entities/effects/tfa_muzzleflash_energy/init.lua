@@ -48,17 +48,19 @@ function EFFECT:Init( data )
 	local dotang = math.deg( math.acos( math.abs(dot) ) )	
 	local halofac =  math.Clamp( 1 - (dotang/90), 0, 1)
 	
-	if CLIENT and !IsValid(ownerent) then ownerent = LocalPlayer() end
-	
-    if (dlight) then
-        dlight.Pos              = self.Position + dir * 1 - dir:Angle():Right()*5
-        dlight.r                = 25
-        dlight.g                = 200
-        dlight.b                = 255
-        dlight.Brightness = 4.0
-        dlight.size     = 110
-        dlight.DieTime  = CurTime() + 0.03
-   end
+if CLIENT and IsValid(self.WeaponEnt) then
+		local dlight = DynamicLight(self.WeaponEnt:EntIndex())
+
+		if dlight then
+			dlight.Pos = self.Position + dir * 1 - dir:Angle():Right() * 5
+			dlight.r = 25
+			dlight.g = 200
+			dlight.b = 255
+			dlight.Brightness = 4.0
+			dlight.size = 110
+			dlight.DieTime = CurTime() + 0.03
+		end
+	end
 	
 	ParticleEffectAttach("tfa_muzzle_energy",PATTACH_POINT_FOLLOW,self.WeaponEnt,data:GetAttachment())
 	
