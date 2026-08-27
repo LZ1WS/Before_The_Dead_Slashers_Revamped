@@ -163,6 +163,7 @@ local function PlayerInitialSpawn(ply)
 						net.WriteBool(false)
 					net.Broadcast()
 					SpectatePlayer(ply, v)
+					break
 				end
 			end
 		end
