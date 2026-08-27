@@ -61,7 +61,7 @@ function SWEP:PrimaryAttack()
 
 	local owner = self:GetOwner()
 
-	if timer.Exists("sls_adrenaline_overdose") then owner:Notify({"addicted_overdose"}, "cross") return end
+	if timer.Exists("sls_adrenaline_overdose" .. owner:EntIndex()) then owner:Notify({"addicted_overdose"}, "cross") return end
 
 	--local Addicted = GAMEMODE.CLASS.Survivors[18]
 
@@ -83,7 +83,7 @@ function SWEP:PrimaryAttack()
 
 		owner:Notify({"addicted_overdose"}, "cross")
 
-		timer.Create("sls_adrenaline_overdose", 12, 1, function()
+		timer.Create("sls_adrenaline_overdose" .. owner:EntIndex(), 12, 1, function()
 			if !owner:IsValid() or !owner:Alive() then return end
 			owner:Kill()
 		end)
@@ -104,7 +104,7 @@ function SWEP:PrimaryAttack()
 		owner:Notify({"class_ability_used"}, "safe")
 	end
 
-	timer.Create("sls_addicted_buff_disable", 5, 1, function()
+	timer.Create("sls_addicted_buff_disable" .. owner:EntIndex(), 5, 1, function()
 		if !owner:IsValid() or !owner:Alive() then return end
 
 		--owner:SetRunSpeed(Addicted.runspeed)
