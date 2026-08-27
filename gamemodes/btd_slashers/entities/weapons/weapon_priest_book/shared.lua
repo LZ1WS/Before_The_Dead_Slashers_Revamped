@@ -43,10 +43,10 @@ function SWEP:Equip(ply)
 	filter:AddAllPlayers()
 	self.PraySFX = CreateSound(ply, "survivors/priest/ability_use.mp3", filter)
 	end
-	sls_priest_prev_health = self.Owner:Health()
+	self.PrevHealth = self.Owner:Health()
 end
 
-function SWEP:Tick()
+function SWEP:Think()
 	if self:Ammo1() <= 0 then return end
 	if CurTime() < self.Delay then return end
 	local owner = self:GetOwner()
@@ -58,7 +58,7 @@ function SWEP:Tick()
 			self.Used = true
 			self:SetNWFloat( 'progressBar', curswepProgress + 0.003)
 			owner:AddFlags(FL_ATCONTROLS)
-			if SERVER and !self.PraySFX:IsPlaying() then
+			if SERVER and self.PraySFX and !self.PraySFX:IsPlaying() then
 				self.PraySFX:Play()
 			end
 			if SERVER then
@@ -73,7 +73,7 @@ function SWEP:Tick()
 				sls.debuff.HolyWeakenPlayer(GM.ROUND.Killer)
 				owner:RemoveFlags(FL_ATCONTROLS)
 				self:SetNWFloat( 'progressBar', 0)
-				if SERVER and self.PraySFX:IsPlaying() then
+				if SERVER and self.PraySFX and self.PraySFX:IsPlaying() then
 					self.PraySFX:FadeOut(3)
 					owner:EmitSound("survivors/priest/ability_finish.mp3", 511)
 					GM.ROUND.Killer:EmitSound("survivors/priest/ability_finish_killer.mp3")
@@ -85,13 +85,13 @@ function SWEP:Tick()
 				end
 		end
 	end
-	if ( !cmd:KeyDown( IN_ATTACK ) or owner:Health() != sls_priest_prev_health ) and self.Used then
+	if ( !cmd:KeyDown( IN_ATTACK ) or owner:Health() != self.PrevHealth ) and self.Used then
 		self.Used = false
 		self.Delay = CurTime() + 5
 		owner:RemoveFlags(FL_ATCONTROLS)
-		sls_priest_prev_health = owner:Health()
+		self.PrevHealth = owner:Health()
 		self:SetNWFloat( 'progressBar', 0)
-		if SERVER and self.PraySFX:IsPlaying() then
+		if SERVER and self.PraySFX and self.PraySFX:IsPlaying() then
 			self.PraySFX:FadeOut(3)
 		end
 	end
