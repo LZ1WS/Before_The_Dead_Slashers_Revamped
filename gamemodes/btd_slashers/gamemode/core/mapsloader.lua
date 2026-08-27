@@ -121,7 +121,7 @@ else
 
 			hook.Run("KillerUseAbility", ply)
 
-			net.Start("sls_mapsloader_useability")
+			net.Start("sls_mapsloader_UseAbility")
 			net.SendToServer()
 			GM.MAP.Killer:UseAbility( ply )
 
