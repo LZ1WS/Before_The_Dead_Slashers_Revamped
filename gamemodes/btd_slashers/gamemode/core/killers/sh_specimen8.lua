@@ -85,4 +85,18 @@ function KILLER:UseAbility(ply)
 	end)
 end
 
+hook.Add("sls_round_End", "sls_specimen8abil_End", function()
+	if GM.MAP:GetKillerIndex() ~= KILLER.index then return end
+
+	timer.Remove("specimen8_ability")
+
+	for _, v in ipairs(ents.FindByClass("func_door*")) do
+		v:SetKeyValue("Speed", "100")
+	end
+
+	for _, v in ipairs(ents.FindByClass("prop_door*")) do
+		v:SetKeyValue("Speed", "100")
+	end
+end)
+
 KILLER_SPECIMEN8 = KILLER.index
