@@ -51,7 +51,7 @@ local function openVotemap()
   horizonBar = vgui.Create("DPanel",backVote,"horBar")
   horizonBar:SetDrawBackground(false)
 
-  local index
+local index = 0
 
   local oneMap = vgui.Create("DPanel",horizonBar,"extend")
   oneMap:SetDrawBackground(false)
@@ -227,7 +227,7 @@ local function receiveVoteStat()
       votePanelCount:GetChild(0):AlignLeft(0)
       votePanelCount:GetChild(0):Show()
 
-      votePanelCount:GetChild(1):SetImage("votemap/votemap_"..nbCurVote - 5 ..".png","vgui/avatar_default")
+      votePanelCount:GetChild(1):SetImage("votemap/votemap_" .. (nbCurVote - 5) .. ".png","vgui/avatar_default")
       votePanelCount:GetChild(1):MoveRightOf(votePanelCount:GetChild(0),-20)
       votePanelCount:GetChild(1):Show()
     end
