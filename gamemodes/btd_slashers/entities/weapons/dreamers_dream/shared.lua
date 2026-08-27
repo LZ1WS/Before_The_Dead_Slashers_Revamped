@@ -84,7 +84,9 @@ function SWEP:PrimaryAttack()
         owner:ConCommand("pp_mat_overlay effects/tp_eyefx/tpeye2")
     end
 
-    timer.Create("dreamers_dream_off", 5, 1, function()
+    local ownerID = owner:EntIndex()
+
+    timer.Create("dreamers_dream_off" .. ownerID, 5, 1, function()
         if !owner:Alive() then return end
         if SERVER then
             hook.Remove("SetupPlayerVisibility", "Dreamers_Visibility")
@@ -95,13 +97,13 @@ function SWEP:PrimaryAttack()
         hook.Remove("CalcView", "Dreamer_View")
         end
 
-        timer.Create("dreamers_dream_runspeed", 5, 1, function()
+        timer.Create("dreamers_dream_runspeed" .. ownerID, 5, 1, function()
             if !owner:Alive() then return end
             owner:RemoveFlags(FL_ATCONTROLS)
         end)
     end)
 
-    timer.Create("dreamers_dream_cooldown", 60, 1, function()
+    timer.Create("dreamers_dream_cooldown" .. ownerID, 60, 1, function()
         if !owner:Alive() then return end
         if SERVER then
         net.Start( "notificationSlasher" )
@@ -113,9 +115,9 @@ function SWEP:PrimaryAttack()
     end)
 
 hook.Add("sls_round_OnTeamWin", "sls_dreamers_dream_End", function()
-timer.Remove("dreamers_dream_cooldown")
-timer.Remove("dreamers_dream_off")
-timer.Remove("dreamers_dream_runspeed")
+timer.Remove("dreamers_dream_cooldown" .. ownerID)
+timer.Remove("dreamers_dream_off" .. ownerID)
+timer.Remove("dreamers_dream_runspeed" .. ownerID)
 hook.Remove("sls_round_OnTeamWin", "sls_dreamers_dream_End")
 end)
 
