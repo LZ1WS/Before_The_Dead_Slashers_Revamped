@@ -158,11 +158,15 @@ function SWEP:Deploy()
 	if ( SERVER ) then
 		self:SetCombo( 0 )
     end
-    self.Owner:SetMaxHealth(SCPSWEPS.zomhealth)
-	self.Owner.Zombie = true
-	if self.Owner:Health() > SCPSWEPS.zomhealth then
-		self.Owner:SetHealth(SCPSWEPS.zomhealth)
+
+	if SERVER then
+		self.Owner:SetMaxHealth(SCPSWEPS.zomhealth)
+		if self.Owner:Health() > SCPSWEPS.zomhealth then
+			self.Owner:SetHealth(SCPSWEPS.zomhealth)
+		end
 	end
+
+	self.Owner.Zombie = true
 	return true
 end
 
