@@ -172,7 +172,11 @@ function SWEP:PrimaryAttack()
 
     if trace.Hit then
 		if ValidMaterials[trace.MatType] and not (trace.Entity:IsPlayer() or trace.Entity:IsNPC() or trace.Entity:IsNextBot()) then
-			self.Weapon:EmitSound(string.format("%s%i%s", MaterialSounds[trace.MatType], math.random(1.3), ".wav"))
+			local matSound = MaterialSounds[trace.MatType]
+
+			if matSound then
+				self.Weapon:EmitSound(string.format("%s%i%s", matSound, math.random(1, 3), ".wav"))
+			end
 		end
 
 		if IsValid(trace.Entity) and not (trace.Entity:IsPlayer() or trace.Entity:IsNPC() or trace.Entity:IsNextBot()) then
@@ -259,7 +263,9 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 end
 
 function SWEP:Precache()
-	util.PrecacheSound(self.Primary.Sound)
+	if self.Primary.Sound then
+		util.PrecacheSound(self.Primary.Sound)
+	end
 	util.PrecacheModel(self.ViewModel)
 	util.PrecacheModel(self.WorldModel)
 end
