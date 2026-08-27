@@ -202,7 +202,7 @@ else
 	local function ResetVisibility()
 	for k,v in pairs(player.GetAll()) do
 		v:DrawShadow( true )
-		if IsValid(GAMEMODE.CLASS.Killers) and GM.ROUND.Killer:Team() == TEAM_KILLER then
+		if GM.ROUND.Killer == KILLER_PROXY then
 			GM.ROUND.Killer:SetNW2Float("sls_max_speed", nil)
 			GM.ROUND.Killer.InvisibleActive = false
 		end
