@@ -25,7 +25,7 @@ end
 local color_green = Color( 0, 153, 0 )
 
 function KILLER:UseAbility(ply)
-	ply:EmitSound(info.Abilities[1])
+	ply:EmitSound(self.Abilities[1])
 
 	if CLIENT then
 		hook.Add("PreDrawHalos", "AddCloakerHalos", function()
