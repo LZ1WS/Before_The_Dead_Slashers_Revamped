@@ -43,7 +43,7 @@ function ENT:Think()
 			net.WriteVector(self:GetPos())
 			net.WriteString("info")
 			net.WriteInt(4, 32)
-			net.Send(team.GetPlayers(TEAM_KILLER)[1])
+			net.Send(GM.ROUND.Killer)
 
 			net.Start("sls_springtrap_trap_activated")
 			net.WriteEntity(ply)
