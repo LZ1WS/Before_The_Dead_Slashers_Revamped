@@ -73,7 +73,7 @@ function ENT:Use(activator, caller)
 		--local tr = caller:GetEyeTrace()
 		self:SetUseType( CONTINUOUS_USE )
 		curentProgress = self:GetNWFloat("progressBar")
-		generatorNowActivated = self:GetNWEntity( "activated")
+		generatorNowActivated = self:GetNWBool( "activated")
 
 		if (curentProgress < 1 ) then
 
