@@ -430,7 +430,7 @@ Ang.roll = Ang.roll
 local trworldx = {
 start = self.SpawnPos,
 endpos = data.HitPos,
-fliter = function(ent) if !ent:IsWorld() then return false end end,
+filter = function(ent) if !ent:IsWorld() then return false end end,
 mask = MASK_SOLID_BRUSHONLY
 }
 local trace = util.TraceLine(trworldx)
@@ -444,7 +444,9 @@ self:GetPhysicsObject():EnableMotion(false)
 self:SetPos(trace.HitPos + data.HitNormal * -10)
 self:SetAngles(Angle(Ang.pitch + 20,self.SpawnAng.yaw,Ang.roll))
 if data.HitEntity:IsNPC() or data.HitEntity:IsPlayer() then
+if SERVER and data.HitEntity:IsPlayer() then
 data.HitEntity:SetShouldServerRagdoll( true )
+end
 self:EmitSound("Weapon_FireAxe.HitFlesh")
 self:Remove()
 else
