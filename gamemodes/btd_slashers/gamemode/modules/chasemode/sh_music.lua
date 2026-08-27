@@ -59,7 +59,7 @@ if CLIENT then
 	cvars.AddChangeCallback("slashers_escape_volume", function(convar_name, value_old, value_new)
 		if value_old == value_new then return end
 
-		if IsValid(ChaseSound) then
+		if IsValid(EscapeSound) then
 			EscapeSound:SetVolume(value_new / 100)
 		end
 	end)
