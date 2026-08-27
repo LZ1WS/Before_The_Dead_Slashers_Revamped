@@ -16,6 +16,7 @@ function ENT:Initialize()
 	self:SetMoveType( MOVETYPE_NONE )
 	self:SetSolid( SOLID_VPHYSICS )
 
+	local phy = self:GetPhysicsObject()
 	if IsValid( phy ) then
 		phy:Wake()
 		phy:EnableGravity( true )
@@ -165,7 +166,10 @@ function ENT:Use( user )
 	if GAMEMODE.MAP.Killer.index == KILLER_HUNTRESS and !self.IsSomeOneInside and user:Team() == TEAM_KILLER then
 		self:EmitSound( 'dbd/lockerent/openfast.mp3' )
 		self:EmitSound( 'dbd/lockerent/open2.mp3' )
-		user:SetAmmo(user:GetActiveWeapon().Secondary.DefaultClip, "SniperRound")
+		local wpn = user:GetActiveWeapon()
+		if IsValid(wpn) then
+			user:SetAmmo(wpn.Secondary.DefaultClip, "SniperRound")
+		end
 		user:Freeze(true)
 		timer.Simple(3, function()
 		user:Freeze(false)
