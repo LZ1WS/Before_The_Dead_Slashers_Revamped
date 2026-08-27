@@ -176,7 +176,7 @@ local function JumpScare()
 		local pos = hisPos - shootPos
 		local unitPos = pos:GetNormalized()
 		if unitPos:Dot(aimVec) > 0.80 then
-			local trace = util.QuickTrace(shootPos, pos, LocalPlayer())
+			local trace = util.QuickTrace(shootPos, hisPos, LocalPlayer())
 			if killer:GetNWBool("sls_chase_disabled", false) or killer:GetNWBool("sls_terror_disabled", false) then return end
 			if trace.Hit and trace.Entity ~= killer then return end
 			if LocalPlayer().lastJumpscare && LocalPlayer().lastJumpscare + jumpscare.cooldown > CurTime() then return end
