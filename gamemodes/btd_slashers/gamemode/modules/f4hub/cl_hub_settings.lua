@@ -206,7 +206,7 @@ function PANEL:Populate()
 					end
 
 					if isfunction(setting.customFunc) then
-						setting:CustomFunc(settingPanel, val)
+						setting:customFunc(settingPanel, val)
 					end
 				end
 
@@ -246,7 +246,7 @@ function PANEL:PopulateAudio()
 					end
 
 					if isfunction(setting.customFunc) then
-						setting:CustomFunc(settingPanel, value)
+						setting:customFunc(settingPanel, value)
 					end
 				end
 
