@@ -85,24 +85,24 @@ local function GetPercentSurvivorDead()
 end
 
 local function StartAmbient(level)
-if game.GetMap() == "slash_liminal_space" then return end
-	if GM.MAP.Killer.Name == "Slenderman" then
-	sound.PlayFile("sound/slashers/ambient/slender_stage" .. level .. ".wav", "noplay", function(station)
-		if IsValid(station) then
-			ambient = station
-			station:SetVolume(0.6)
-			station:Play()
-			timer.Create("sls_sambient", 10, 0, function()
-				local percent = GetPercentSurvivorDead()
+	if game.GetMap() == "slash_liminal_space" then return end
+	if GM.MAP:GetKillerIndex() == KILLER_SLENDER then
+		sound.PlayFile("sound/slashers/ambient/slender_stage" .. level .. ".wav", "noplay", function(station)
+			if IsValid(station) then
+				ambient = station
+				station:SetVolume(0.6)
+				station:Play()
+				timer.Create("sls_sambient", 10, 0, function()
+					local percent = GetPercentSurvivorDead()
 
-				if level != percent then
-					timer.Remove("sls_sambient")
-					StartAmbient(percent)
-				else
-					station:Play()
-				end
-			end)
-		end
+					if level != percent then
+						timer.Remove("sls_sambient")
+						StartAmbient(percent)
+					else
+						station:Play()
+					end
+				end)
+			end
 		end)
 	else
 	sound.PlayFile("sound/slashers/ambient/loop_" .. level .. "_percent.wav", "noplay", function(station)
@@ -169,7 +169,7 @@ local function JumpScare()
 
 	local shootPos = LocalPlayer():GetShootPos()
 	local hisPos = killer:GetShootPos()
-	local aimVec = LocalPlayer():GetAimVector() 
+	local aimVec = LocalPlayer():GetAimVector()
 	local distance = hisPos:DistToSqr(shootPos)
 
 	if distance < 3000000 then
@@ -182,7 +182,7 @@ local function JumpScare()
 			if LocalPlayer().lastJumpscare && LocalPlayer().lastJumpscare + jumpscare.cooldown > CurTime() then return end
 
 			if distance <= 100000 then
-				if GM.MAP.Killer.Name == "Slenderman" then
+				if GM.MAP:GetKillerIndex() == KILLER_SLENDER then
 				surface.PlaySound("slender/voice/" .. slender_jumpscare.high[math.random(1, #slender_jumpscare.high)])
 				net.Start("sls_slender_jumpscare_dmg")
 				net.SendToServer()
@@ -191,7 +191,7 @@ local function JumpScare()
 				surface.PlaySound("slashers/scares/" .. jumpscare.high[math.random(1, #jumpscare.high)])
 				end
 			elseif distance <= 1000000 then
-				if GM.MAP.Killer.Name == "Slenderman" then
+				if GM.MAP:GetKillerIndex() == KILLER_SLENDER then
 					surface.PlaySound("slender/voice/" .. slender_jumpscare.mid[math.random(1, #slender_jumpscare.mid)])
 					net.Start("sls_slender_jumpscare_dmg")
 					net.SendToServer()
@@ -200,8 +200,8 @@ local function JumpScare()
 				surface.PlaySound("slashers/scares/" .. jumpscare.mid[math.random(1, #jumpscare.mid)])
 				end
 			else
-				if GM.MAP.Killer.Name == "Slenderman" then
-				surface.PlaySound("slender/voice/" .. slender_jumpscare.low[math.random(1, #slender_jumpscare.low)])	
+				if GM.MAP:GetKillerIndex() == KILLER_SLENDER then
+				surface.PlaySound("slender/voice/" .. slender_jumpscare.low[math.random(1, #slender_jumpscare.low)])
 				else
 					-- Low
 				surface.PlaySound("slashers/scares/" .. jumpscare.low[math.random(1, #jumpscare.low)])
