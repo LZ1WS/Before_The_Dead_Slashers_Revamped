@@ -234,9 +234,7 @@ hook.Add( "sls_NextObjective", "slender_objectives", function(goal)
 		GAMEMODE.ROUND:UpdateEndTime(GAMEMODE.ROUND.EndTime + GetConVar("slashers_duration_addobj"):GetFloat())
 
 		local shotgunSpawn = (GM.MAP.Pages and GM.MAP.Pages.Shotgun) or GM.MAP.Shotgun
-		for _, v in pairs( shotgunSpawn ) do
-			shotgun = table.Random(v)
-
+		for _, shotgun in RandomPairs( shotgunSpawn ) do
 			--get the type of entity
 			local entType = shotgun.type
 			--spawn it
@@ -247,8 +245,8 @@ hook.Add( "sls_NextObjective", "slender_objectives", function(goal)
 			newEnt:Spawn()
 
 			newEnt:Activate()
+			break
 		end
-
 	elseif (info.CurrentObjective == "find_shotgun") then
 		info.CurrentObjective = "kill_slender"
 		GAMEMODE.ROUND:UpdateEndTime(GAMEMODE.ROUND.EndTime + GetConVar("slashers_duration_addobj"):GetFloat())
