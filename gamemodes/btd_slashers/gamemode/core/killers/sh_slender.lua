@@ -189,6 +189,7 @@ hook.Add( "sls_round_PostStart", "Slender Page Spawn", Spawn_SlashPages )
 hook.Add( "sls_round_PreStart", "sls_slender_ReinitObjectives", function( ply, text, public )
 	if GM.MAP.Pages then --If we have data for this map
 		for k, v in pairs( GM.MAP.Pages ) do
+			if k == "Shotgun" then continue end
 			for m, w in pairs( v ) do
 				w.spw = false
 			end
