@@ -22,7 +22,7 @@ sound.Add({
 sound.Add({
 	name =				"SlenderRising.SignWhispers",
 	channel =			CHAN_STATIC,
-	volume =			1.0,
+	volume =			0.3,
 	soundlevel =			70,
 	sound =				"slender-rising/sign_drone8_loop.wav"
 })
@@ -89,9 +89,6 @@ function ENT:Initialize()
 end
 
 function ENT:Use( activator )
-
-	if GetGlobalInt("RNDKiller", 1) ~= KILLER_SLENDER then return end
-
 	local info = GM.MAP.Killer.SpecialGoals
 
 	if !info then return end
