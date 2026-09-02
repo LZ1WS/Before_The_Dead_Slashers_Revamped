@@ -152,6 +152,7 @@ local function Spawn_SlashPages()
 
 	if GM.MAP.Killer.SpecialRound == "GM.MAP.Pages" && GM.MAP.Pages then --If we have data for this map
 		for k, v in pairs( GM.MAP.Pages ) do
+			if k == "Shotgun" then continue end
 
 			if (v == GM.MAP.Pages.Page) then
 				nbPageToSpawn = 2 * math.ceil( (#player.GetAll() + #GetLambdaPlayers()) * 1.1 )
