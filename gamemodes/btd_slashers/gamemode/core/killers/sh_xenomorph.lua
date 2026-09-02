@@ -108,4 +108,4 @@ hook.Add("sls_round_End", "sls_xenoability_End", function()
     for _, v in ipairs(player.GetAll()) do v:SetDSP(0) end
 end)
 
-KILLER_XENO = KILLER.index
+KILLER_XENOMORPH = KILLER.index
