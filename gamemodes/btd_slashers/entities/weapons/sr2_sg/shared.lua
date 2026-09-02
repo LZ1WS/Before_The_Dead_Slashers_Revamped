@@ -110,8 +110,6 @@ function SWEP:Initialize()
 end
 
 function SWEP:Equip(ent)
-	if GetGlobalInt("RNDKiller", 1) ~= KILLER_SLENDER then return end
-
 	local info = GAMEMODE.MAP.Killer.SpecialGoals
 
 	if !info then return end
