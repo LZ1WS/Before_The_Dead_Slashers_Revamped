@@ -142,7 +142,7 @@ function SWEP:Deploy()
 end
 
 function SWEP:CreateFreakOut()
-	local info = GM.MAP.Killer.SpecialGoals
+	local info = GAMEMODE.MAP.Killer.SpecialGoals
 
 	if !info then return end
 
