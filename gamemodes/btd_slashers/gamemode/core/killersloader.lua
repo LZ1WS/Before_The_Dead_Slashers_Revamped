@@ -94,6 +94,14 @@ function sls.killers.GetIndex(uniqueID)
 	return info.index
 end
 
+function sls.killers.RefreshGlobals()
+	for _, info in ipairs(GM.KILLERS) do
+		local globalName = ("KILLER_" .. string.upper(info.uniqueID))
+
+		_G[globalName] = info.index
+	end
+end
+
 function sls.killers.Init(bNoHookTrigger)
 	GM.KILLERS = {}
 	GM.KILLERS_LIST = {}
@@ -103,10 +111,10 @@ end
 
 local disabled = {["wesker"] = true}
 function sls.killers.Load(fileName, filePath)
-	local id = #GM.KILLERS + 1
 	local niceName = fileName:sub(4, -5)
 
 	if disabled[niceName] then return end
+	local id = #GM.KILLERS + 1
 
 	KILLER = setmetatable({uniqueID = niceName, index = id}, sls.meta.killer)
 
@@ -133,6 +141,7 @@ function sls.killers.LoadFromDir(directory, bNoHookTrigger)
 
 	if !bNoHookTrigger then
 		hook.Run("InitializedKillers")
+		sls.killers.RefreshGlobals()
 	end
 end
 
@@ -170,6 +179,8 @@ function sls.killers.Remove(index)
 		newTbl[#newTbl + 1] = tab
 	end
 	GM.KILLERS = newTbl
+
+	sls.killers.RefreshGlobals()
 
 	return true
 end
