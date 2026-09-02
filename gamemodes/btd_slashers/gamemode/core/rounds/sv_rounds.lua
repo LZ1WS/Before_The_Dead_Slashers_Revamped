@@ -64,7 +64,7 @@ function GM.ROUND:Start(forceKiller)
 	local spec_chance = GetConVar("slashers_specialround_chance"):GetInt() / 100
 	local bots_num = GetConVar("slashers_lambdabots_num"):GetInt()
 
-	if chance <= spec_chance then
+	if GM.ROUND.Special and chance <= spec_chance then
 		if spec_chance == 0 then return end
 		GM.ROUND.SpecialType = table.Random(GM.ROUND.Special)
 
